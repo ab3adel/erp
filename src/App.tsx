@@ -1,6 +1,8 @@
 import { RouterProvider } from "react-router-dom";
-import { router } from "./routes";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ThemeProvider, responsiveFontSizes, CssBaseline } from "@mui/material";
+import { router } from "./routes";
+import { theme } from "./theme";
 
 const client = new ApolloClient({
   uri: "http://localhost:1337/graphql",
@@ -10,7 +12,10 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={responsiveFontSizes(theme)}>
+        <CssBaseline />
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </ApolloProvider>
   );
 }
