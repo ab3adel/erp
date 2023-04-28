@@ -35,12 +35,12 @@ const typography: TypographyOptions = {
   },
   body1: {
     fontFamily: PRIMARY_FONT,
-    fontWeight: 600,
+    fontWeight: 500,
     fontSize: 16,
   },
   body2: {
     fontFamily: PRIMARY_FONT,
-    fontWeight: "regular",
+    fontWeight: 400,
     fontSize: 14,
   },
   button: {

@@ -13,7 +13,7 @@ export const ButtonStylesOverrides: Components<
     root: ({ ownerState }) => ({
       paddingTop: "4px",
       paddingBottom: "4px",
-      borderRadius: "6px",
+      borderRadius: "90px",
       paddingRight: ownerState.endIcon ? "10px" : "16px",
       paddingLeft: ownerState.startIcon ? "10px" : "16px",
       textTransform: "initial",
@@ -25,8 +25,8 @@ export const ButtonStylesOverrides: Components<
       },
     }),
     fullWidth: {
-      paddingTop: "16px",
-      paddingBottom: "16px",
+      paddingTop: "8px",
+      paddingBottom: "8px",
     },
     contained: ({ ownerState, theme }) => {
       const color = ownerState.color ?? "inherit";

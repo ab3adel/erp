@@ -1,8 +1,8 @@
 import { PaletteOptions } from "@mui/material";
 
-const PRIMARY_COLOR = "#4557B2";
+const PRIMARY_COLOR = "#008E8F";
 
-const SECONDARY_COLOR = "#664BB7";
+const SECONDARY_COLOR = "#FF8749";
 
 export const palette: PaletteOptions = {
   primary: {
@@ -12,7 +12,7 @@ export const palette: PaletteOptions = {
     main: SECONDARY_COLOR,
   },
   common: {
-    white: "#fffbff",
-    black: "#191c1e",
+    white: "#ffffff",
+    black: "#242828DE",
   },
 };

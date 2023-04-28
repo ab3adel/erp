@@ -1,10 +1,19 @@
 import { Box, Typography } from "@mui/material";
 import MainLogo from "@/assets/images/main-logo-white.svg";
-import { LeftSideContainer } from "./components";
+import { LeftSideContainer, LoginForm } from "./components";
 
 export const Login = () => {
   return (
-    <Box width="100%" display="flex" height="100%">
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection={{
+        xs: "column",
+        md: "row",
+      }}
+      height="100%"
+      sx={{ backgroundColor: "#fff" }}
+    >
       <LeftSideContainer>
         <img src={MainLogo} />
         <Typography
@@ -42,6 +51,18 @@ export const Login = () => {
           Login to start!
         </Typography>
       </LeftSideContainer>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        p={3}
+        width={{
+          xs: "100%",
+          md: "65%",
+        }}
+      >
+        <LoginForm />
+      </Box>
     </Box>
   );
 };
