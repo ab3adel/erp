@@ -10,11 +10,11 @@ import {
   FormHelperText,
   FormControl,
 } from "@mui/material";
-import { useLoginForm } from "../hooks/useLoginForm";
+import { useSignupForm } from "../hooks/useSignupForm";
 import { Form, useNavigate } from "react-router-dom";
 
-export const LoginForm = () => {
-  const { getFieldProps, dirty, errors, touched, isValid } = useLoginForm();
+export const SignupForm = () => {
+  const { getFieldProps, dirty, errors, touched, isValid } = useSignupForm();
   const navigate = useNavigate();
 
   return (
@@ -26,7 +26,7 @@ export const LoginForm = () => {
           fontSize={20}
           gutterBottom
         >
-          Log In
+          Sign Up
         </Typography>
         <Typography variant="body2" sx={{ color: "grey.500" }}>
           Get started for free
@@ -65,17 +65,17 @@ export const LoginForm = () => {
         </FormHelperText>
       </FormControl>
       <Button fullWidth disabled={!dirty || !isValid} type="submit">
-        Login
+        Signup
       </Button>
       <Box display="flex" columnGap={2}>
         <Link
           fontWeight={500}
           sx={{ cursor: "pointer" }}
           onClick={() => {
-            navigate("/signup");
+            navigate("/login");
           }}
         >
-          Create account
+          Login to account
         </Link>
         <Link fontWeight={500} sx={{ cursor: "pointer" }}>
           Forgot password?

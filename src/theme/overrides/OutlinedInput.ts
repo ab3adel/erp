@@ -6,5 +6,8 @@ export const OutlinedInputOverrides: Components<Theme>["MuiOutlinedInput"] = {
       height: 40,
       borderRadius: "8px",
     },
+    input: {
+      padding: "6.5px 14px",
+    },
   },
 };
