@@ -9,6 +9,7 @@ import {
   Typography,
   FormHelperText,
   FormControl,
+  FormLabel,
 } from "@mui/material";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { useNavigate } from "react-router-dom";
@@ -34,27 +35,32 @@ export const LoginForm = () => {
         >
           Log In
         </Typography>
-        <Typography variant="body2" sx={{ color: "grey.500" }}>
-          Get started for free
-        </Typography>
       </Box>
-      <TextField
-        variant="outlined"
-        fullWidth
-        placeholder="Username"
-        {...getFieldProps("username")}
-        error={touched.username && Boolean(errors.username)}
-        helperText={touched.username && errors.username}
-      />
-      <TextField
-        variant="outlined"
-        fullWidth
-        placeholder="Password"
-        type="password"
-        {...getFieldProps("password")}
-        error={touched.password && Boolean(errors.password)}
-        helperText={touched.password && errors.password}
-      />
+      <FormControl>
+        <FormLabel sx={{ mb: 1, color: "#292A2ABF", fontSize: 14 }}>
+          Username/Email
+        </FormLabel>
+        <TextField
+          variant="outlined"
+          fullWidth
+          {...getFieldProps("username")}
+          error={touched.username && Boolean(errors.username)}
+          helperText={touched.username && errors.username}
+        />
+      </FormControl>
+      <FormControl>
+        <FormLabel sx={{ mb: 1, color: "#292A2ABF", fontSize: 14 }}>
+          Password
+        </FormLabel>
+        <TextField
+          variant="outlined"
+          fullWidth
+          type="password"
+          {...getFieldProps("password")}
+          error={touched.password && Boolean(errors.password)}
+          helperText={touched.password && errors.password}
+        />
+      </FormControl>
       <FormControl error={touched.acceptTerms && Boolean(errors.acceptTerms)}>
         <FormControlLabel
           control={
@@ -64,7 +70,12 @@ export const LoginForm = () => {
               checked={getFieldProps("acceptTerms").value}
             />
           }
-          label="I accept the terms and conditions"
+          label={
+            <Typography>
+              I accept the{" "}
+              <Link sx={{ textDecoration: "none" }}>terms and conditions</Link>
+            </Typography>
+          }
         />
         <FormHelperText>
           {touched.acceptTerms && errors.acceptTerms}
@@ -76,14 +87,17 @@ export const LoginForm = () => {
       <Box display="flex" columnGap={2}>
         <Link
           fontWeight={500}
-          sx={{ cursor: "pointer" }}
+          sx={{ textDecoration: "none", cursor: "pointer" }}
           onClick={() => {
             navigate("/signup");
           }}
         >
           Create account
         </Link>
-        <Link fontWeight={500} sx={{ cursor: "pointer" }}>
+        <Link
+          fontWeight={500}
+          sx={{ textDecoration: "none", cursor: "pointer" }}
+        >
           Forgot password?
         </Link>
       </Box>

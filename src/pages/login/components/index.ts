@@ -1,2 +1,2 @@
-export { LeftSideContainer } from "./LeftSideContainer";
+export { RightSideContainer } from "./RightSideContainer";
 export { LoginForm } from "./LoginForm";

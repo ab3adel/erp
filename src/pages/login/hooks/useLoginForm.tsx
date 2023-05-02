@@ -35,7 +35,7 @@ export const useLoginForm = () => {
       });
     },
     validationSchema: Yup.object().shape({
-      username: Yup.string().required("Username is required"),
+      username: Yup.string().required("Username/Email is required"),
       password: Yup.string()
         .required("Password is required")
         .min(8, "Password must be at least 8 characters long"),
