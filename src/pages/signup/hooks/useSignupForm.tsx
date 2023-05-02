@@ -1,7 +1,18 @@
+import { useGenericMutation } from "@/shared";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { signupUser } from "../graphql/mutations/signupUser";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const useSignupForm = () => {
+  const [signup] = useGenericMutation<
+  { register: { jwt: string } },
+  { email: string; password: string }
+>(signupUser);
+
+const navigate = useNavigate();
+
   const formik = useFormik<{
     username: string;
     password: string;
@@ -13,7 +24,16 @@ export const useSignupForm = () => {
       acceptTerms: false,
     },
     onSubmit: (result: { username: string; password: string }) => {
-      console.log(result);
+      signup({
+        variables: {
+          email: result.username,
+          password: result.password,
+        },
+        onCompleted: (data) => {
+          Cookies.set("token", data.register.jwt);
+          navigate("/");
+        },
+      });
     },
     validationSchema: Yup.object().shape({
       username: Yup.string().required("Username is required"),

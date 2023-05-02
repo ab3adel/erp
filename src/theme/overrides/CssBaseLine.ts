@@ -6,7 +6,7 @@ export const CssBaselineOverrides: Components<Theme>["MuiCssBaseline"] = {
       margin: 0,
       padding: 0,
       overflowX: "hidden",
-      backgroundColor: "#fafafc",
+      backgroundColor: "#F5F5F5",
       height: "100%",
     },
     "& #root": {

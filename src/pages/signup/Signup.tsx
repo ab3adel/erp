@@ -1,6 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import MainLogo from "@/assets/images/main-logo-white.svg";
 import { LeftSideContainer, SignupForm } from "./components";
+import { redirect } from "react-router-dom";
+import Cookies from "js-cookie";
+
+const loader = () => {
+  const token = Cookies.get("token");
+  if (token) {
+    return redirect("/");
+  }
+  return null;
+};
 
 export const Signup = () => {
   return (
@@ -66,3 +76,5 @@ export const Signup = () => {
     </Box>
   );
 };
+
+Signup.loader = loader;

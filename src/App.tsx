@@ -3,18 +3,22 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { ThemeProvider, responsiveFontSizes, CssBaseline } from "@mui/material";
 import { router } from "./routes";
 import { theme } from "./theme";
+import { SnackbarProvider } from "notistack";
 
 const client = new ApolloClient({
-  uri: "http://localhost:1337/graphql",
+  uri: import.meta.env.VITE_BACKEND_URL,
   cache: new InMemoryCache(),
 });
 
 function App() {
+  console.log(import.meta.env)
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={responsiveFontSizes(theme)}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <SnackbarProvider>
+          <RouterProvider router={router} />
+        </SnackbarProvider>
       </ThemeProvider>
     </ApolloProvider>
   );

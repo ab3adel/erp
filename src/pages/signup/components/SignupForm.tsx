@@ -11,14 +11,20 @@ import {
   FormControl,
 } from "@mui/material";
 import { useSignupForm } from "../hooks/useSignupForm";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const SignupForm = () => {
-  const { getFieldProps, dirty, errors, touched, isValid } = useSignupForm();
+  const { getFieldProps, dirty, errors, touched, isValid, handleSubmit } =
+    useSignupForm();
   const navigate = useNavigate();
 
   return (
-    <Stack spacing={2} component={Form} width={{ xs: "100%", md: "380px" }}>
+    <Stack
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit}
+      width={{ xs: "100%", md: "380px" }}
+    >
       <Box>
         <Typography
           fontFamily="Public Sans"

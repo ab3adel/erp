@@ -11,14 +11,20 @@ import {
   FormControl,
 } from "@mui/material";
 import { useLoginForm } from "../hooks/useLoginForm";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
-  const { getFieldProps, dirty, errors, touched, isValid } = useLoginForm();
+  const { getFieldProps, dirty, errors, touched, isValid, handleSubmit } =
+    useLoginForm();
   const navigate = useNavigate();
 
   return (
-    <Stack spacing={2} component={Form} width={{ xs: "100%", md: "380px" }}>
+    <Stack
+      spacing={2}
+      component="form"
+      onSubmit={handleSubmit}
+      width={{ xs: "100%", md: "380px" }}
+    >
       <Box>
         <Typography
           fontFamily="Public Sans"

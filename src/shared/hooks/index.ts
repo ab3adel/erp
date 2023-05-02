@@ -1,0 +1,1 @@
+export { useGenericMutation } from "./useGenericMutation";

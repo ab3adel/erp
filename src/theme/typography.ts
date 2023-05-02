@@ -45,7 +45,7 @@ const typography: TypographyOptions = {
   },
   button: {
     fontFamily: PRIMARY_FONT,
-    fontWeight: "bold",
+    fontWeight: 500,
     fontSize: 12,
   },
 };

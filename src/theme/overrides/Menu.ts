@@ -10,7 +10,7 @@ export const MenuStylesOverrides: Components<Theme>['MuiMenu'] = {
                 padding: 0,
             },
             '& .MuiPaper-root': {
-                marginTop: 8,
+                marginTop: 4,
                 marginRight: 32,
                 minWidth: 180,
                 boxShadow: theme.shadows[2]

@@ -13,6 +13,7 @@ export const ButtonStylesOverrides: Components<
     root: ({ ownerState }) => ({
       paddingTop: "4px",
       paddingBottom: "4px",
+      fontSize: "14px",
       borderRadius: "90px",
       paddingRight: ownerState.endIcon ? "10px" : "16px",
       paddingLeft: ownerState.startIcon ? "10px" : "16px",
