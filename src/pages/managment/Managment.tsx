@@ -3,6 +3,8 @@ import { Box, Button, Typography, Tab, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { ReceiptionsTable } from "./components/ReceiptionsTable";
 import { TabContext, TabPanel, TabList } from "@mui/lab";
+import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
+
 export const Managment = () => {
   const [value, setValue] = React.useState("0");
 
@@ -27,25 +29,27 @@ export const Managment = () => {
         </Typography>
         <Button startIcon={<AddIcon />}>NEW RECEPTION</Button>
       </Box>
-      <Paper elevation={3} sx={{ p: 2 }}>
-        <TabContext value={value}>
-          <TabList
-            value={value}
-            onChange={handleChange}
-            sx={{
-              "& .MuiTabs-scroller .MuiTabs-indicator": {
-                display: "none",
-              },
-            }}
-          >
-            <Tab label="Reception" value="0" />
-            <Tab label="Approved inventory" value="1" />
-          </TabList>
+      <TabContext value={value}>
+        <CurvedTabs
+          value={value}
+          onChange={handleChange}
+          tabs={[
+            {
+              label: "Reception",
+              value: "0",
+            },
+            {
+              label: "Approved inventory",
+              value: "1",
+            },
+          ]}
+        />
+        <Paper elevation={0} sx={{ p: 2 }}>
           <TabPanel value="0">
             <ReceiptionsTable />
           </TabPanel>
-        </TabContext>
-      </Paper>
+        </Paper>
+      </TabContext>
     </Box>
   );
 };

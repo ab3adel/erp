@@ -8,7 +8,7 @@ export const ReceiptionsTable = () => {
   return (
     <div style={{ display: "flex", height: "500px" }}>
       <div style={{ flexGrow: 1 }}>
-        <DataGrid rows={rows} columns={columns} />
+        <DataGrid rows={rows} columns={columns} checkboxSelection />
       </div>
     </div>
   );
