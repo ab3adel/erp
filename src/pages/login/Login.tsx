@@ -41,7 +41,7 @@ export const Login = () => {
         justifyContent="center"
         p={3}
       >
-        <Paper elevation={8} sx={{ borderRadius: "32px", p: 6 }}>
+        <Paper elevation={8} sx={{ borderRadius: "32px", p: 5 }}>
           <Box textAlign="center" mb={2}>
             <img src={MainLogo} />
           </Box>
