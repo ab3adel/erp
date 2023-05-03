@@ -45,10 +45,7 @@ export const Drawer = () => {
       >
         APPS & PAGES
       </Divider>
-      <GenericTreeView
-        treeNodes={navs}
-        onNodeClick={(key, isLeaf) => isLeaf && navigate(key)}
-      />
+      <GenericTreeView treeNodes={navs} onNodeClick={(key) => navigate(key)} />
       <MenuItem>
         <ListItemIcon>
           <SettingsOutlinedIcon

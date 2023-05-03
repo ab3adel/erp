@@ -1,10 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import {
-  TreeItem,
-  TreeItemProps,
-  treeItemClasses,
-  useTreeItem,
-} from "@mui/lab";
+import { TreeItem, TreeItemProps, treeItemClasses } from "@mui/lab";
 import { styled, Box } from "@mui/material";
 import { memo } from "react";
 
@@ -13,10 +8,10 @@ const GenericTreeItem = ({
   onNodeClick,
   ...props
 }: GenericTreeItemProps) => {
-  const { expanded } = useTreeItem(treeNode.nodeId);
-
   const handleItemClick = () => {
-    const key = treeNode.nodeId;
+    const key = !treeNode.children
+      ? treeNode.nodeId
+      : treeNode.children[0].nodeId;
     const isLeaf = !treeNode.children;
     onNodeClick(key, isLeaf);
   };
