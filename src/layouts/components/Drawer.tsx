@@ -7,12 +7,12 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { useNavigationsItems } from "../hooks/useNavigationsItems";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useNavigate } from "react-router-dom";
+import { useNavigationTreeItems } from "../hooks/useNavigationsItems";
 
 export const Drawer = () => {
-  const [dasboardNavs, ...navs] = useNavigationsItems();
+  const [dasboardNavs, ...navs] = useNavigationTreeItems();
   const navigate = useNavigate();
 
   return (

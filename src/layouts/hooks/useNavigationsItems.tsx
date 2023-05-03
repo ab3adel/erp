@@ -4,7 +4,7 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import DirectionsBoatFilledOutlinedIcon from "@mui/icons-material/DirectionsBoatFilledOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 
-export const useNavigationsItems = () => {
+export const useNavigationTreeItems = () => {
   const navs: TreeNode[] = [
     {
       label: "Dashboard",
@@ -22,7 +22,7 @@ export const useNavigationsItems = () => {
       icon: <SettingsSuggestIcon sx={{ color: "inherit" }} />,
       children: [
         {
-          label: "management",
+          label: "Management",
           nodeId: "/management",
         },
         {
