@@ -4,6 +4,7 @@ import MainLogo from "@/assets/images/main_logo.svg";
 import { RightSideContainer, SignupForm } from "./components";
 import { redirect } from "react-router-dom";
 import Cookies from "js-cookie";
+import { SocialLinks } from "../login/components/SocialLinks";
 
 const loader = () => {
   const token = Cookies.get("token");
@@ -41,7 +42,7 @@ export const Signup = () => {
         justifyContent="center"
         p={3}
       >
-        <Paper elevation={8} sx={{ borderRadius: "32px", p: 5 }}>
+        <Paper elevation={8} sx={{ borderRadius: "32px", p: 5, mb: 3 }}>
           <Box textAlign="center" mb={2}>
             <img src={MainLogo} />
           </Box>
@@ -49,6 +50,7 @@ export const Signup = () => {
             <SignupForm />
           </Box>
         </Paper>
+        <SocialLinks />
       </RightSideContainer>
     </Grid>
   );
