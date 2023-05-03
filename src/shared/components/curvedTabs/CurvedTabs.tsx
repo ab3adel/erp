@@ -3,7 +3,7 @@ import { CurvedTab } from "./components/Tab";
 
 export const CurvedTabs = ({ onChange, value, tabs }: CurvedTabsProps) => {
   return (
-    <CurvedTabList onChange={onChange} value={value}>
+    <CurvedTabList onChange={onChange} value={value} scrollButtons>
       {tabs.map((tab) => (
         <CurvedTab
           key={tab.value}

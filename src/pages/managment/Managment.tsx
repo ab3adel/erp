@@ -1,8 +1,8 @@
 import React from "react";
-import { Box, Button, Typography, Tab, Paper } from "@mui/material";
+import { Box, Button, Typography, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { ReceiptionsTable } from "./components/ReceiptionsTable";
-import { TabContext, TabPanel, TabList } from "@mui/lab";
+import { TabContext, TabPanel } from "@mui/lab";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 
 export const Managment = () => {
@@ -44,7 +44,7 @@ export const Managment = () => {
             },
           ]}
         />
-        <Paper elevation={0} sx={{ pt: 5 }}>
+        <Paper elevation={0}>
           <TabPanel value="0" sx={{ p: 0, borderRadius: "0px 0px 12px 12px" }}>
             <ReceiptionsTable />
           </TabPanel>

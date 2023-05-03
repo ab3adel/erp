@@ -12,6 +12,7 @@ import { OutlinedInputOverrides } from "./OutlinedInput";
 import { DataGridStylesOverrides } from "./Datagrid";
 import { MuiLinkStylesOverrides } from "./Link";
 import "@mui/x-data-grid/themeAugmentation";
+import { ChipStylesOverrides } from "./Chip";
 
 export const componentOverrides: Components<Theme> = {
   MuiCssBaseline: CssBaselineOverrides,
@@ -26,4 +27,5 @@ export const componentOverrides: Components<Theme> = {
   MuiOutlinedInput: OutlinedInputOverrides,
   MuiDataGrid: DataGridStylesOverrides,
   MuiLink: MuiLinkStylesOverrides,
+  MuiChip: ChipStylesOverrides,
 };

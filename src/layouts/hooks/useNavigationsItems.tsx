@@ -37,12 +37,12 @@ export const useNavigationTreeItems = () => {
       icon: <PeopleAltOutlinedIcon sx={{ color: "inherit" }} />,
       children: [
         {
-          label: "management",
-          nodeId: "/management",
+          label: "Accounts",
+          nodeId: "/accounts",
         },
         {
-          label: "Traceability",
-          nodeId: "/traceability",
+          label: "Commnunication",
+          nodeId: "/communication",
         },
       ],
     },

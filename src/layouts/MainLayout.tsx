@@ -16,7 +16,7 @@ export const MainLayout = () => {
     <Box display="flex">
       <AppBar />
       <Drawer />
-      <Box component="main" sx={{ flexGrow: 1, px: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, px: 3 }} width="20%">
         <Toolbar />
         <Outlet />
         <Box
