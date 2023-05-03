@@ -8,9 +8,7 @@ export const useReceiptionsTableColumns = () => {
       field: "status",
       headerName: "Status",
       flex: 1,
-      renderCell: ({ row }) => (
-        <Chip label={row.status} variant="outlined" color="error" />
-      ),
+      renderCell: ({ row }) => <Chip label={row.status} color="primary" />,
     },
     { field: "accountId", headerName: "Account ID", flex: 1 },
     { field: "accountName", headerName: "Account Name", flex: 1 },

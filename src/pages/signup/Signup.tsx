@@ -3,11 +3,10 @@ import Farmer from "@/assets/images/farmer.png";
 import MainLogo from "@/assets/images/main_logo.svg";
 import { RightSideContainer, SignupForm } from "./components";
 import { redirect } from "react-router-dom";
-import Cookies from "js-cookie";
 import { SocialLinks } from "../login/components/SocialLinks";
 
 const loader = () => {
-  const token = Cookies.get("token");
+  const token = localStorage.getItem("token");
   if (token) {
     return redirect("/");
   }

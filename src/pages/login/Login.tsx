@@ -1,13 +1,12 @@
 import { Box, Grid, Paper } from "@mui/material";
 import { LoginForm, RightSideContainer } from "./components";
 import { redirect } from "react-router-dom";
-import Cookies from "js-cookie";
 import Farmer from "@/assets/images/farmer.png";
 import MainLogo from "@/assets/images/main_logo.svg";
 import { SocialLinks } from "./components/SocialLinks";
 
 const loader = () => {
-  const token = Cookies.get("token");
+  const token = localStorage.getItem("token");
   if (token) {
     return redirect("/");
   }
@@ -42,7 +41,7 @@ export const Login = () => {
         justifyContent="center"
         p={3}
       >
-        <Paper elevation={8} sx={{ borderRadius: "32px", p: 5 , mb : 3 }}>
+        <Paper elevation={8} sx={{ borderRadius: "32px", p: 5, mb: 3 }}>
           <Box textAlign="center" mb={2}>
             <img src={MainLogo} />
           </Box>

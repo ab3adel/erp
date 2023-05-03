@@ -2,7 +2,6 @@ import { useGenericMutation } from "@/shared";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { loginUser } from "../graphql/mutations/loginUser";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 export const useLoginForm = () => {
@@ -29,7 +28,7 @@ export const useLoginForm = () => {
           password: result.password,
         },
         onCompleted: (data) => {
-          Cookies.set("token", data.login.jwt);
+          localStorage.setItem("token", data.login.jwt);
           navigate("/");
         },
       });

@@ -1,5 +1,4 @@
 import { useApolloClient } from "@apollo/client";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 export const useSignout = () => {
@@ -8,7 +7,7 @@ export const useSignout = () => {
 
   return () => {
     client.clearStore();
-    Cookies.remove("token");
+    localStorage.removeItem("token");
     navigate("/login");
   };
 };

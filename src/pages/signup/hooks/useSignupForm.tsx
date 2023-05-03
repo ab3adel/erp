@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { signupUser } from "../graphql/mutations/signupUser";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 export const useSignupForm = () => {
   const [signup] = useGenericMutation<
@@ -30,7 +29,7 @@ const navigate = useNavigate();
           password: result.password,
         },
         onCompleted: (data) => {
-          Cookies.set("token", data.register.jwt);
+          localStorage.setItem("token", data.register.jwt);
           navigate("/");
         },
       });

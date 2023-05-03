@@ -1,11 +1,10 @@
 import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/AppBar";
 import { Outlet, redirect } from "react-router-dom";
-import Cookies from "js-cookie";
 import { Drawer } from "./components/Drawer";
 
 const loader = () => {
-  const token = Cookies.get("token");
+  const token = localStorage.getItem("token");
   if (!token) {
     return redirect("/login");
   }
