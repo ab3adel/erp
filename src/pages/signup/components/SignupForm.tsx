@@ -72,8 +72,7 @@ export const SignupForm = () => {
           }
           label={
             <Typography>
-              I accept the{" "}
-              <Link sx={{ textDecoration: "none" }}>terms and conditions</Link>
+              I accept the <Link>terms and conditions</Link>
             </Typography>
           }
         />
@@ -87,19 +86,13 @@ export const SignupForm = () => {
       <Box display="flex" columnGap={2}>
         <Link
           fontWeight={500}
-          sx={{ cursor: "pointer", textDecoration: "none" }}
           onClick={() => {
             navigate("/login");
           }}
         >
           Login to account
         </Link>
-        <Link
-          fontWeight={500}
-          sx={{ cursor: "pointer", textDecoration: "none" }}
-        >
-          Forgot password?
-        </Link>
+        <Link fontWeight={500}>Forgot password?</Link>
       </Box>
     </Stack>
   );

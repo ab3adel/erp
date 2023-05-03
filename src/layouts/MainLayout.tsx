@@ -1,4 +1,4 @@
-import { Box, Toolbar } from "@mui/material";
+import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/AppBar";
 import { Outlet, redirect } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -20,6 +20,24 @@ export const MainLayout = () => {
       <Box component="main" sx={{ flexGrow: 1, px: 3 }}>
         <Toolbar />
         <Outlet />
+        <Box
+          display="flex"
+          sx={{
+            position: "absolute",
+            bottom: "18px",
+            right: "0px",
+            width: "100%",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="body1" sx={{ color: "text.secondary" }}>
+            © 2023 M·Cultivo
+          </Typography>
+          <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
+          <Link variant="body1">Terms of Service</Link>
+          <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
+          <Link variant="body1">Privacy Policy</Link>
+        </Box>
       </Box>
     </Box>
   );

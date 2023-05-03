@@ -35,6 +35,5 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
     transform: "skew(24deg)",
     right: "-13px",
     zIndex: 1,
-    boxShadow: "10px 10px 9px -6px rgba(36, 40, 40, 0.2)",
   },
 }));

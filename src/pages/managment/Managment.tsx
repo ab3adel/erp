@@ -44,8 +44,8 @@ export const Managment = () => {
             },
           ]}
         />
-        <Paper elevation={0} sx={{ p: 2 }}>
-          <TabPanel value="0">
+        <Paper elevation={0} sx={{ pt: 5 }}>
+          <TabPanel value="0" sx={{ p: 0, borderRadius: "0px 0px 12px 12px" }}>
             <ReceiptionsTable />
           </TabPanel>
         </Paper>

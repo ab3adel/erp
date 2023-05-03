@@ -9,6 +9,9 @@ import { MenuItemStylesOverrides } from "./MenuItem";
 import { ContainerStylesOverrides } from "./container";
 import { DialogStylesOverrides } from "./Dialog";
 import { OutlinedInputOverrides } from "./OutlinedInput";
+import { DataGridStylesOverrides } from "./Datagrid";
+import { MuiLinkStylesOverrides } from "./Link";
+import "@mui/x-data-grid/themeAugmentation";
 
 export const componentOverrides: Components<Theme> = {
   MuiCssBaseline: CssBaselineOverrides,
@@ -21,4 +24,6 @@ export const componentOverrides: Components<Theme> = {
   MuiContainer: ContainerStylesOverrides,
   MuiDialog: DialogStylesOverrides,
   MuiOutlinedInput: OutlinedInputOverrides,
+  MuiDataGrid: DataGridStylesOverrides,
+  MuiLink: MuiLinkStylesOverrides,
 };
