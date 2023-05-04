@@ -3,6 +3,8 @@ import { Managment } from "@/pages/managment/Managment";
 import { Login } from "@/pages/login/Login";
 import { Signup } from "@/pages/signup/Signup";
 import { createBrowserRouter } from "react-router-dom";
+import { Receiptions } from "@/pages/managment/views/receptions";
+import { AcceptedInventory } from "@/pages/managment/views/acceptedInventory/AcceptedInventory";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +25,16 @@ export const router = createBrowserRouter([
       {
         path: "management",
         element: <Managment />,
+        children: [
+          {
+            index: true,
+            element: <Receiptions />,
+          },
+          {
+            path: "approved-inventory",
+            element: <AcceptedInventory />,
+          },
+        ],
       },
     ],
   },

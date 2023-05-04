@@ -1,6 +1,4 @@
-import { Reception } from "../types";
-
-export const useReceiptionsTableRows = (): Reception[] => {
+export const useReceiptionsTableRows = (): Record<string, any>[] => {
   return Array.from(new Array(50)).map((_, index) => ({
     id: index,
     receptionDate: new Date(),

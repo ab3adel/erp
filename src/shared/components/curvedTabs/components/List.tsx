@@ -1,7 +1,6 @@
-import { TabList } from "@mui/lab";
-import { styled } from "@mui/material";
+import { styled, Tabs } from "@mui/material";
 
-export const CurvedTabList = styled(TabList)(({ theme }) => ({
+export const CurvedTabList = styled(Tabs)(({ theme }) => ({
   "& .MuiTabs-scroller .MuiTabs-indicator": {
     display: "none",
   },

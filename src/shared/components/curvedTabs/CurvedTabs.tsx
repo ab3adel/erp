@@ -1,9 +1,19 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { CurvedTabList } from "./components/List";
 import { CurvedTab } from "./components/Tab";
 
-export const CurvedTabs = ({ onChange, value, tabs }: CurvedTabsProps) => {
+export const CurvedTabs = ({ tabs }: CurvedTabsProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
-    <CurvedTabList onChange={onChange} value={value} scrollButtons>
+    <CurvedTabList
+      onChange={(_, value) => {
+        navigate(value);
+      }}
+      value={location.pathname}
+      scrollButtons
+    >
       {tabs.map((tab) => (
         <CurvedTab
           key={tab.value}
@@ -17,7 +27,5 @@ export const CurvedTabs = ({ onChange, value, tabs }: CurvedTabsProps) => {
 };
 
 type CurvedTabsProps = {
-  value: string;
-  onChange: (_: React.SyntheticEvent, newValue: string) => void;
   tabs: Array<{ label: string; value: string }>;
 };
