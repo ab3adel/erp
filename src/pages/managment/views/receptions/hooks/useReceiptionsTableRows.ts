@@ -1,18 +1,26 @@
-export const useReceiptionsTableRows = (): Record<string, any>[] => {
-  return Array.from(new Array(50)).map((_, index) => ({
-    id: index,
-    receptionDate: new Date(),
-    status: "Pending",
-    accountId: `${index + 2}`,
-    accountName: `Account ${index + 2}`,
-    lotNumber: `${index + 2}`,
-    grade: `Grade ${index + 2}`,
-    weight: `${index + 2}`,
-    totalCost: `${index + 2}`,
-    payment: true,
-    commission: `${index + 2}`,
-    uom: "KG",
-    cherry_price: `${index + 2}`,
-    currency_fixed: "USD",
-  }));
+import { useQuery } from "@apollo/client";
+import { receiptionQuery } from "../graphql/queries/ReceiptionsQuery";
+import { Response } from "../types";
+
+export const useReceiptionsTableRows = () => {
+  const { data, loading } = useQuery<Response>(receiptionQuery);
+  const rows =
+    data?.receptions?.data?.map?.((reception) => ({
+      id: reception.id,
+      receptionDate: new Date(reception.attributes.date),
+      status: reception.attributes.status,
+      accountId: reception.attributes.account.data.id,
+      accountName: reception.attributes.account.data.attributes.name,
+      lotNumber: reception.attributes.lot.data.attributes.number,
+      grade: reception.attributes.lot.data.attributes.grade,
+      weight: reception.attributes.lot.data.attributes.weight,
+      totalCost: reception.attributes.totalCost,
+      payment: reception.attributes.payment,
+      commission: reception.attributes.comission,
+      uom: reception.attributes.lot.data.attributes.uom,
+      cherry_price: reception.attributes.cherryPrice,
+      currency_fixed: reception.attributes.currecnyFixed,
+    })) || [];
+
+  return { rows, loading };
 };
