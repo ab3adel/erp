@@ -33,12 +33,12 @@ export const useNavigationTreeItems = () => {
     },
     {
       label: "Relationships",
-      nodeId: "/relationships",
+      nodeId: "/relationshipsContainer",
       icon: <PeopleAltOutlinedIcon sx={{ color: "inherit" }} />,
       children: [
         {
           label: "Accounts",
-          nodeId: "/accounts",
+          nodeId: "/relationships",
         },
         {
           label: "Commnunication",

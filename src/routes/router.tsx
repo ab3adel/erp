@@ -5,6 +5,8 @@ import { Signup } from "@/pages/signup/Signup";
 import { createBrowserRouter } from "react-router-dom";
 import { Receiptions } from "@/pages/managment/views/receptions";
 import { AcceptedInventory } from "@/pages/managment/views/acceptedInventory/AcceptedInventory";
+import { RelationShips } from "@/pages/relationships";
+import { Accounts } from "@/pages/relationships/views/accounts";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +35,16 @@ export const router = createBrowserRouter([
           {
             path: "approved-inventory",
             element: <AcceptedInventory />,
+          },
+        ],
+      },
+      {
+        path: "/relationships",
+        element: <RelationShips />,
+        children: [
+          {
+            index: true,
+            element: <Accounts />,
           },
         ],
       },
