@@ -17,7 +17,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.128",
     "@mui/material": "^5.12.2",
-    "@mui/x-data-grid": "^6.2.1",
+    "@mui/x-data-grid": "^6.3.0",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "notistack": "^3.0.1",

@@ -3,7 +3,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-
 export const useReceiptionsTableColumns = () => {
   const navigate = useNavigate();
 
@@ -19,10 +18,24 @@ export const useReceiptionsTableColumns = () => {
       field: "status",
       headerName: "Status",
       width: 100,
-      renderCell: ({ row }) => <Chip label={row.status} color="primary" />,
+      type: "singleSelect",
+      valueOptions: ["pending", "approved"],
+      renderCell: ({ value }) =>
+        value ? <Chip label={value} color="primary" /> : <></>,
+      editable: true,
     },
-    { field: "accountId", headerName: "Account ID", width: 150 },
-    { field: "accountName", headerName: "Account Name", width: 150 },
+    {
+      field: "accountId",
+      headerName: "Account ID",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "accountName",
+      headerName: "Account Name",
+      width: 150,
+      editable: true,
+    },
     {
       field: "lotNumber",
       headerName: "Lot Number",
@@ -36,10 +49,26 @@ export const useReceiptionsTableColumns = () => {
           {value}
         </Link>
       ),
+      editable: true,
     },
-    { field: "grade", headerName: "Grade", width: 100 },
-    { field: "weight", headerName: "Weight", width: 100 },
-    { field: "totalCost", headerName: "Total Cost", width: 150 },
+    {
+      field: "grade",
+      headerName: "Grade",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "weight",
+      headerName: "Weight",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "totalCost",
+      headerName: "Total Cost",
+      width: 150,
+      editable: true,
+    },
     {
       field: "payment",
       headerName: "Payment",
@@ -58,28 +87,37 @@ export const useReceiptionsTableColumns = () => {
             return (
               <HighlightOffIcon sx={{ color: "error.main" }} fontSize="small" />
             );
+          default:
+            return (
+              <HighlightOffIcon sx={{ color: "error.main" }} fontSize="small" />
+            );
         }
       },
+      editable: true,
     },
     {
       field: "commission",
       headerName: "Commission",
       width: 100,
+      editable: true,
     },
     {
       field: "uom",
       headerName: "UoM",
       width: 100,
+      editable: true,
     },
     {
       field: "cherry_price",
       headerName: "Cherry Price",
       width: 100,
+      editable: true,
     },
     {
       field: "currency_fixed",
       headerName: "Currency Fixed",
       width: 100,
+      editable: true,
     },
   ];
   return columns;

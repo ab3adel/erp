@@ -51,7 +51,8 @@ interface ReceptionEntityResponseCollection {
 }
 
 export interface DataGridRow {
-  receptionDate: string;
+  id: string;
+  receptionDate: Date;
   status: string;
   accountId: string;
   accountName: string;
@@ -69,3 +70,17 @@ export interface DataGridRow {
 export interface Response {
   receptions: ReceptionEntityResponseCollection;
 }
+
+type AddReceiptionAction = {
+  type: "ADD_RECEIPTION";
+};
+
+type CancelReceiptionAction = {
+  type: "CANCEL_RECEIPTION";
+};
+
+type SaveReceiptAction = {
+  type: "SAVE_RECEIPTION";
+};
+
+export type Action = AddReceiptionAction | CancelReceiptionAction | SaveReceiptAction;

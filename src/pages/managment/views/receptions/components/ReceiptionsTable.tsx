@@ -3,8 +3,14 @@ import { useReceiptionsTableRows } from "../hooks/useReceiptionsTableRows";
 import { DataGrid } from "@mui/x-data-grid";
 import { ReceiptionsTableToolbar } from "./ReceiptionsTableToolbar";
 import { useState } from "react";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
+import { Action } from "../types";
 
-export const ReceiptionsTable = () => {
+export const ReceiptionsTable = ({
+  apiRef,
+  dispatch,
+  isRowAdded,
+}: ReceiptionsTableProps) => {
   const { rows, loading } = useReceiptionsTableRows();
   const columns = useReceiptionsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
@@ -14,6 +20,7 @@ export const ReceiptionsTable = () => {
       <div style={{ height: 450, width: "100%" }}>
         <DataGrid
           loading={loading}
+          apiRef={apiRef}
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
@@ -25,6 +32,8 @@ export const ReceiptionsTable = () => {
           slotProps={{
             toolbar: {
               rowsSelection,
+              isRowAdded,
+              dispatch,
             },
           }}
           slots={{
@@ -34,4 +43,10 @@ export const ReceiptionsTable = () => {
       </div>
     </div>
   );
+};
+
+type ReceiptionsTableProps = {
+  apiRef: React.MutableRefObject<GridApiCommunity>;
+  dispatch: (action: Action) => void;
+  isRowAdded: boolean;
 };
