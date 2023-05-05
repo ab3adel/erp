@@ -1,0 +1,1 @@
+export { removeReceiption } from "./removeReceiption";

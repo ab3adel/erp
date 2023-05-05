@@ -6,12 +6,6 @@ export const DialogStylesOverrides: Components<Theme>["MuiDialog"] = {
     fullWidth: true,
   },
   styleOverrides: {
-    root: {
-      "& .MuiBackdrop-root": {
-        background: "rgba(201, 201, 201, 0.06)",
-        backdropFilter: "blur(2px)",
-      },
-    },
     paper: ({ theme }) => ({
       minWidth: "auto !important",
       paddingBottom: 16,
@@ -23,7 +17,7 @@ export const DialogStylesOverrides: Components<Theme>["MuiDialog"] = {
         paddingLeft: 32,
         height: 60,
         color: "#fff",
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.main,
         ...theme.typography.h2,
         "& .MuiButtonBase-root": {
           color: "#fff",
@@ -38,6 +32,7 @@ export const DialogStylesOverrides: Components<Theme>["MuiDialog"] = {
         paddingRight: 32,
         paddingLeft: 32,
         paddingBottom: 0,
+        borderTop: `1px solid ${theme.palette.divider}`,
       },
     }),
     paperWidthMd: {
