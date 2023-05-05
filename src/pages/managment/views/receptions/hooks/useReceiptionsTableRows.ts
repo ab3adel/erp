@@ -1,12 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { receiptionQuery } from "../graphql/queries/ReceiptionsQuery";
 import { DataGridRow, Response } from "../types";
 import { useMemo } from "react";
+import { receptions } from "../graphql/queries/receptions";
+
 export const useReceiptionsTableRows = (): {
   rows: DataGridRow[];
   loading: boolean;
 } => {
-  const { data, loading } = useQuery<Response>(receiptionQuery, {});
+  const { data, loading } = useQuery<Response>(receptions);
   const rows: DataGridRow[] = useMemo(() => {
     return (
       data?.receptions?.data?.map?.((reception) => ({

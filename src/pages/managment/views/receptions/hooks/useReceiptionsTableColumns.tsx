@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import { AccountsEditSelect } from "../components/AccountsEditSelect";
 export const useReceiptionsTableColumns = () => {
   const navigate = useNavigate();
 
@@ -28,13 +29,13 @@ export const useReceiptionsTableColumns = () => {
       field: "accountId",
       headerName: "Account ID",
       width: 150,
+      renderEditCell: (props) => <AccountsEditSelect {...props} />,
       editable: true,
     },
     {
       field: "accountName",
       headerName: "Account Name",
       width: 150,
-      editable: true,
     },
     {
       field: "lotNumber",
