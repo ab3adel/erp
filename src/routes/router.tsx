@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
         element: <RelationShips />,
         children: [
           {
-            index: true,
+            path : "accounts",
             element: <Accounts />,
           },
         ],

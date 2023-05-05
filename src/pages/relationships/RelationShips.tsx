@@ -16,7 +16,7 @@ export const RelationShips = () => {
         tabs={[
           {
             label: "Accounts",
-            value: "/relationships",
+            value: "/relationships/accounts",
           },
           {
             label: "Suppliers",
