@@ -1,11 +1,17 @@
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { DataGridRow } from "../types";
 import React from "react";
+import { useGenericMutation } from "@/shared";
+import { saveReceiption } from "../graphql/mutations/saveReceiption";
 
 export const useAddReceiption = (
   ref: React.MutableRefObject<GridApiCommunity>
 ) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
+  const [save] = useGenericMutation<{ __typename: string }, Variables>(
+    saveReceiption,
+    { refetchQueries: ["ReceptionsQuery"] }
+  );
 
   const dispatch = (action: Action) => {
     const row: Partial<DataGridRow> = { id: "new" };
@@ -19,8 +25,26 @@ export const useAddReceiption = (
         ref.current.updateRows([{ ...row, _action: "delete" }]);
         setIsRowAdded(false);
         break;
-      case "SAVE_RECEIPTION":
+      case "SAVE_RECEIPTION": {
+        const row = ref.current.getRowModels().get("new") as DataGridRow;
+        if (row) {
+          save({
+            variables: {
+              data: {
+                date: row.receptionDate.toISOString().split("T")[0],
+                status: row.status,
+                totalCost: row.totalCost,
+                payment: row.payment,
+                comission: row.commission,
+                cherryPrice: row.cherry_price,
+                currecnyFixed: row.currency_fixed,
+                account: row.accountId,
+              },
+            },
+          });
+        }
         break;
+      }
     }
   };
   return { dispatch, isRowAdded };
@@ -39,3 +63,16 @@ type SaveReceiptAction = {
 };
 
 type Action = AddReceiptionAction | CancelReceiptionAction | SaveReceiptAction;
+
+type Variables = {
+  data: {
+    date: string;
+    status: string;
+    totalCost: number;
+    payment: boolean;
+    comission: number;
+    cherryPrice: number;
+    currecnyFixed: string;
+    account: string;
+  };
+};

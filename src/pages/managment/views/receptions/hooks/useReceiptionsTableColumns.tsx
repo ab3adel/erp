@@ -41,6 +41,7 @@ export const useReceiptionsTableColumns = () => {
       field: "lotNumber",
       headerName: "Lot Number",
       width: 150,
+      type: "number",
       renderCell: ({ value }) => (
         <Link
           onClick={() => {
@@ -63,11 +64,13 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Weight",
       width: 100,
       editable: true,
+      type: "number",
     },
     {
       field: "totalCost",
       headerName: "Total Cost",
       width: 150,
+      type: "number",
       editable: true,
     },
     {
@@ -100,6 +103,7 @@ export const useReceiptionsTableColumns = () => {
       field: "commission",
       headerName: "Commission",
       width: 100,
+      type: "number",
       editable: true,
     },
     {
@@ -112,6 +116,7 @@ export const useReceiptionsTableColumns = () => {
       field: "cherry_price",
       headerName: "Cherry Price",
       width: 100,
+      type: "number",
       editable: true,
     },
     {

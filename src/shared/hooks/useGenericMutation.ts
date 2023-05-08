@@ -21,6 +21,15 @@ export const useGenericMutation = <
         },
       });
     },
+    onCompleted: () => {
+      enqueueSnackbar("Saved Successfully", {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "center",
+        },
+      });
+    },
   });
   return mutation;
 };
