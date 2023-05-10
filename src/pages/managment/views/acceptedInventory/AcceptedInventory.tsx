@@ -40,7 +40,7 @@ export const AcceptedInventory = () => {
           <Tab key={tab.label} label={tab.label} value={tab.type} />
         ))}
       </Tabs>
-      <Divider sx={{ mb: 3 }} />
+      <Divider sx={{ mb: 2 }} />
       <LotsGrid type={type} />
     </Box>
   );
