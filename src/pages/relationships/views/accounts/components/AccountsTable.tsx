@@ -3,8 +3,14 @@ import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import { DataGrid } from "@mui/x-data-grid";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
+import { Action } from "../hooks/useAddAccount";
+import { GridApiCommunity } from "@mui/x-data-grid/internals";
 
-export const AccountsTable = () => {
+export const AccountsTable = ({
+  apiRef,
+  dispatch,
+  isRowAdded,
+}: AccountsTableProps) => {
   const { rows, loading } = useAccountsTableRows();
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
@@ -16,6 +22,7 @@ export const AccountsTable = () => {
           loading={loading}
           rows={rows}
           columns={columns}
+          apiRef={apiRef}
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
@@ -26,10 +33,16 @@ export const AccountsTable = () => {
             toolbar: AccountsTableToolbar,
           }}
           slotProps={{
-            toolbar: { rowsSelection },
+            toolbar: { rowsSelection, dispatch, isRowAdded },
           }}
         />
       </div>
     </div>
   );
+};
+
+type AccountsTableProps = {
+  apiRef: React.MutableRefObject<GridApiCommunity>;
+  dispatch: (action: Action) => void;
+  isRowAdded: boolean;
 };

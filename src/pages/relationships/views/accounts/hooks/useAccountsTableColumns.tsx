@@ -23,15 +23,24 @@ function LinearProgressWithLabel(
 
 export const useAccountsTableColumns = () => {
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "type", headerName: "Type", width: 150 },
-    { field: "firstName", headerName: "First Name", width: 150 },
-    { field: "lastName", headerName: "Last Name", width: 150 },
-    { field: "govId", headerName: "Gov ID", width: 150 },
-    { field: "mobileNumber", headerName: "Mobile Number", width: 150 },
-    { field: "district", headerName: "District", width: 150 },
-    { field: "status", headerName: "Status", width: 150 },
+    { field: "name", headerName: "Name", width: 150, editable: true },
+    { field: "type", headerName: "Type", width: 150, editable: true },
+    {
+      field: "firstName",
+      headerName: "First Name",
+      width: 150,
+      editable: true,
+    },
+    { field: "lastName", headerName: "Last Name", width: 150, editable: true },
+    { field: "govId", headerName: "Gov ID", width: 150, editable: true },
+    {
+      field: "mobileNumber",
+      headerName: "Mobile Number",
+      width: 150,
+      editable: true,
+    },
+    { field: "district", headerName: "District", width: 150, editable: true },
+    { field: "status", headerName: "Status", width: 150, editable: true },
     {
       field: "completeness",
       headerName: "Completeness",

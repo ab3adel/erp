@@ -1,4 +1,4 @@
-interface Account {
+export interface Account {
   id: string;
   attributes: {
     name: string;

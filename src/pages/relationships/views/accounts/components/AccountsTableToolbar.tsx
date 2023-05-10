@@ -11,9 +11,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
+import { Action } from "../hooks/useAddAccount";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
-  const { rowsSelection } = props;
+  const { rowsSelection, dispatch, isRowAdded } = props;
   const { openDialog, closeDialog, isDialogOpen } =
     useDialog<"deleteAccount">();
   const [removeAccount] = useGenericMutation<
@@ -33,7 +34,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
 
   return (
     <GridToolbarContainer sx={{ justifyContent: "end", m: 2 }}>
-      {rowsSelection.length ? (
+      {rowsSelection.length && !isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
             <Button
@@ -58,6 +59,33 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             </Button>
             <Button variant="text" startIcon={<SaveIcon />}>
               SAVE VIEW
+            </Button>
+          </Box>
+          <Divider orientation="vertical" />
+        </>
+      ) : (
+        <></>
+      )}
+      {isRowAdded ? (
+        <>
+          <Box display="flex" columnGap={2}>
+            <Button
+              variant="text"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                dispatch({ type: "SAVE_ACCOUNT" });
+              }}
+            >
+              Save row
+            </Button>
+            <Button
+              variant="text"
+              startIcon={<DeleteIcon />}
+              onClick={() => {
+                dispatch({ type: "CANCEL_ACCOUNT" });
+              }}
+            >
+              Cancel
             </Button>
           </Box>
           <Divider orientation="vertical" />
@@ -90,4 +118,6 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
 
 type AccountsTableToolbarProps = GridToolbarProps & {
   rowsSelection: string[];
+  dispatch: (action: Action) => void;
+  isRowAdded: boolean;
 };
