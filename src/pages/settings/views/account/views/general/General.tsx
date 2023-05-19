@@ -68,7 +68,8 @@ export const General = () => {
                 alignItems: "center",
               }}
             >
-              <AboutIcon sx={{ mr: 1 }} /> Ideal dimensions: 100 x 100 pixels.
+              <AboutIcon sx={{ mr: 1 }} fontSize="small" /> Ideal dimensions:
+              100 x 100 pixels.
             </Typography>
           </Box>
         </Box>

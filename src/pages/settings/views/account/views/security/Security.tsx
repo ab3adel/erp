@@ -47,7 +47,7 @@ export const Security = () => {
           </FormLabel>
           <TextField
             variant="filled"
-            label="Please confirm your new password"
+            label="Please re-enter your new password"
             type="email"
             sx={{ width: "440px" }}
           />
