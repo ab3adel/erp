@@ -32,8 +32,9 @@ export const GeneralInfoForm = () => {
         select
       >
         <MenuItem value="1">Administrator</MenuItem>
-        <MenuItem value="2">Manager</MenuItem>
-        <MenuItem value="3">Employee</MenuItem>
+        <MenuItem value="2">Bookkeeper</MenuItem>
+        <MenuItem value="3">Sales</MenuItem>
+        <MenuItem value="4">Washing Station Staff</MenuItem>
       </TextField>
       <TextField
         variant="filled"
