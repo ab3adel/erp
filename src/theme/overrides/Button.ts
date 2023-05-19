@@ -15,6 +15,7 @@ export const ButtonStylesOverrides: Components<
       paddingBottom: "4px",
       fontSize: "14px",
       borderRadius: "90px",
+      maxHeight: 36,
       paddingRight: ownerState.endIcon ? "10px" : "16px",
       paddingLeft: ownerState.startIcon ? "10px" : "16px",
       textTransform: "initial",

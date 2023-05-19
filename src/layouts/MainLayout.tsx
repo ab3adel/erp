@@ -18,7 +18,9 @@ export const MainLayout = () => {
       <Drawer />
       <Box component="main" sx={{ flexGrow: 1, px: 3 }} width="20%">
         <Toolbar />
-        <Outlet />
+        <Box sx={{ zIndex: 1, position: "relative" }}>
+          <Outlet />
+        </Box>
         <Box
           display="flex"
           sx={{
@@ -27,6 +29,7 @@ export const MainLayout = () => {
             right: "0px",
             width: "100%",
             justifyContent: "center",
+            zIndex: 0,
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>

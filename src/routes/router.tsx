@@ -7,6 +7,12 @@ import { Receiptions } from "@/pages/managment/views/receptions";
 import { AcceptedInventory } from "@/pages/managment/views/acceptedInventory/AcceptedInventory";
 import { RelationShips } from "@/pages/relationships";
 import { Accounts } from "@/pages/relationships/views/accounts";
+import { SettingsNavs } from "@/pages/settings/components/SettingsNavs";
+import { Settings } from "@/pages/settings/Settings";
+import { Account } from "@/pages/settings/views/account/Account";
+import { General } from "@/pages/settings/views/account/views/general/General";
+import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
+import { Security } from "@/pages/settings/views/account/views/security/Security";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +51,33 @@ export const router = createBrowserRouter([
           {
             path: "accounts",
             element: <Accounts />,
+          },
+        ],
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
+        handle: {
+          navs: <SettingsNavs />,
+        },
+        children: [
+          {
+            path: "account",
+            element: <Account />,
+            children: [
+              {
+                index: true,
+                element: <General />,
+              },
+              {
+                path: "notifications",
+                element: <Notificationts />,
+              },
+              {
+                path: "security",
+                element: <Security />,
+              },
+            ],
           },
         ],
       },

@@ -10,6 +10,8 @@ import { ThemeProvider, responsiveFontSizes, CssBaseline } from "@mui/material";
 import { router } from "./routes";
 import { theme } from "./theme";
 import { SnackbarProvider } from "notistack";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_BACKEND_URL,
@@ -34,10 +36,12 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={responsiveFontSizes(theme)}>
-        <CssBaseline />
-        <SnackbarProvider>
-          <RouterProvider router={router} />
-        </SnackbarProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CssBaseline />
+          <SnackbarProvider>
+            <RouterProvider router={router} />
+          </SnackbarProvider>
+        </LocalizationProvider>
       </ThemeProvider>
     </ApolloProvider>
   );
