@@ -13,12 +13,6 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
   >(localStorageKey, tabs);
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (tabs.length) {
-      setValue(tabs);
-    }
-  }, []);
-
   // orderTab
   const orderTab = ({
     oldIndex,

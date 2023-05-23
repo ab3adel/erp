@@ -56,22 +56,24 @@ const SortableCurvedTab = SortableElement<SortableCurvedTabProps>(
           >
             {canDrag && <DragHandle hover={hover} />}
             {label}
-            {canDelete && pathname !== value && (
-              <Fade in={hover}>
-                <CloseIcon
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete();
-                  }}
-                  sx={{
-                    position: "absolute",
-                    zIndex: 2,
-                    color: "#008E8F80",
-                    right: "5px",
-                  }}
-                />
-              </Fade>
-            )}
+            {canDelete &&
+              pathname !== value &&
+              value.includes("customview") && (
+                <Fade in={hover}>
+                  <CloseIcon
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete();
+                    }}
+                    sx={{
+                      position: "absolute",
+                      zIndex: 2,
+                      color: "#008E8F80",
+                      right: "5px",
+                    }}
+                  />
+                </Fade>
+              )}
           </Box>
         }
         value={value}
@@ -106,7 +108,7 @@ export const CurvedTabs = ({
       onChange={(_, value) => {
         navigate(value);
       }}
-      value={location.pathname}
+      value={location.pathname + location.search}
       scrollButtons
     >
       {children}
