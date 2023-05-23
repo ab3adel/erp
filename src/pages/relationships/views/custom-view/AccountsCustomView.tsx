@@ -3,10 +3,14 @@ import AddIcon from "@mui/icons-material/Add";
 import { AccountsCustomViewTable } from "./components/AccountsCustomViewTable";
 import { useAddAccount } from "./hooks/useAddAccount";
 import { useGridApiRef } from "@mui/x-data-grid";
+import { useSearchParams } from "react-router-dom";
 
 export const AccountsCustomView = () => {
   const apiRef = useGridApiRef();
   const { dispatch, isRowAdded } = useAddAccount(apiRef);
+  const [params , setParams] = useSearchParams();
+  const tabParam = params.get("tab");
+
   return (
     <Box>
       <Button
@@ -19,6 +23,7 @@ export const AccountsCustomView = () => {
         NEW ACCOUNT
       </Button>
       <AccountsCustomViewTable
+        key={tabParam}
         dispatch={dispatch}
         isRowAdded={isRowAdded}
         apiRef={apiRef}
