@@ -6,10 +6,9 @@ import { useState } from "react";
 import { Action } from "../hooks/useAddAccount";
 import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTabs";
-import { CreateViewForm } from "./CreateViewForm";
-import { GenericDialog, useDialog } from "@/shared";
+import { useSearchParams } from "react-router-dom";
 
-export const AccountsTable = ({
+export const AccountsCustomViewTable = ({
   apiRef,
   dispatch,
   isRowAdded,
@@ -17,17 +16,13 @@ export const AccountsTable = ({
   const { rows, loading } = useAccountsTableRows();
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
-  const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
-  const [model, setModel] = useState<GridColumnVisibilityModel>();
-  const { closeDialog, isDialogOpen, openDialog } = useDialog<"save_view">();
-
-  const handleCreateView = (form: {
-    label: string;
-    type: "personal" | "shared";
-  }) => {
-    createTab(form.label, model!);
-    closeDialog();
-  };
+  const { getColumnVisibiltyModelByTabParam } = useCurvedTabs({
+    localStorageKey: "relationships",
+  });
+  const [params] = useSearchParams();
+  const tabParam = params.get("tab");
+  const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
+  const [model, setModel] = useState<GridColumnVisibilityModel>(defaultModel!);
 
   return (
     <div style={{ width: "100%" }}>
@@ -49,30 +44,10 @@ export const AccountsTable = ({
             toolbar: AccountsTableToolbar,
           }}
           slotProps={{
-            toolbar: { rowsSelection, dispatch, isRowAdded, openDialog },
+            toolbar: { rowsSelection, dispatch, isRowAdded },
           }}
         />
       </div>
-      <GenericDialog
-        open={isDialogOpen("save_view")}
-        onClose={closeDialog}
-        color="#fff"
-        hideCloseButton={false}
-        dialog={{
-          title: "Save View",
-          closeButton: {
-            label: "Cancel",
-            color: "inherit",
-          },
-          submitButton: {
-            label: "Save",
-            type: "submit",
-            form: "save_view_form",
-          },
-        }}
-      >
-        <CreateViewForm onSubmit={handleCreateView} />
-      </GenericDialog>
     </div>
   );
 };

@@ -12,7 +12,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
-import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTabs";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -58,6 +57,9 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               DELETE
             </Button>
+            <Button variant="text" startIcon={<SaveIcon />}>
+              SAVE VIEW
+            </Button>
           </Box>
           <Divider orientation="vertical" />
         </>
@@ -92,16 +94,6 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         <></>
       )}
 
-      <Button
-        variant="text"
-        startIcon={<SaveIcon />}
-        onClick={() => {
-          props.openDialog("save_view");
-        }}
-      >
-        Save view
-      </Button>
-      <Divider orientation="vertical" />
       <GridToolbarExport variant="text" />
       <GridToolbarColumnsButton variant="text" />
       <GenericDialog
@@ -129,5 +121,4 @@ type AccountsTableToolbarProps = GridToolbarProps & {
   rowsSelection: string[];
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
-  openDialog: (dialog: "save_view") => void;
 };
