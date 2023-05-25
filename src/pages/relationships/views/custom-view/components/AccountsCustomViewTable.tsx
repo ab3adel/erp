@@ -1,12 +1,12 @@
 import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
-import { DataGrid, GridColumnVisibilityModel } from "@mui/x-data-grid";
+import { DataGridPro, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
 import { Action } from "../hooks/useAddAccount";
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTabs";
 import { useSearchParams } from "react-router-dom";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -16,23 +16,26 @@ export const AccountsCustomViewTable = ({
   const { rows, loading } = useAccountsTableRows();
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
-  const { getColumnVisibiltyModelByTabParam } = useCurvedTabs({
-    localStorageKey: "relationships",
-  });
+  const { getColumnVisibiltyModelByTabParam, getColumnsByTabParam } =
+    useCurvedTabs({
+      localStorageKey: "relationships",
+    });
   const [params] = useSearchParams();
   const tabParam = params.get("tab");
   const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
+  const columnsValue = getColumnsByTabParam(tabParam!);
   const [model, setModel] = useState<GridColumnVisibilityModel>(defaultModel!);
 
   return (
     <div style={{ width: "100%" }}>
       <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
+        <DataGridPro
+          unstable_headerFilters
           columnVisibilityModel={model}
           onColumnVisibilityModelChange={(newModel) => setModel(newModel)}
           loading={loading}
           rows={rows}
-          columns={columns}
+          columns={columnsValue || []}
           apiRef={apiRef}
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
@@ -53,7 +56,7 @@ export const AccountsCustomViewTable = ({
 };
 
 type AccountsTableProps = {
-  apiRef: React.MutableRefObject<GridApiCommunity>;
+  apiRef: React.MutableRefObject<GridApiPro>;
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
 };

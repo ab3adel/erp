@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { AccountsTable } from "./components/AccountsTable";
 import { useAddAccount } from "./hooks/useAddAccount";
-import { useGridApiRef } from "@mui/x-data-grid";
+import { useGridApiRef } from "@mui/x-data-grid-pro";
 
 export const Accounts = () => {
   const apiRef = useGridApiRef();

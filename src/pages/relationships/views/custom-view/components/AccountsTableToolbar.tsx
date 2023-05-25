@@ -3,7 +3,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarProps,
-} from "@mui/x-data-grid";
+} from "@mui/x-data-grid-pro";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -95,7 +95,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       )}
 
       <GridToolbarExport variant="text" />
-      <GridToolbarColumnsButton variant="text" />
+
       <GenericDialog
         open={isDialogOpen("deleteAccount")}
         onClose={closeDialog}

@@ -1,11 +1,11 @@
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { DataGridRow } from "../types";
 import React from "react";
 import { useGenericMutation } from "@/shared";
 import { saveReceiption } from "../graphql/mutations/saveReceiption";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 export const useAddReceiption = (
-  ref: React.MutableRefObject<GridApiCommunity>
+  ref: React.MutableRefObject<GridApiPro>
 ) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
   const [save] = useGenericMutation<{ __typename: string }, Variables>(

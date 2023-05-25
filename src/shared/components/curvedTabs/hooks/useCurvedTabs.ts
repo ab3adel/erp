@@ -1,4 +1,4 @@
-import { GridColumnVisibilityModel } from "@mui/x-data-grid";
+import { GridColDef, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
@@ -9,6 +9,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
       value: string;
       label: string;
       columnVisibiltyModel?: GridColumnVisibilityModel;
+      columns?: GridColDef[];
     }[]
   >(localStorageKey, tabs);
   const { pathname } = useLocation();
@@ -43,7 +44,8 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
   // add a tab
   const createTab = (
     label: string,
-    columnVisibiltyModel: GridColumnVisibilityModel
+    columnVisibiltyModel: GridColumnVisibilityModel,
+    columns: GridColDef[]
   ) => {
     const newTabs = [...value];
 
@@ -55,6 +57,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
         `?tab=${label.toLowerCase().replace(/\s/g, "-")}`,
       label,
       columnVisibiltyModel,
+      columns,
     });
 
     setValue(newTabs);
@@ -73,6 +76,14 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
     );
     return customView?.columnVisibiltyModel;
   };
+  // get columns by tab param
+  const getColumnsByTabParam = (tabParam: string) => {
+    const customViews = getCustomViews();
+    const customView = customViews.find((view) =>
+      view.value.includes(tabParam)
+    );
+    return customView?.columns;
+  };
 
   return {
     value,
@@ -81,6 +92,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
     createTab,
     getCustomViews,
     getColumnVisibiltyModelByTabParam,
+    getColumnsByTabParam,
   };
 };
 

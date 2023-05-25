@@ -70,7 +70,7 @@ export const GenericDialog = ({
           </Button>
         )}
         {!!submitButton && (
-          <Button variant="text" {...submitButtonProps} onClick={onSubmit}>
+          <Button variant="text" onClick={onSubmit} {...submitButtonProps}>
             {submitButtonLabel}
           </Button>
         )}

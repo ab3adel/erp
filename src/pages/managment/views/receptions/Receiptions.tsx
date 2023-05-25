@@ -1,7 +1,7 @@
 import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { ReceiptionsTable } from "./components/ReceiptionsTable";
-import { useGridApiRef } from "@mui/x-data-grid";
+import { useGridApiRef } from "@mui/x-data-grid-pro";
 import { useAddReceiption } from "./hooks";
 
 export const Receiptions = () => {

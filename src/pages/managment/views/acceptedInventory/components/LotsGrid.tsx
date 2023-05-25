@@ -1,4 +1,4 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 import { useLotDataGridColumns } from "../hooks/useLotDataGridColumns";
 import { useLotsDataGridRows } from "../hooks/useLotsDataGridRows";
 import { LotsGridToolbar } from "./LotsGridToolbar";
@@ -12,7 +12,7 @@ function LotsGrid(props: LotsGridProps) {
   return (
     <div style={{ width: "100%" }}>
       <div style={{ height: 420, width: "100%" }}>
-        <DataGrid
+        <DataGridPro
           columns={columns}
           loading={loading}
           rows={rows}

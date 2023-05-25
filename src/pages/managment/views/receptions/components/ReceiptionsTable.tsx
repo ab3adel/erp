@@ -1,10 +1,10 @@
 import { useReceiptionsTableColumns } from "../hooks/useReceiptionsTableColumns";
 import { useReceiptionsTableRows } from "../hooks/useReceiptionsTableRows";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGridPro } from "@mui/x-data-grid-pro";
 import { ReceiptionsTableToolbar } from "./ReceiptionsTableToolbar";
 import { useState } from "react";
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import { Action } from "../types";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 export const ReceiptionsTable = ({
   apiRef,
@@ -18,7 +18,7 @@ export const ReceiptionsTable = ({
   return (
     <div style={{ width: "100%" }}>
       <div style={{ height: 450, width: "100%" }}>
-        <DataGrid
+        <DataGridPro
           loading={loading}
           apiRef={apiRef}
           rowSelectionModel={rowsSelection}
@@ -46,7 +46,7 @@ export const ReceiptionsTable = ({
 };
 
 type ReceiptionsTableProps = {
-  apiRef: React.MutableRefObject<GridApiCommunity>;
+  apiRef: React.MutableRefObject<GridApiPro>;
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
 };

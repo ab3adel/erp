@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { accountsNames } from "../graphql/queries/accountsNames";
 import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
-import { GridRenderCellParams, useGridApiContext } from "@mui/x-data-grid";
+import { GridRenderCellParams, useGridApiContext } from "@mui/x-data-grid-pro";
 
 export const AccountsEditSelect = (
   props: GridRenderCellParams<any, number>

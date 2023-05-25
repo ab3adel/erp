@@ -1,4 +1,4 @@
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef } from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";

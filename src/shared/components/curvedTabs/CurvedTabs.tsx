@@ -11,6 +11,7 @@ import { Box, Fade } from "@mui/material";
 import React, { ReactNode, useState } from "react";
 import DragIndicatorOutlined from "@mui/icons-material/DragIndicatorOutlined";
 import { useCurvedTabs } from "./hooks/useCurvedTabs";
+import { GenericDialog } from "..";
 
 const DragHandle = SortableHandle<{ hover: boolean }>(
   ({ hover }: { hover: boolean }) => (
@@ -92,6 +93,7 @@ export const CurvedTabs = ({
 }: CurvedTabsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [selectedTab, setSelectedTab] = useState<number>();
   const {
     orderTab,
     value: sortedTabs,
@@ -100,6 +102,11 @@ export const CurvedTabs = ({
     localStorageKey,
     tabs,
   });
+
+  const handleDeleteTab = () => {
+    deleteTab(selectedTab || 0);
+    setSelectedTab(undefined);
+  };
 
   const SortableCurvedTabList = SortableContainer<{
     children: ReactNode;
@@ -125,9 +132,25 @@ export const CurvedTabs = ({
           label={tab.label}
           canDrag={canDrag}
           canDelete={canDelete}
-          onDelete={() => deleteTab(index)}
+          onDelete={() => setSelectedTab(index)}
         />
       ))}
+      <GenericDialog
+        open={selectedTab !== undefined}
+        onClose={() => setSelectedTab(undefined)}
+        onSubmit={handleDeleteTab}
+        dialog={{
+          title: "Delete Tab",
+          submitButton: {
+            label: "Delete",
+          },
+        }}
+      >
+        <Box>
+          Are you sure you want to delete the tab{" "}
+          <b>{sortedTabs[selectedTab || 0]?.label}</b>?
+        </Box>
+      </GenericDialog>
     </SortableCurvedTabList>
   );
 };

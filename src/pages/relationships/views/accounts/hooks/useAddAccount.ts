@@ -1,11 +1,11 @@
-import { GridApiCommunity } from "@mui/x-data-grid/internals";
 import React from "react";
 import { useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { Account } from "../types";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 export const useAddAccount = (
-  ref: React.MutableRefObject<GridApiCommunity>
+  ref: React.MutableRefObject<GridApiPro>
 ) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
   const [save] = useGenericMutation<{ __typename: string }, Variables>(
