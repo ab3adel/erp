@@ -1,5 +1,4 @@
 import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
-import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import {
   DataGridPro,
   GridColDef,
@@ -14,12 +13,50 @@ import { GenericDialog, useDialog } from "@/shared";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 
+const rows = [
+  {
+    id: 1,
+    name: "John Doe",
+    type: "Individual",
+    firstName: "John",
+    lastName: "Doe",
+    govId: "123456789",
+    mobileNumber: "123456789",
+    district: "Kampala",
+    status: "Active",
+    completeness: 100,
+  },
+  {
+    id: 2,
+    name: "Jane Doe",
+    type: "Individual",
+    firstName: "Jane",
+    lastName: "Doe",
+    govId: "123456789",
+    mobileNumber: "123456789",
+    district: "Kampala",
+    status: "Active",
+    completeness: 100,
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    type: "Individual",
+    firstName: "John",
+    lastName: "Doe",
+    govId: "123456789",
+    mobileNumber: "123456789",
+    district: "Kampala",
+    status: "Active",
+    completeness: 100,
+  },
+];
+
 export const AccountsTable = ({
   apiRef,
   dispatch,
   isRowAdded,
 }: AccountsTableProps) => {
-  const { rows, loading } = useAccountsTableRows();
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
@@ -42,7 +79,6 @@ export const AccountsTable = ({
       <div style={{ height: 450, width: "100%" }}>
         <DataGridPro
           unstable_headerFilters
-          loading={loading}
           rows={rows}
           columns={columnsState}
           apiRef={apiRef}
