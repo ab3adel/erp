@@ -4,7 +4,7 @@ import { useLotsDataGridRows } from "../hooks/useLotsDataGridRows";
 import { LotsGridToolbar } from "./LotsGridToolbar";
 import { useState } from "react";
 
-function LotsGrid(props: LotsGridProps) {
+function LotsGrid() {
   const columns = useLotDataGridColumns();
   const { rows, loading } = useLotsDataGridRows();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
@@ -36,7 +36,4 @@ function LotsGrid(props: LotsGridProps) {
   );
 }
 
-type LotsGridProps = {
-  type: "cherry" | "pachment" | "green";
-};
 export default LotsGrid;

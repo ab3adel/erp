@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 export const AccountsCustomView = () => {
   const apiRef = useGridApiRef();
   const { dispatch, isRowAdded } = useAddAccount(apiRef);
-  const [params, setParams] = useSearchParams();
+  const [params] = useSearchParams();
   const tabParam = params.get("tab");
 
   return (

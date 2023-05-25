@@ -1,5 +1,4 @@
-import { Box, Tab, IconButton, Tabs, Divider } from "@mui/material";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Box, Tab, Tabs, Divider } from "@mui/material";
 import React from "react";
 import LotsGrid from "./components/LotsGrid";
 
