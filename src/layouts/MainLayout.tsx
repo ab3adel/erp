@@ -5,9 +5,9 @@ import { Drawer } from "./components/Drawer";
 
 const loader = () => {
   const token = localStorage.getItem("token");
-  if (!token) {
+  /* if (!token) {
     return redirect("/login");
-  }
+  } */
   return null;
 };
 
