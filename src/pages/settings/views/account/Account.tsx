@@ -6,6 +6,7 @@ export const Account = () => {
   return (
     <Box>
       <CurvedTabs
+        localStorageKey="accountTab"
         tabs={[
           {
             label: "General",
