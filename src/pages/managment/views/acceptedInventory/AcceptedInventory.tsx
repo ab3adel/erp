@@ -40,7 +40,7 @@ export const AcceptedInventory = () => {
         ))}
       </Tabs>
       <Divider sx={{ mb: 2 }} />
-      <LotsGrid type={type} />
+      <LotsGrid />
     </Box>
   );
 };
