@@ -13,6 +13,7 @@ import { Account } from "@/pages/settings/views/account/Account";
 import { General } from "@/pages/settings/views/account/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
+import { AccountsCustomView } from "@/pages/relationships/views/custom-view";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
           {
             path: "accounts",
             element: <Accounts />,
+          },
+          {
+            path: "customview",
+            element: <AccountsCustomView />,
           },
         ],
       },

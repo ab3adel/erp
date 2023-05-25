@@ -1,12 +1,16 @@
 import { Box, Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { AccountsTable } from "./components/AccountsTable";
+import { AccountsCustomViewTable } from "./components/AccountsCustomViewTable";
 import { useAddAccount } from "./hooks/useAddAccount";
 import { useGridApiRef } from "@mui/x-data-grid-pro";
+import { useSearchParams } from "react-router-dom";
 
-export const Accounts = () => {
+export const AccountsCustomView = () => {
   const apiRef = useGridApiRef();
   const { dispatch, isRowAdded } = useAddAccount(apiRef);
+  const [params, setParams] = useSearchParams();
+  const tabParam = params.get("tab");
+
   return (
     <Box>
       <Button
@@ -18,7 +22,8 @@ export const Accounts = () => {
       >
         NEW ACCOUNT
       </Button>
-      <AccountsTable
+      <AccountsCustomViewTable
+        key={tabParam}
         dispatch={dispatch}
         isRowAdded={isRowAdded}
         apiRef={apiRef}

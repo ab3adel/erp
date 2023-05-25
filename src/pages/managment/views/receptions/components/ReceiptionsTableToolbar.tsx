@@ -3,7 +3,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarProps,
-} from "@mui/x-data-grid";
+} from "@mui/x-data-grid-pro";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { removeReceiption } from "../graphql/mutations";

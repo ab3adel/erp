@@ -18,15 +18,8 @@ export const RelationShips = () => {
             label: "Accounts",
             value: "/relationships/accounts",
           },
-          {
-            label: "Suppliers",
-            value: "/relationships/suppliers",
-          },
-          {
-            label: "Buyers",
-            value: "/relationships/buyers",
-          },
         ]}
+        localStorageKey="relationships"
       />
       <Paper elevation={0} sx={{ borderRadius: "0px 0px 12px 12px" }}>
         <Outlet />

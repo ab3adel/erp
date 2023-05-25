@@ -3,7 +3,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarProps,
-} from "@mui/x-data-grid";
+} from "@mui/x-data-grid-pro";
 import { Box, Button, Divider } from "@mui/material";
 import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import MergeTypeIcon from "@mui/icons-material/MergeType";

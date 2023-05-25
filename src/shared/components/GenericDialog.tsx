@@ -6,13 +6,17 @@ import {
   ButtonProps as MuiButtonProps,
   Button,
   DialogTitle,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export const GenericDialog = ({
   onClose,
   onSubmit,
   dialog,
   children,
+  hideCloseButton = true,
+  color,
   ...props
 }: GenericDialogProps) => {
   const {
@@ -25,8 +29,25 @@ export const GenericDialog = ({
 
   return (
     <Dialog onClose={onClose} fullWidth {...props}>
-      <DialogTitle sx={{ pb: 3 }} variant="h3" textAlign="center">
+      <DialogTitle
+        variant="h3"
+        textAlign="center"
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: hideCloseButton ? "center" : "space-between",
+          ...(color && {
+            backgroundColor: `${color} !important`,
+            color: (theme) => `${theme.palette.common.black} !important`,
+          }),
+        }}
+      >
         {title}
+        {!hideCloseButton && (
+          <IconButton onClick={onClose}>
+            <CloseIcon sx={{ color: "common.black" }} />
+          </IconButton>
+        )}
       </DialogTitle>
       <DialogContent sx={{ px: "8px", py: 3 }}>{children}</DialogContent>
       <DialogActions
@@ -49,7 +70,7 @@ export const GenericDialog = ({
           </Button>
         )}
         {!!submitButton && (
-          <Button variant="text" {...submitButtonProps} onClick={onSubmit}>
+          <Button variant="text" onClick={onSubmit} {...submitButtonProps}>
             {submitButtonLabel}
           </Button>
         )}
@@ -70,4 +91,6 @@ export type GenericDialogProps = Omit<DialogProps, "onClose" | "onSubmit"> & {
   };
   onClose: () => void;
   onSubmit?: () => void;
+  hideCloseButton?: boolean;
+  color?: string;
 };

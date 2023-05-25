@@ -13,6 +13,8 @@ export const Managment = () => {
         Management
       </Typography>
       <CurvedTabs
+        canDelete={false}
+        canDrag={false}
         tabs={[
           {
             label: "Reception",

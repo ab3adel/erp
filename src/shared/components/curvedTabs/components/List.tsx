@@ -10,10 +10,7 @@ export const CurvedTabList = styled(Tabs)(({ theme }) => ({
   "& .MuiTabs-scroller button": {
     margin: 0,
   },
-  "& .MuiTabs-scroller button:nth-child(2)": {
-    margin: "0 40px",
-  },
-  [`& .MuiTabs-scroller button:not(:first-child):not(:last-child)`]: {
+  "& .MuiTabs-scroller button:nth-child(even)": {
     margin: "0 40px",
   },
 }));

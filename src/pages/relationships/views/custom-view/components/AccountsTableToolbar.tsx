@@ -12,7 +12,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
-import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -58,6 +57,9 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               DELETE
             </Button>
+            <Button variant="text" startIcon={<SaveIcon />}>
+              SAVE VIEW
+            </Button>
           </Box>
           <Divider orientation="vertical" />
         </>
@@ -92,26 +94,8 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         <></>
       )}
 
-      <Button
-        variant="text"
-        startIcon={<SaveIcon />}
-        onClick={() => {
-          props.openDialog("save_view");
-        }}
-      >
-        Save view
-      </Button>
-      <Divider orientation="vertical" />
       <GridToolbarExport variant="text" />
-      <Button
-        variant="text"
-        startIcon={<ViewWeekIcon />}
-        onClick={() => {
-          props.setOpenColumnsDialog(true);
-        }}
-      >
-        Columns
-      </Button>
+
       <GenericDialog
         open={isDialogOpen("deleteAccount")}
         onClose={closeDialog}
@@ -137,6 +121,4 @@ type AccountsTableToolbarProps = GridToolbarProps & {
   rowsSelection: string[];
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
-  openDialog: (dialog: "save_view") => void;
-  setOpenColumnsDialog: (open: boolean) => void;
 };
