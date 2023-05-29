@@ -1,9 +1,18 @@
 import {
   GridToolbarContainer,
   GridToolbarExport,
-  GridToolbarProps
+  GridToolbarProps,
 } from "@mui/x-data-grid-pro";
-import { Box, Button, Divider, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,6 +21,7 @@ import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
+import { useState } from "react";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -21,6 +31,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     { __typename: string },
     { id: string }
   >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
+  const [isMerged, setIsMerged] = useState(false);
 
   const handleDeleteAccount = () => {
     const [id] = rowsSelection;
@@ -116,16 +127,44 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         onClose={closeDialog}
         maxWidth="xs"
         dialog={{
-          title: "Delete Account ? ",
+          title: "Delete & Merge Account",
           submitButton: {
             label: "Delete",
             variant: "text",
+            color: "error",
+          },
+          closeButton: {
+            label: "Cancel",
+            variant: "text",
+            color: "inherit",
+          },
+          dialogTitleSx: {
+            bgcolor: (theme) => `${theme.palette.error.main} !important`,
           },
         }}
         onSubmit={handleDeleteAccount}
       >
         <Typography variant="body1" sx={{ color: "common.black" }}>
-          Are you sure you want to delete this account ?
+          There are existing transactions and surveys attached to the account.
+          Would you like to merge this account to an existing one?
+          <Box>
+            <FormControlLabel
+              control={<Switch />}
+              label="Merge"
+              onChange={(e) => {
+                const target = e.target as HTMLInputElement;
+                setIsMerged(target.checked);
+              }}
+              checked={isMerged}
+            />
+            {isMerged && (
+              <TextField
+                variant="filled"
+                sx={{ width: "100%" }}
+                label="Select Account"
+              />
+            )}
+          </Box>
         </Typography>
       </GenericDialog>
     </GridToolbarContainer>

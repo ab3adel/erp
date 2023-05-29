@@ -14,6 +14,11 @@ import { General } from "@/pages/settings/views/account/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
 import { AccountsCustomView } from "@/pages/relationships/views/custom-view";
+import { AgentProfile } from "@/pages/agent-profile/AgentProfile";
+import { AgentFarms } from "@/pages/agent-profile/views/farms/AgentFarms";
+import { BuyerProfile } from "@/pages/buyer-profile/BuyerProfile";
+import { FarmerProfle } from "@/pages/farmer-profile/FarmerProfle";
+import { PlotProfile } from "@/pages/plot-profile/PlotProfile";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +31,7 @@ export const router = createBrowserRouter([
     element: <Signup />,
     loader: Signup.loader,
   },
+
   {
     path: "/",
     element: <MainLayout />,
@@ -85,6 +91,28 @@ export const router = createBrowserRouter([
             ],
           },
         ],
+      },
+      {
+        path: ":id/agent-profile",
+        element: <AgentProfile />,
+        children: [
+          {
+            index: true,
+            element: <AgentFarms />,
+          },
+        ],
+      },
+      {
+        path: ":id/buyer-profile",
+        element: <BuyerProfile />,
+      },
+      {
+        path: ":id/farmer-profile",
+        element: <FarmerProfle />,
+      },
+      {
+        path: ":id/plot-profile",
+        element: <PlotProfile />,
       },
     ],
   },

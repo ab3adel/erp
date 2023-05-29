@@ -2,7 +2,8 @@ import { GridColDef } from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -22,8 +23,28 @@ function LinearProgressWithLabel(
 }
 
 export const useAccountsTableColumns = () => {
+  const navigate = useNavigate();
+
   const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 150, editable: true },
+    {
+      field: "name",
+      headerName: "Name",
+      width: 150,
+      editable: true,
+      renderCell: (params) => (
+        <Link
+          sx={{
+            textDecoration: "none",
+            color: "primary.main",
+          }}
+          onClick={() =>
+            navigate(`/${params.id}/${params.row?.type?.toLowerCase()}-profile`)
+          }
+        >
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "type", headerName: "Type", width: 150, editable: true },
     {
       field: "firstName",
