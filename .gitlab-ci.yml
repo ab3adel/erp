@@ -40,6 +40,8 @@ deploy-job:      # This job runs in the deploy stage.
     - cd /var/www/mc-erp2/dev/mc-erp2.0-frontend-dev
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
     - echo "Application successfully deployed."
+    - npm run build
+    - "Application successfully built."
 
   only:
     - dev
