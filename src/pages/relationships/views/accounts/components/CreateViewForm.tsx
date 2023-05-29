@@ -1,10 +1,8 @@
 import { useFormik } from "formik";
 import {
-  TextField,
-  Button,
-  FormControlLabel,
+  TextField, FormControlLabel,
   RadioGroup,
-  Radio,
+  Radio
 } from "@mui/material";
 
 export const CreateViewForm = ({

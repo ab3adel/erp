@@ -6,6 +6,9 @@ export const Account = () => {
   return (
     <Box>
       <CurvedTabs
+        localStorageKey="accountTab"
+        canDelete={false}
+        canDrag={false}
         tabs={[
           {
             label: "General",

@@ -15,6 +15,7 @@ export const Managment = () => {
       <CurvedTabs
         canDelete={false}
         canDrag={false}
+        localStorageKey="managementTab"
         tabs={[
           {
             label: "Reception",

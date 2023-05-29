@@ -1,17 +1,18 @@
 import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/AppBar";
-import { Outlet, redirect } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Drawer } from "./components/Drawer";
 
 const loader = () => {
-  const token = localStorage.getItem("token");
-  /* if (!token) {
+  /*   const token = localStorage.getItem("token");
+   */ /* if (!token) {
     return redirect("/login");
   } */
   return null;
 };
 
 export const MainLayout = () => {
+  const { pathname } = useLocation();
   return (
     <Box display="flex">
       <AppBar />
@@ -22,7 +23,6 @@ export const MainLayout = () => {
           <Outlet />
         </Box>
         <Box
-          display="flex"
           sx={{
             position: "absolute",
             bottom: "18px",
@@ -30,6 +30,7 @@ export const MainLayout = () => {
             width: "100%",
             justifyContent: "center",
             zIndex: 0,
+            display: pathname === "/" ? "flex" : "none",
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>

@@ -1,4 +1,3 @@
-import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import { DataGridPro, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
@@ -14,7 +13,6 @@ export const AccountsCustomViewTable = ({
   isRowAdded,
 }: AccountsTableProps) => {
   const { rows, loading } = useAccountsTableRows();
-  const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { getColumnVisibiltyModelByTabParam, getColumnsByTabParam } =
     useCurvedTabs({

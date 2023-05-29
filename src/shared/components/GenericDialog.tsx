@@ -7,6 +7,8 @@ import {
   Button,
   DialogTitle,
   IconButton,
+  SxProps,
+  Theme,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -37,9 +39,10 @@ export const GenericDialog = ({
           alignItems: "center",
           justifyContent: hideCloseButton ? "center" : "space-between",
           ...(color && {
-            backgroundColor: `${color} !important`,
+            bgcolor: `${color} !important`,
             color: (theme) => `${theme.palette.common.black} !important`,
           }),
+          ...dialog.dialogTitleSx,
         }}
       >
         {title}
@@ -88,6 +91,7 @@ export type GenericDialogProps = Omit<DialogProps, "onClose" | "onSubmit"> & {
     closeButton?: MuiButtonProps & {
       label: string;
     };
+    dialogTitleSx?: SxProps<Theme>;
   };
   onClose: () => void;
   onSubmit?: () => void;

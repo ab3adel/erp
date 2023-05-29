@@ -12,6 +12,9 @@ import { theme } from "./theme";
 import { SnackbarProvider } from "notistack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { LicenseInfo } from '@mui/x-license-pro';
+
+LicenseInfo.setLicenseKey(import.meta.env.VITE_MUI_KEY);
 
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_BACKEND_URL,
