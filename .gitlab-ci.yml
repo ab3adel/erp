@@ -37,9 +37,9 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     - echo "Deploying application..."
     - whoami
-    - cd /var/www/mc-erp2/dev/mc-erp2.0-frontend-dev
-    - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
+    - cd /var/www/mc-erp2/test/mc-erp2.0-frontend-test
+    - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git test
     - echo "Application successfully deployed."
 
   only:
-    - dev
+    - test
