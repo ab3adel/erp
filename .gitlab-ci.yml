@@ -41,7 +41,7 @@ deploy-job:      # This job runs in the deploy stage.
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
     - echo "Application successfully deployed."
     - npx vite build
-    - "Application successfully built."
+    - echo "Application successfully built."
 
   only:
     - dev
