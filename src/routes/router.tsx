@@ -24,6 +24,7 @@ import { FarmerCosts } from "@/pages/farmer-profile/views/costs/FarmerCosts";
 import { AgentCosts } from "@/pages/agent-profile/views/costs/AgentCosts";
 import { AgentTransactions } from "@/pages/agent-profile/views/transactions/AgentTransactions";
 import { FarmerTransactions } from "@/pages/farmer-profile/views/transactions/FarmerTransactions";
+import { AgentNotes } from "@/pages/agent-profile/views/notes/AgentNotes";
 
 export const router = createBrowserRouter([
   {
@@ -113,11 +114,25 @@ export const router = createBrowserRouter([
             path: "transactions",
             element: <AgentTransactions />,
           },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
         ],
       },
       {
         path: ":id/buyer-profile",
         element: <BuyerProfile />,
+        children: [
+          {
+            index: true,
+            element: <AgentTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
+        ],
       },
       {
         path: ":id/farmer-profile",
@@ -135,11 +150,33 @@ export const router = createBrowserRouter([
             path: "transactions",
             element: <FarmerTransactions />,
           },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
         ],
       },
       {
         path: ":id/plot-profile",
         element: <PlotProfile />,
+        children: [
+          {
+            index: true,
+            element: <div>area</div>,
+          },
+          {
+            path: "costs",
+            element: <div>costs</div>,
+          },
+          {
+            path: "transactions",
+            element: <AgentTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
+        ],
       },
     ],
   },
