@@ -20,6 +20,10 @@ import { BuyerProfile } from "@/pages/buyer-profile/BuyerProfile";
 import { FarmerProfle } from "@/pages/farmer-profile/FarmerProfle";
 import { PlotProfile } from "@/pages/plot-profile/PlotProfile";
 import { FarmerFarms } from "@/pages/farmer-profile/views/farms/FarmerFarms";
+import { FarmerCosts } from "@/pages/farmer-profile/views/costs/FarmerCosts";
+import { AgentCosts } from "@/pages/agent-profile/views/costs/AgentCosts";
+import { AgentTransactions } from "@/pages/agent-profile/views/transactions/AgentTransactions";
+import { FarmerTransactions } from "@/pages/farmer-profile/views/transactions/FarmerTransactions";
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +105,14 @@ export const router = createBrowserRouter([
             index: true,
             element: <AgentFarms />,
           },
+          {
+            path: "costs",
+            element: <AgentCosts />,
+          },
+          {
+            path: "transactions",
+            element: <AgentTransactions />,
+          },
         ],
       },
       {
@@ -114,6 +126,14 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <FarmerFarms />,
+          },
+          {
+            path: "costs",
+            element: <FarmerCosts />,
+          },
+          {
+            path: "transactions",
+            element: <FarmerTransactions />,
           },
         ],
       },
