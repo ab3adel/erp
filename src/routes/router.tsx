@@ -19,6 +19,7 @@ import { AgentFarms } from "@/pages/agent-profile/views/farms/AgentFarms";
 import { BuyerProfile } from "@/pages/buyer-profile/BuyerProfile";
 import { FarmerProfle } from "@/pages/farmer-profile/FarmerProfle";
 import { PlotProfile } from "@/pages/plot-profile/PlotProfile";
+import { FarmerFarms } from "@/pages/farmer-profile/views/farms/FarmerFarms";
 
 export const router = createBrowserRouter([
   {
@@ -109,6 +110,12 @@ export const router = createBrowserRouter([
       {
         path: ":id/farmer-profile",
         element: <FarmerProfle />,
+        children: [
+          {
+            index: true,
+            element: <FarmerFarms />,
+          },
+        ],
       },
       {
         path: ":id/plot-profile",

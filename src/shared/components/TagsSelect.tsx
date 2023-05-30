@@ -12,9 +12,11 @@ import {
   Typography,
   IconButton,
   Box,
+  Button,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
 
 interface Tag {
   id: string;
@@ -100,9 +102,14 @@ export const TagsSelect: React.FC<TagDropdownProps> = ({
           </MenuItem>
         ))}
         {tags.length === 0 && (
-          <Typography variant="body2" sx={{ p: 2 }}>
-            No tags found.
-          </Typography>
+          <Box width="100%" my={1} textAlign="center">
+            <Button fullWidth startIcon={<AddIcon />}>
+              Create new tag
+            </Button>
+            <Typography variant="body2" sx={{ p: 2 }}>
+              No tags found.
+            </Typography>
+          </Box>
         )}
       </Paper>
     </Popper>
