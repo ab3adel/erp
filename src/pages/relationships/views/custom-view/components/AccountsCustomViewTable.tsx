@@ -1,11 +1,16 @@
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
-import { DataGridPro, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
+import {
+  DataGridPro,
+  GridColumnVisibilityModel,
+  GridColDef,
+} from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
 import { Action } from "../hooks/useAddAccount";
 import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTabs";
 import { useSearchParams } from "react-router-dom";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
+import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -18,10 +23,13 @@ export const AccountsCustomViewTable = ({
     useCurvedTabs({
       localStorageKey: "relationships",
     });
+
   const [params] = useSearchParams();
   const tabParam = params.get("tab");
   const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
   const columnsValue = getColumnsByTabParam(tabParam!);
+  const [columnsState, setColumnsState] = useState<GridColDef[]>(columnsValue!);
+  const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
   const [model, setModel] = useState<GridColumnVisibilityModel>(defaultModel!);
 
   return (
@@ -33,7 +41,7 @@ export const AccountsCustomViewTable = ({
           onColumnVisibilityModelChange={(newModel) => setModel(newModel)}
           loading={loading}
           rows={rows}
-          columns={columnsValue || []}
+          columns={columnsState || []}
           apiRef={apiRef}
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
@@ -45,10 +53,23 @@ export const AccountsCustomViewTable = ({
             toolbar: AccountsTableToolbar,
           }}
           slotProps={{
-            toolbar: { rowsSelection, dispatch, isRowAdded },
+            toolbar: {
+              rowsSelection,
+              dispatch,
+              isRowAdded,
+              setOpenColumnsDialog,
+            },
           }}
         />
       </div>
+      <ManageColumnsPanel
+        open={openColumnsDialog}
+        onClose={() => setOpenColumnsDialog(false)}
+        columns={columnsValue || []}
+        setColumns={setColumnsState}
+        setVisibiltyModel={setModel}
+        visibiltyModel={model}
+      />
     </div>
   );
 };

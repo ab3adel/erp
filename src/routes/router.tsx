@@ -19,6 +19,12 @@ import { AgentFarms } from "@/pages/agent-profile/views/farms/AgentFarms";
 import { BuyerProfile } from "@/pages/buyer-profile/BuyerProfile";
 import { FarmerProfle } from "@/pages/farmer-profile/FarmerProfle";
 import { PlotProfile } from "@/pages/plot-profile/PlotProfile";
+import { FarmerFarms } from "@/pages/farmer-profile/views/farms/FarmerFarms";
+import { FarmerCosts } from "@/pages/farmer-profile/views/costs/FarmerCosts";
+import { AgentCosts } from "@/pages/agent-profile/views/costs/AgentCosts";
+import { AgentTransactions } from "@/pages/agent-profile/views/transactions/AgentTransactions";
+import { FarmerTransactions } from "@/pages/farmer-profile/views/transactions/FarmerTransactions";
+import { AgentNotes } from "@/pages/agent-profile/views/notes/AgentNotes";
 
 export const router = createBrowserRouter([
   {
@@ -100,19 +106,77 @@ export const router = createBrowserRouter([
             index: true,
             element: <AgentFarms />,
           },
+          {
+            path: "costs",
+            element: <AgentCosts />,
+          },
+          {
+            path: "transactions",
+            element: <AgentTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
         ],
       },
       {
         path: ":id/buyer-profile",
         element: <BuyerProfile />,
+        children: [
+          {
+            index: true,
+            element: <AgentTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
+        ],
       },
       {
         path: ":id/farmer-profile",
         element: <FarmerProfle />,
+        children: [
+          {
+            index: true,
+            element: <FarmerFarms />,
+          },
+          {
+            path: "costs",
+            element: <FarmerCosts />,
+          },
+          {
+            path: "transactions",
+            element: <FarmerTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
+        ],
       },
       {
         path: ":id/plot-profile",
         element: <PlotProfile />,
+        children: [
+          {
+            index: true,
+            element: <div>area</div>,
+          },
+          {
+            path: "costs",
+            element: <div>costs</div>,
+          },
+          {
+            path: "transactions",
+            element: <AgentTransactions />,
+          },
+          {
+            path: "notes",
+            element: <AgentNotes />,
+          },
+        ],
       },
     ],
   },

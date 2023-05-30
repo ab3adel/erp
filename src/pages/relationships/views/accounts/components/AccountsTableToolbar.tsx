@@ -7,11 +7,12 @@ import {
   Box,
   Button,
   Divider,
-  FormControl,
+  Snackbar,
   FormControlLabel,
   Switch,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -22,6 +23,25 @@ import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useState } from "react";
+import { TagsSelect } from "@/shared/components/TagsSelect";
+
+const tags = [
+  {
+    id: "1",
+    label: "Tag 1",
+    color: "#3f51b5",
+  },
+  {
+    id: "2",
+    label: "Tag 2",
+    color: "#f50057",
+  },
+  {
+    id: "3",
+    label: "Tag 3",
+    color: "#4caf50",
+  },
+];
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -32,15 +52,25 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     { id: string }
   >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
   const [isMerged, setIsMerged] = useState(false);
+  const [filterdTags, setFilteredTags] = useState(tags);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
 
   const handleDeleteAccount = () => {
     const [id] = rowsSelection;
-    removeAccount({
+    closeDialog();
+    setShowSnackbar(true);
+    /* removeAccount({
       variables: { id },
       onCompleted: () => {
         closeDialog();
+        setShowSnackbar(true);
       },
-    });
+    }); */
   };
 
   return (
@@ -55,7 +85,11 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               APPROVE
             </Button>
-            <Button variant="text" startIcon={<LocalOfferIcon />}>
+            <Button
+              variant="text"
+              startIcon={<LocalOfferIcon />}
+              onClick={handleTagButtonClick}
+            >
               TAG
             </Button>
             <Button
@@ -120,7 +154,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           props.setOpenColumnsDialog(true);
         }}
       >
-        Columns
+        Customize
       </Button>
       <GenericDialog
         open={isDialogOpen("deleteAccount")}
@@ -167,6 +201,45 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
+      <TagsSelect
+        anchorEl={anchorEl}
+        onDelete={(tag) => {
+          setFilteredTags(filterdTags.filter((t) => t.id !== tag.id));
+        }}
+        onSearch={(search) => {
+          setFilteredTags(
+            tags.filter((tag) => tag.label.toLowerCase().includes(search))
+          );
+        }}
+        tags={filterdTags}
+      />
+
+      <Snackbar
+        open={showSnackbar}
+        anchorOrigin={{
+          horizontal: "center",
+          vertical: "top",
+        }}
+        autoHideDuration={5000}
+        onClose={() => setShowSnackbar(false)}
+      >
+        <Alert
+          severity="error"
+          onClose={() => setShowSnackbar(false)}
+          action={
+            <Button
+              color="inherit"
+              size="small"
+              variant="text"
+              onClick={() => setShowSnackbar(false)}
+            >
+              UNDO
+            </Button>
+          }
+        >
+          Account deleted
+        </Alert>
+      </Snackbar>
     </GridToolbarContainer>
   );
 };

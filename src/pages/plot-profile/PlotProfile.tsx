@@ -42,7 +42,7 @@ export const PlotProfile = () => {
           <CurvedTabs
             tabs={[
               {
-                label: "FARMS",
+                label: "AREA",
                 value: `/${id}/plot-profile`,
               },
               {

@@ -2,7 +2,7 @@ import { GridColDef } from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography, Link } from "@mui/material";
+import { Box, Typography, Link, Chip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function LinearProgressWithLabel(
@@ -61,12 +61,20 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     { field: "district", headerName: "District", width: 150, editable: true },
-    { field: "status", headerName: "Status", width: 150, editable: true },
     {
       field: "completeness",
       headerName: "Completeness",
       width: 150,
       renderCell: ({ value }) => <LinearProgressWithLabel value={value} />,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      editable: true,
+      renderCell: ({ value }) => (
+        <Chip label={value} color="primary" variant="outlined" />
+      ),
     },
   ];
   return columns;
