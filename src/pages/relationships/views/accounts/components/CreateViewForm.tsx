@@ -1,9 +1,5 @@
 import { useFormik } from "formik";
-import {
-  TextField, FormControlLabel,
-  RadioGroup,
-  Radio
-} from "@mui/material";
+import { TextField, FormControlLabel, RadioGroup, Radio } from "@mui/material";
 
 export const CreateViewForm = ({
   onSubmit,
@@ -30,7 +26,8 @@ export const CreateViewForm = ({
         id="label"
         name="label"
         fullWidth
-        placeholder="Enter label"
+        variant="filled"
+        label="Name"
         value={formik.values.label}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
@@ -45,9 +42,9 @@ export const CreateViewForm = ({
         <FormControlLabel
           value="personal"
           control={<Radio />}
-          label="Personal"
+          label="Only me"
         />
-        <FormControlLabel value="shared" control={<Radio />} label="Shared" />
+        <FormControlLabel value="shared" control={<Radio />} label="Team" />
       </RadioGroup>
     </form>
   );

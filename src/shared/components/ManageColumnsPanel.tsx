@@ -15,6 +15,7 @@ import {
   ListItemText,
   Typography,
   Avatar,
+  InputBase,
 } from "@mui/material";
 import {
   SortableContainer,
@@ -23,6 +24,7 @@ import {
 } from "react-sortable-hoc";
 import DragIndicatorOutlined from "@mui/icons-material/DragIndicatorOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
 
 const DragHandle = SortableHandle(() => (
   <DragIndicatorOutlined
@@ -50,6 +52,12 @@ const SortableColumnItem = SortableElement<{
     state: GridColDef[];
   }) => (
     <ListItem
+      sx={{
+        border: "1px solid #E0E0E0",
+        mb: 1,
+        zIndex: 100000,
+      }}
+      dense
       secondaryAction={
         <IconButton
           aria-label="Remove"
@@ -88,7 +96,10 @@ export const ManageColumnsPanel = ({
   ...props
 }: ManageColumnsPanelProps) => {
   const [state, setState] = React.useState(columns);
-
+  const [search, setSearch] = React.useState("");
+  const filterdColumns = columns.filter((column) =>
+    column.headerName?.toLowerCase().includes(search.toLowerCase())
+  );
   const onSortEnd = ({
     oldIndex,
     newIndex,
@@ -137,10 +148,25 @@ export const ManageColumnsPanel = ({
     >
       <Grid container columnSpacing={2}>
         <Grid item xs>
+          <InputBase
+            sx={{ mb: 2 }}
+            placeholder="Search columns"
+            inputProps={{ "aria-label": "search columns" }}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            startAdornment={
+              <SearchIcon
+                sx={{
+                  color: "text.disabled",
+                  mr: 1,
+                }}
+              />
+            }
+          />
           <FormControl variant="standard">
             <FormLabel sx={{ color: "text.secondary" }}>Columns</FormLabel>
             <FormGroup>
-              {columns.map((column) => (
+              {filterdColumns.map((column) => (
                 <FormControlLabel
                   key={column.field}
                   control={

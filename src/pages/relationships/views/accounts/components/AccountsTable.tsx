@@ -28,7 +28,6 @@ export const AccountsTable = ({
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
 
-  console.log(model);
   const handleCreateView = (form: {
     label: string;
     type: "personal" | "shared";

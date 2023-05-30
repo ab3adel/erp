@@ -1,7 +1,7 @@
 import {
   GridToolbarContainer,
   GridToolbarExport,
-  GridToolbarProps
+  GridToolbarProps,
 } from "@mui/x-data-grid-pro";
 import { Box, Button, Divider, Typography } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
@@ -11,6 +11,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
+import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -94,7 +95,15 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       )}
 
       <GridToolbarExport variant="text" />
-
+      <Button
+        variant="text"
+        startIcon={<ViewWeekIcon />}
+        onClick={() => {
+          props.setOpenColumnsDialog(true);
+        }}
+      >
+        Customize
+      </Button>
       <GenericDialog
         open={isDialogOpen("deleteAccount")}
         onClose={closeDialog}
@@ -120,4 +129,5 @@ type AccountsTableToolbarProps = GridToolbarProps & {
   rowsSelection: string[];
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
+  setOpenColumnsDialog: (open: boolean) => void;
 };

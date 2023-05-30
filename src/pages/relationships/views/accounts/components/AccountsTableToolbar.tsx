@@ -22,6 +22,7 @@ import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useState } from "react";
+import { TagsSelect } from "@/shared/components/TagsSelect";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -32,6 +33,30 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     { id: string }
   >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
   const [isMerged, setIsMerged] = useState(false);
+  const [tags, setTags] = useState([
+    {
+      id: "1",
+      label: "Tag 1",
+      color: "#3f51b5",
+    },
+    {
+      id: "2",
+      label: "Tag 2",
+      color: "#f50057",
+    },
+    {
+      id: "3",
+      label: "Tag 3",
+      color: "#4caf50",
+    },
+  ]);
+  const [filterdTags, setFilteredTags] = useState(tags);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
 
   const handleDeleteAccount = () => {
     const [id] = rowsSelection;
@@ -55,7 +80,11 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               APPROVE
             </Button>
-            <Button variant="text" startIcon={<LocalOfferIcon />}>
+            <Button
+              variant="text"
+              startIcon={<LocalOfferIcon />}
+              onClick={handleTagButtonClick}
+            >
               TAG
             </Button>
             <Button
@@ -120,7 +149,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           props.setOpenColumnsDialog(true);
         }}
       >
-        Columns
+        Customize
       </Button>
       <GenericDialog
         open={isDialogOpen("deleteAccount")}
@@ -167,6 +196,18 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
+      <TagsSelect
+        anchorEl={anchorEl}
+        onDelete={(tag) => {
+          setFilteredTags(filterdTags.filter((t) => t.id !== tag.id));
+        }}
+        onSearch={(search) => {
+          setFilteredTags(
+            tags.filter((tag) => tag.label.toLowerCase().includes(search))
+          );
+        }}
+        tags={filterdTags}
+      />
     </GridToolbarContainer>
   );
 };
