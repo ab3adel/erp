@@ -37,6 +37,8 @@ deploy_job:
 # Pipeline for the dev branch
 dev:
   stage: deploy
+  tags:
+    - MX-ERP2Server
   script:
     - echo "Deploying application..."
     - whoami
@@ -53,6 +55,8 @@ dev:
 # Pipeline for the test branch
 test:
   stage: deploy
+  tags:
+    - MX-ERP2Server
   script:
     - echo "Deploying application..."
     - whoami
@@ -70,6 +74,9 @@ test:
 
 # Pipeline for the staging branch
 staging:
+  stage: deploy
+  tags:
+    - MX-ERP2Server
   script:
     - echo "Deploying application..."
     - whoami
