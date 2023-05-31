@@ -1,37 +1,60 @@
-#This file is associated with the Turnsole Dev Site..
-
-stages:          # List of stages for jobs,, and their order of execution.
+stages:
   - build
   - test
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+build_job:
   stage: build
   tags:
     - MX-ERP2Server
   script:
     - echo "Compiling the code..."
-    - echo "Compile complete."
 
-unit-test-job:   # This job runs in the test stage.
+
+test_job:
   stage: test    # It only starts when the job in the build stage completes successfully.
   tags:
     - MX-ERP2Server
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - echo "Code coverage is 90%"
-      
+    - echo "Testing..."
 
 lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   tags:
     - MX-ERP2Server
   script:
-    - echo "Linting code... This will take about 10 seconds."
+    - echo "Testing..."
     - echo "No lint issues found."
 
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+deploy_job:
+  stage: deploy
+  tags:
+    - MX-ERP2Server
+  script:
+    - echo "Deploying..."
+    
+
+# Pipeline for the dev branch
+dev:
+  stage: deploy
+  tags:
+    - MX-ERP2Server
+  script:
+    - echo "Deploying application..."
+    - whoami
+    - cd /var/www/mc-erp2/dev/mc-erp2.0-frontend-dev
+    - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
+    - echo "Application successfully deployed."
+    - npm install --force
+    - echo "The libraries have been updated successfully."
+    - npx vite build
+    - echo "Application successfully built."
+  only:
+    - dev
+
+# Pipeline for the test branch
+test:
+  stage: deploy
   tags:
     - MX-ERP2Server
   script:
@@ -47,3 +70,24 @@ deploy-job:      # This job runs in the deploy stage.
 
   only:
     - test
+
+
+# Pipeline for the staging branch
+staging:
+  stage: deploy
+  tags:
+    - MX-ERP2Server
+  script:
+    - echo "Deploying application..."
+    - whoami
+    - cd /var/www/mc-erp2/staging/mc-erp2.0-frontend-staging
+    - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git staging
+    - echo "Application successfully deployed."
+    - npm install --force
+    - echo "The libraries have been updated successfully."
+    - npx vite build
+    - echo "Application successfully built."
+
+  only:
+    - staging
+
