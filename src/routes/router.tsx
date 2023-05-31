@@ -162,7 +162,7 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <div>area</div>,
+            element: <AgentFarms />,
           },
           {
             path: "costs",
@@ -175,6 +175,10 @@ export const router = createBrowserRouter([
           {
             path: "notes",
             element: <AgentNotes />,
+          },
+          {
+            path: "history",
+            element: <div>history</div>,
           },
         ],
       },
