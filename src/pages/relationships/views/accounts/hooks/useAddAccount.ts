@@ -4,9 +4,7 @@ import { saveAccount } from "../graphql/mutations/saveAccount";
 import { Account } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
-export const useAddAccount = (
-  ref: React.MutableRefObject<GridApiPro>
-) => {
+export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
   const [save] = useGenericMutation<{ __typename: string }, Variables>(
     saveAccount,
@@ -17,7 +15,10 @@ export const useAddAccount = (
     const row: Partial<Record<string, any>> = { id: "new" };
     switch (action.type) {
       case "ADD_ACCOUNT": {
-        ref.current.updateRows([row]);
+        const rowsModels = ref.current.getRowModels();
+        const rows = Array.from(rowsModels.values());
+        rows.unshift(row);
+        ref.current.setRows(rows);
         setIsRowAdded(true);
         break;
       }
