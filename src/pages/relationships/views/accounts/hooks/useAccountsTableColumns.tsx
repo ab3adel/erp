@@ -10,7 +10,7 @@ function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
 ) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center" , width : "100%" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
@@ -65,7 +65,7 @@ export const useAccountsTableColumns = () => {
     {
       field: "completeness",
       headerName: "Completeness",
-      width: 150,
+      width: 200,
       renderCell: ({ value }) => <LinearProgressWithLabel value={value} />,
     },
     {
