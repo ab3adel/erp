@@ -44,8 +44,6 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
     [data]
   );
 
-  console.log("rows", rows);
-
   const paginationInfo = data?.accounts.paginatorInfo;
 
   return { rows, loading, paginationInfo };
