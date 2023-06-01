@@ -4,6 +4,7 @@ import {
   DataGridPro,
   GridColDef,
   GridColumnVisibilityModel,
+  GridPaginationModel,
 } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
@@ -19,7 +20,12 @@ export const AccountsTable = ({
   dispatch,
   isRowAdded,
 }: AccountsTableProps) => {
-  const { rows, loading } = useAccountsTableRows();
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 10,
+  });
+  const { rows, loading, paginationInfo } =
+    useAccountsTableRows(paginationModel);
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
@@ -43,6 +49,13 @@ export const AccountsTable = ({
           unstable_headerFilters
           loading={loading}
           rows={rows}
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newModel) => {
+            setPaginationModel(newModel);
+          }}
+          pagination
+          pageSizeOptions={[10, 25, 50]}
+          rowCount={paginationInfo?.total || 0}
           columns={columnsState}
           apiRef={apiRef}
           columnVisibilityModel={model}
@@ -54,7 +67,7 @@ export const AccountsTable = ({
             setRowsSelection(newSelection as string[]);
           }}
           checkboxSelection
-          paginationMode="client"
+          paginationMode="server"
           slots={{
             toolbar: AccountsTableToolbar,
           }}

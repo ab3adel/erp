@@ -1,12 +1,13 @@
 import { styled, Tab } from "@mui/material";
 
 export const CurvedTab = styled(Tab)(({ theme }) => ({
-  textTransform: "none",
+  textTransform: "uppercase",
   fontWeight: 700,
 
   overflow: "visible",
   position: "relative",
-  fontSize: 18,
+  fontSize: 14,
+  fontFamily: "Lato",
   marginRight: "-12px",
   backgroundColor: theme.palette.grey[300],
   color: theme.palette.text.disabled,
@@ -15,6 +16,14 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
   "&.Mui-selected": {
     color: theme.palette.primary.main,
     backgroundColor: theme.palette.common.white,
+    "&::after": {
+      boxShadow: "3px 3px 4px rgba(36, 40, 40, 0.12)",
+      border: "none",
+    },
+    "&::before": {
+      boxShadow: "-3px 3px 4px rgba(36, 40, 40, 0.12)",
+      border: "none",
+    },
   },
   "&::before , &::after": {
     content: '" "',
@@ -29,11 +38,13 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
     borderRadius: "12px 0 0 0",
     transform: "skew(-24deg)",
     left: "-13px",
+    borderLeft: "1px solid #b8b8b8",
   },
   "&::after": {
     borderRadius: "0 12px 0 0",
     transform: "skew(24deg)",
     right: "-13px",
     zIndex: 1,
+    borderRight: "1px solid #b8b8b8",
   },
 }));

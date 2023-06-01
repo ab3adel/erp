@@ -4,12 +4,13 @@ import LinearProgress, {
 } from "@mui/material/LinearProgress";
 import { Box, Typography, Link, Chip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AccountRow } from "../types";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
 ) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center" , width : "100%" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
@@ -25,7 +26,7 @@ function LinearProgressWithLabel(
 export const useAccountsTableColumns = () => {
   const navigate = useNavigate();
 
-  const columns: GridColDef[] = [
+  const columns: GridColDef<AccountRow>[] = [
     {
       field: "name",
       headerName: "Name",
@@ -64,7 +65,7 @@ export const useAccountsTableColumns = () => {
     {
       field: "completeness",
       headerName: "Completeness",
-      width: 150,
+      width: 200,
       renderCell: ({ value }) => <LinearProgressWithLabel value={value} />,
     },
     {
