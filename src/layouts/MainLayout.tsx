@@ -30,7 +30,7 @@ export const MainLayout = () => {
             width: "100%",
             justifyContent: "center",
             zIndex: 0,
-            display: pathname === "/" ? "flex" : "none",
+            display: "flex",
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
