@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useLoginForm = () => {
   const [login] = useGenericMutation<
-    { login: { jwt: string } },
+    { login: { token: string } },
     { email: string; password: string }
   >(loginUser);
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export const useLoginForm = () => {
           password: result.password,
         },
         onCompleted: (data) => {
-          localStorage.setItem("token", data.login.jwt);
+          localStorage.setItem("token", data.login.token);
           navigate("/");
         },
       });

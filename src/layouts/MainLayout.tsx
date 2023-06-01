@@ -1,13 +1,13 @@
 import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/AppBar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, redirect, useLocation } from "react-router-dom";
 import { Drawer } from "./components/Drawer";
 
 const loader = () => {
-  /*   const token = localStorage.getItem("token");
-   */ /* if (!token) {
+  const token = localStorage.getItem("token");
+  if (!token) {
     return redirect("/login");
-  } */
+  }
   return null;
 };
 

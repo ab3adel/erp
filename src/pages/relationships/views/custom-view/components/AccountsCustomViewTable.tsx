@@ -3,6 +3,7 @@ import {
   DataGridPro,
   GridColumnVisibilityModel,
   GridColDef,
+  GridPaginationModel,
 } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
@@ -17,7 +18,11 @@ export const AccountsCustomViewTable = ({
   dispatch,
   isRowAdded,
 }: AccountsTableProps) => {
-  const { rows, loading } = useAccountsTableRows();
+  const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
+    page: 0,
+    pageSize: 10,
+  });
+  const { rows, loading, paginationInfo } = useAccountsTableRows();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { getColumnVisibiltyModelByTabParam, getColumnsByTabParam } =
     useCurvedTabs({
@@ -37,18 +42,25 @@ export const AccountsCustomViewTable = ({
       <div style={{ height: 450, width: "100%" }}>
         <DataGridPro
           unstable_headerFilters
+          pagination
           columnVisibilityModel={model}
           onColumnVisibilityModelChange={(newModel) => setModel(newModel)}
           loading={loading}
+          rowCount={paginationInfo?.total || 0}
+          paginationModel={paginationModel}
+          onPaginationModelChange={(newModel) => {
+            setPaginationModel(newModel);
+          }}
           rows={rows}
           columns={columnsState || []}
           apiRef={apiRef}
+          pageSizeOptions={[10, 25, 50]}
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
           }}
           checkboxSelection
-          paginationMode="client"
+          paginationMode="server"
           slots={{
             toolbar: AccountsTableToolbar,
           }}
