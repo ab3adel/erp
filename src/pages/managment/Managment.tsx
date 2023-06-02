@@ -1,6 +1,7 @@
 import { Box, Typography, Paper } from "@mui/material";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet } from "react-router-dom";
+import { CurvedTabsContainer } from "@/shared/components/curvedTabs/CurvedTabsContainer";
 
 export const Managment = () => {
   return (
@@ -27,9 +28,9 @@ export const Managment = () => {
           },
         ]}
       />
-      <Paper elevation={0} sx={{ borderRadius: "0px 0px 12px 12px" }}>
+      <CurvedTabsContainer>
         <Outlet />
-      </Paper>
+      </CurvedTabsContainer>
     </Box>
   );
 };

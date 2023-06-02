@@ -10,7 +10,7 @@ function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
 ) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" , width : "100%" }}>
+    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
@@ -73,9 +73,39 @@ export const useAccountsTableColumns = () => {
       headerName: "Status",
       width: 150,
       editable: true,
-      renderCell: ({ value }) => (
-        <Chip label={value} color="primary" variant="outlined" />
-      ),
+      renderCell: ({ value }) => {
+        let color:
+          | "primary"
+          | "success"
+          | "error"
+          | "warning"
+          | "info"
+          | "default"
+          | "secondary" = "primary";
+        switch (value) {
+          case "active": {
+            color = "success";
+            break;
+          }
+          case "inactive": {
+            color = "error";
+            break;
+          }
+          case "pending": {
+            color = "warning";
+            break;
+          }
+          case "archived": {
+            color = "info";
+            break;
+          }
+          default: {
+            color = "primary";
+            break;
+          }
+        }
+        return <Chip label={value} color={color} />;
+      },
     },
   ];
   return columns;
