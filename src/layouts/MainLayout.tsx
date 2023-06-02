@@ -14,23 +14,26 @@ const loader = () => {
 export const MainLayout = () => {
   const { pathname } = useLocation();
   return (
-    <Box display="flex">
+    <Box display="flex" height="100%">
       <AppBar />
       <Drawer />
-      <Box component="main" sx={{ flexGrow: 1, px: 3 }} width="20%">
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, px: 3 }}
+        width="20%"
+        height="100%"
+      >
         <Toolbar />
-        <Box sx={{ zIndex: 1, position: "relative" }}>
+        <Box sx={{ zIndex: 1, position: "relative", height: "85%" }}>
           <Outlet />
         </Box>
         <Box
           sx={{
-            position: "absolute",
-            bottom: "18px",
-            right: "0px",
             width: "100%",
             justifyContent: "center",
             zIndex: 0,
             display: "flex",
+            
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
