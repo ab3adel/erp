@@ -18,7 +18,7 @@ export const ButtonStylesOverrides: Components<
       maxHeight: 36,
       paddingRight: ownerState.endIcon ? "10px" : "16px",
       paddingLeft: ownerState.startIcon ? "10px" : "16px",
-      textTransform: "initial",
+      textTransform: "uppercase",
       "& .MuiButton-startIcon , .MuiButton-endIcon": {
         padding: 4,
         "& svg": {

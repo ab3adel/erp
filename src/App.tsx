@@ -17,7 +17,7 @@ import { LicenseInfo } from "@mui/x-license-pro";
 LicenseInfo.setLicenseKey(import.meta.env.VITE_MUI_KEY);
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_BACKEND_URL,
+  uri: "https://mc.erp-backend-dev.turnsole.tech/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

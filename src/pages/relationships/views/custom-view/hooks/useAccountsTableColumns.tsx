@@ -2,13 +2,15 @@ import { GridColDef } from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link, Chip } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { AccountRow } from "../types";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
 ) {
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
@@ -22,8 +24,28 @@ function LinearProgressWithLabel(
 }
 
 export const useAccountsTableColumns = () => {
-  const columns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 150, editable: true },
+  const navigate = useNavigate();
+
+  const columns: GridColDef<AccountRow>[] = [
+    {
+      field: "name",
+      headerName: "Name",
+      width: 150,
+      editable: true,
+      renderCell: (params) => (
+        <Link
+          sx={{
+            textDecoration: "none",
+            color: "primary.main",
+          }}
+          onClick={() =>
+            navigate(`/${params.id}/${params.row?.type?.toLowerCase()}-profile`)
+          }
+        >
+          {params.value}
+        </Link>
+      ),
+    },
     { field: "type", headerName: "Type", width: 150, editable: true },
     {
       field: "firstName",
@@ -40,12 +62,50 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     { field: "district", headerName: "District", width: 150, editable: true },
-    { field: "status", headerName: "Status", width: 150, editable: true },
     {
       field: "completeness",
       headerName: "Completeness",
-      width: 150,
+      width: 200,
       renderCell: ({ value }) => <LinearProgressWithLabel value={value} />,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      editable: true,
+      renderCell: ({ value }) => {
+        let color:
+          | "primary"
+          | "success"
+          | "error"
+          | "warning"
+          | "info"
+          | "default"
+          | "secondary" = "primary";
+        switch (value) {
+          case "active": {
+            color = "success";
+            break;
+          }
+          case "inactive": {
+            color = "error";
+            break;
+          }
+          case "pending": {
+            color = "warning";
+            break;
+          }
+          case "archived": {
+            color = "info";
+            break;
+          }
+          default: {
+            color = "primary";
+            break;
+          }
+        }
+        return <Chip label={value} color={color} />;
+      },
     },
   ];
   return columns;

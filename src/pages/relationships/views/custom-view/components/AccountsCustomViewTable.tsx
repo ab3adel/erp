@@ -39,7 +39,7 @@ export const AccountsCustomViewTable = ({
 
   return (
     <div style={{ width: "100%" }}>
-      <div style={{ height: 450, width: "100%" }}>
+      <div style={{ height: "68vh", width: "100%" }}>
         <DataGridPro
           unstable_headerFilters
           pagination

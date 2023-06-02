@@ -2,6 +2,7 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarProps,
+  useGridApiContext,
 } from "@mui/x-data-grid-pro";
 import {
   Box,
@@ -55,6 +56,9 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const [filterdTags, setFilteredTags] = useState(tags);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
+  const apiRef = useGridApiContext();
+  const selectedRows = apiRef.current.getSelectedRows().values();
+  const selectedRow = selectedRows.next().value;
 
   const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -78,13 +82,15 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {rowsSelection.length && !isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Button
-              variant="text"
-              startIcon={<DoneIcon />}
-              disabled={rowsSelection.length !== 1}
-            >
-              APPROVE
-            </Button>
+            {selectedRow?.status === "pending" && (
+              <Button
+                variant="text"
+                startIcon={<DoneIcon />}
+                disabled={rowsSelection.length !== 1}
+              >
+                APPROVE
+              </Button>
+            )}
             <Button
               variant="text"
               startIcon={<LocalOfferIcon />}
