@@ -4,7 +4,7 @@ import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { UserProfileInfo } from "@/pages/profile/components/UserProfileInfo";
 
-export const PlotProfile = () => {
+export const AgentProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   return (
@@ -27,7 +27,7 @@ export const PlotProfile = () => {
             userData={{
               name: "John Doe",
               accountId: "123456789",
-              type: "Plot",
+              type: "Agent",
               progressValue: 50,
               mobile: "+1 9876543210",
               whatsapp: "+1 9876543210",
@@ -42,27 +42,23 @@ export const PlotProfile = () => {
           <CurvedTabs
             tabs={[
               {
-                label: "AREA",
-                value: `/${id}/plot-profile`,
+                label: "FARMS",
+                value: `/${id}/agent-profile`,
               },
               {
                 label: "COSTS",
-                value: `/${id}/plot-profile/costs`,
+                value: `/${id}/agent-profile/costs`,
               },
               {
                 label: "TRANSACTIONS",
-                value: `/${id}/plot-profile/transactions`,
-              },
-              {
-                label: "HISTORY",
-                value: `/${id}/plot-profile/history`,
+                value: `/${id}/agent-profile/transactions`,
               },
               {
                 label: "NOTES",
-                value: `/${id}/plot-profile/notes`,
+                value: `/${id}/agent-profile/notes`,
               },
             ]}
-            localStorageKey="plot-profile"
+            localStorageKey="agent-profile"
             canDelete={false}
             canDrag={false}
           />

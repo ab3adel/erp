@@ -27,6 +27,11 @@ export const useSignout = () => {
         localStorage.removeItem("token");
         navigate("/login");
       },
+      onError: () => {
+        client.clearStore();
+        localStorage.removeItem("token");
+        navigate("/login");
+      },
     });
   };
 };

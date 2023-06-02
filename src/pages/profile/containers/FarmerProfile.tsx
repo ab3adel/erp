@@ -2,9 +2,9 @@ import { Box, Button, Grid, Paper } from "@mui/material";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { UserProfileInfo } from "@/shared/components/UserProfileInfo";
+import { UserProfileInfo } from "@/pages/profile/components/UserProfileInfo";
 
-export const AgentProfile = () => {
+export const FarmerProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   return (
@@ -27,7 +27,7 @@ export const AgentProfile = () => {
             userData={{
               name: "John Doe",
               accountId: "123456789",
-              type: "Agent",
+              type: "Farmer",
               progressValue: 50,
               mobile: "+1 9876543210",
               whatsapp: "+1 9876543210",
@@ -43,22 +43,22 @@ export const AgentProfile = () => {
             tabs={[
               {
                 label: "FARMS",
-                value: `/${id}/agent-profile`,
+                value: `/${id}/farmer-profile`,
               },
               {
                 label: "COSTS",
-                value: `/${id}/agent-profile/costs`,
+                value: `/${id}/farmer-profile/costs`,
               },
               {
                 label: "TRANSACTIONS",
-                value: `/${id}/agent-profile/transactions`,
+                value: `/${id}/farmer-profile/transactions`,
               },
               {
                 label: "NOTES",
-                value: `/${id}/agent-profile/notes`,
+                value: `/${id}/farmer-profile/notes`,
               },
             ]}
-            localStorageKey="agent-profile"
+            localStorageKey="farmer-profile"
             canDelete={false}
             canDrag={false}
           />

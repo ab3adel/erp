@@ -1,6 +1,6 @@
 import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/AppBar";
-import { Outlet, redirect, useLocation } from "react-router-dom";
+import { Outlet, redirect } from "react-router-dom";
 import { Drawer } from "./components/Drawer";
 
 const loader = () => {
@@ -12,7 +12,6 @@ const loader = () => {
 };
 
 export const MainLayout = () => {
-  const { pathname } = useLocation();
   return (
     <Box display="flex" height="100%">
       <AppBar />
@@ -33,7 +32,7 @@ export const MainLayout = () => {
             justifyContent: "center",
             zIndex: 0,
             display: "flex",
-            
+            mt: 1.5,
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>

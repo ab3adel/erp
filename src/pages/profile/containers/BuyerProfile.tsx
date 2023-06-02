@@ -2,7 +2,7 @@ import { Box, Button, Grid, Paper } from "@mui/material";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { UserProfileInfo } from "@/shared/components/UserProfileInfo";
+import { UserProfileInfo } from "@/pages/profile/components/UserProfileInfo";
 
 export const BuyerProfile = () => {
   const navigate = useNavigate();
