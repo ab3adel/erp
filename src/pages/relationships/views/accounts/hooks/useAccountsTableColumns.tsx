@@ -1,11 +1,17 @@
-import { GridColDef } from "@mui/x-data-grid-pro";
+import {
+  GridColDef,
+  GridEditInputCell,
+  GridRenderEditCellParams,
+} from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography, Link, Chip } from "@mui/material";
+import { Box, Typography, Link, Chip, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AccountRow } from "../types";
 import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
+import { useLazyQuery } from "@apollo/client";
+import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -43,6 +49,16 @@ function LinearProgressWithLabel(
 
 export const useAccountsTableColumns = () => {
   const navigate = useNavigate();
+  const [queryFn] = useLazyQuery<
+    {
+      accounts: {
+        data: { id: string }[];
+      };
+    },
+    {
+      name: string;
+    }
+  >(accountNameSearch);
 
   const columns: GridColDef<AccountRow>[] = [
     {
@@ -63,6 +79,40 @@ export const useAccountsTableColumns = () => {
           {params.value}
         </Link>
       ),
+      preProcessEditCellProps: async (params) => {
+        const value = params.props.value;
+        console.log("HI");
+        const { data } = await queryFn({
+          variables: {
+            name: value,
+          },
+        });
+        let hasError = false;
+
+        if (data) {
+          hasError = data?.accounts.data.length > 0;
+        }
+
+        return {
+          ...params.props,
+          error: hasError ? "The user is already exists" : "",
+        };
+      },
+      renderEditCell: (props: GridRenderEditCellParams) => (
+        <Tooltip
+          open={!!props.error}
+          title={props.error}
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: props.error ? "error.main" : "inherit",
+              },
+            },
+          }}
+        >
+          <GridEditInputCell {...props} />
+        </Tooltip>
+      ),
     },
     {
       field: "id",
@@ -75,6 +125,9 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
+      valueGetter: ({ value }) => {
+        typeof value === "object" ? value.category : value;
+      },
     },
     {
       field: "firstName",
@@ -144,7 +197,6 @@ export const useAccountsTableColumns = () => {
       field: "completeness",
       headerName: "Completeness",
       type: "number",
-      editable: true,
       width: 200,
       renderCell: ({ value }) => <LinearProgressWithLabel value={value || 0} />,
     },

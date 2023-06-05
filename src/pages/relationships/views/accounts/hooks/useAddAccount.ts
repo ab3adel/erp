@@ -29,12 +29,20 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
         break;
       case "SAVE_ACCOUNT": {
         const newRow = ref.current.getRowModels().get("new") as AccountRow;
+        console.log(newRow);
         if (newRow) {
           const { id, ...data } = newRow;
+
           save({
             variables: {
               input: {
-                address1: data.address1 as string,
+                name: data.name,
+                address1: data.address1 || "",
+                district: data.district,
+                first_name: data.firstName,
+                last_name: data.lastName,
+                type_id:
+                  (newRow.type as unknown as { value: number }).value || 1,
               },
             },
           });
@@ -64,5 +72,36 @@ export type Action =
   | SaveReceiptAction;
 
 type Variables = {
-  input: Partial<Account>;
+  input: AccountInput;
 };
+
+interface AccountInput {
+  id?: number;
+  name?: string;
+  status?: string;
+  subscription_type?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  country?: string;
+  currency?: string;
+  district?: string;
+  government_id?: string;
+  language?: string;
+  region?: string;
+  zone?: string;
+  state?: string;
+  unit_of_measurement?: string;
+  date_of_birth?: string;
+  education_level?: string;
+  first_name?: string;
+  last_name?: string;
+  gender?: string;
+  marital_status?: string;
+  members_in_household?: number;
+  read_literate?: string;
+  write_literate?: string;
+  total_children?: number;
+
+  type_id?: number;
+}

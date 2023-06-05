@@ -11,6 +11,7 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
       page: paginationModel.page + 1,
     },
   });
+
   const rows = useMemo(
     (): AccountRow[] =>
       data?.accounts.data.map((account) => ({
