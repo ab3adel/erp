@@ -49,6 +49,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
   ) => {
     const newTabs = [...value];
 
+    console.log(columnVisibiltyModel);
     newTabs.push({
       value:
         "/" +
@@ -71,9 +72,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
   //get column visibilty model by tab param
   const getColumnVisibiltyModelByTabParam = (tabParam: string) => {
     const customViews = getCustomViews();
-    const customView = customViews.find((view) =>
-      view.value.includes(tabParam)
-    );
+    const customView = customViews.find((view) => view.label === tabParam);
     return customView?.columnVisibiltyModel;
   };
   // get columns by tab param

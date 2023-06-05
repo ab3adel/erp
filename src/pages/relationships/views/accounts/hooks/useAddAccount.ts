@@ -1,8 +1,9 @@
 import React from "react";
 import { useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
-import { Account } from "../types";
+import { AccountRow } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
+import { Account } from "@/shared/models/models";
 
 export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
@@ -27,23 +28,13 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
         setIsRowAdded(false);
         break;
       case "SAVE_ACCOUNT": {
-        const row = ref.current.getRowModels().get("new") as Record<
-          string,
-          any
-        >;
-        if (row) {
+        const newRow = ref.current.getRowModels().get("new") as AccountRow;
+        if (newRow) {
+          const { id, ...data } = newRow;
           save({
             variables: {
-              data: {
-                completeness: row.completeness,
-                district: row.district,
-                firstName: row.firstName,
-                govId: row.govrmentId as number,
-                lastName: row.lastName,
-                mobileNumber: row.mobileNumber,
-                name: row.name,
-                status: row.status,
-                type: row.type,
+              input: {
+                address1: data.address1 as string,
               },
             },
           });
@@ -73,5 +64,5 @@ export type Action =
   | SaveReceiptAction;
 
 type Variables = {
-  data: Account["attributes"];
+  input: Partial<Account>;
 };

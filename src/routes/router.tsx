@@ -13,7 +13,6 @@ import { Account } from "@/pages/settings/views/account/Account";
 import { General } from "@/pages/settings/views/account/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
-import { AccountsCustomView } from "@/pages/relationships/views/custom-view";
 import {
   AccountCosts,
   AccountFarms,
@@ -25,6 +24,7 @@ import {
   FarmerProfile,
   PlotProfile,
 } from "@/pages/profile";
+import { AccountsCustomView } from "@/pages/relationships/views/accounts/AccountsCustomView";
 
 const ProfileChildrenRoutes = [
   {
