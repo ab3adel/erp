@@ -66,15 +66,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
 
   const handleDeleteAccount = () => {
     const [id] = rowsSelection;
-    closeDialog();
-    setShowSnackbar(true);
-    /* removeAccount({
+
+    removeAccount({
       variables: { id },
       onCompleted: () => {
         closeDialog();
-        setShowSnackbar(true);
       },
-    }); */
+    });
   };
 
   return (
