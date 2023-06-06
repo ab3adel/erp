@@ -101,6 +101,8 @@ export const CurvedTabs = ({
   } = useCurvedTabs({
     localStorageKey,
     tabs,
+    canDelete,
+    canDrag,
   });
 
   const handleDeleteTab = () => {

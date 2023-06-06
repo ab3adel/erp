@@ -3,7 +3,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 
-export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
+export const useCurvedTabs = ({
+  localStorageKey,
+  tabs = [],
+  canDelete,
+  canDrag,
+}: Params) => {
   const [value, setValue] = useLocalStorage<
     {
       value: string;
@@ -16,7 +21,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
 
   useEffect(() => {
     const value = localStorage.getItem(localStorageKey);
-    if (!value && tabs.length > 0) {
+    if (!value && tabs.length > 0 && (canDelete || canDrag)) {
       setValue(tabs);
     }
   }, []);
@@ -85,7 +90,7 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
   };
 
   return {
-    value,
+    value: canDrag || canDelete ? value : tabs,
     orderTab,
     deleteTab,
     createTab,
@@ -98,4 +103,6 @@ export const useCurvedTabs = ({ localStorageKey, tabs = [] }: Params) => {
 type Params = {
   localStorageKey: string;
   tabs?: { value: string; label: string }[];
+  canDrag?: boolean;
+  canDelete?: boolean;
 };
