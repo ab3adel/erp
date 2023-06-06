@@ -3,6 +3,7 @@ import { useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput, AccountRow } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
+import { enqueueSnackbar } from "notistack";
 
 export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
@@ -40,13 +41,20 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
                 name: data.name,
                 address1: data.address1 || "",
                 district: data.district,
-                first_name: data.firstName,
-                last_name: data.lastName,
+                first_name: data.first_name,
+                last_name: data.last_name,
                 type_id:
                   (newRow.type as unknown as { value: number }).value || 0,
               },
             },
             onCompleted: () => {
+              enqueueSnackbar("Saved Successfully", {
+                variant: "success",
+                anchorOrigin: {
+                  vertical: "top",
+                  horizontal: "center",
+                },
+              });
               setIsRowAdded(false);
             },
           });

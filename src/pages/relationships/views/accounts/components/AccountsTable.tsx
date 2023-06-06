@@ -91,7 +91,9 @@ export const AccountsTable = ({
           }}
           processRowUpdate={(newRow, oldRow) => {
             const updatedValues: Record<string, any> = {};
-
+            if (newRow.id === "new") {
+              return Promise.resolve(newRow);
+            }
             for (const key in newRow) {
               if (newRow[key] !== oldRow[key] && key !== "type") {
                 updatedValues[key] = newRow[key];
