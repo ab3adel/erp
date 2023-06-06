@@ -7,10 +7,11 @@ import {
   Typography,
   IconButton,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import LocalOfferIcon from "@mui/icons-material/LocalOfferOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from "@mui/icons-material/EditOutlined";
 import StayCurrentPortraitOutlinedIcon from "@mui/icons-material/StayCurrentPortraitOutlined";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
@@ -134,24 +135,30 @@ export const UserProfileInfo: React.FC = () => {
             {data?.account.accountType?.category}
           </Typography>
           <Box display="flex" columnGap={2} justifyContent="center">
-            <CircularProgressWithLabel
-              value={data?.account.completeness || 0}
-              color="secondary"
-            />
-            <IconButton
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.primary.main}`,
-              }}
-            >
-              <LocalOfferIcon sx={{ color: "primary.main" }} />
-            </IconButton>
-            <IconButton
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.primary.main}`,
-              }}
-            >
-              <SmsOutlinedIcon sx={{ color: "primary.main" }} />
-            </IconButton>
+            <Tooltip title="Completness">
+              <CircularProgressWithLabel
+                value={data?.account.completeness || 0}
+                color="secondary"
+              />
+            </Tooltip>
+            <Tooltip title="Tags">
+              <IconButton
+                sx={{
+                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                }}
+              >
+                <LocalOfferIcon sx={{ color: "primary.main" }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="message">
+              <IconButton
+                sx={{
+                  border: (theme) => `1px solid ${theme.palette.primary.main}`,
+                }}
+              >
+                <SmsOutlinedIcon sx={{ color: "primary.main" }} />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
       </Box>
@@ -166,13 +173,15 @@ export const UserProfileInfo: React.FC = () => {
             Contact Details
           </Typography>
           {editMode ? (
-            <IconButton onClick={handleSave}>
+            <IconButton onClick={handleSave} title="Save">
               <SaveIcon color="primary" />
             </IconButton>
           ) : (
-            <IconButton onClick={() => setEditMode(true)}>
-              <EditIcon />
-            </IconButton>
+            <Tooltip title="Edit">
+              <IconButton onClick={() => setEditMode(true)}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </Box>
         <Divider />
@@ -386,13 +395,19 @@ export const UserProfileInfo: React.FC = () => {
                   Location Details
                 </Typography>
                 {locationDetailsEditMode ? (
-                  <IconButton onClick={handleSaveLocationDetails}>
-                    <SaveIcon color="primary" />
-                  </IconButton>
+                  <Tooltip title="Save">
+                    <IconButton onClick={handleSaveLocationDetails}>
+                      <SaveIcon color="primary" />
+                    </IconButton>
+                  </Tooltip>
                 ) : (
-                  <IconButton onClick={() => setLocationDetailsEditMode(true)}>
-                    <EditIcon sx={{ color: "grey.700" }} />
-                  </IconButton>
+                  <Tooltip title="Edit">
+                    <IconButton
+                      onClick={() => setLocationDetailsEditMode(true)}
+                    >
+                      <EditIcon sx={{ color: "grey.700" }} />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </Box>
               <Divider />
