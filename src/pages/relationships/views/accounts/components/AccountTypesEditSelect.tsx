@@ -35,7 +35,12 @@ export const AccountTypesEditSelect = (
   };
 
   return (
-    <Select ref={handleRef} value={value} onChange={handleChange} fullWidth>
+    <Select
+      ref={handleRef}
+      defaultValue={value}
+      onChange={handleChange}
+      fullWidth
+    >
       {data?.accountTypes?.data?.map?.((type) => (
         <MenuItem key={type.id} value={type.id}>
           {type.category}
