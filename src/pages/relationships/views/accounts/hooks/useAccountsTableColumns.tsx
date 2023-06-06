@@ -72,9 +72,13 @@ export const useAccountsTableColumns = () => {
             textDecoration: "none",
             color: "primary.main",
           }}
-          onClick={() =>
-            navigate(`/${params.id}/${params.row?.type?.toLowerCase()}-profile`)
-          }
+          onClick={() => {
+            if (params.row.id.toString() !== "new") {
+              navigate(
+                `/${params.id}/${params.row?.type?.toLowerCase()}-profile`
+              );
+            }
+          }}
         >
           {params.value}
         </Link>
@@ -118,6 +122,15 @@ export const useAccountsTableColumns = () => {
       field: "id",
       headerName: "Account ID",
       width: 150,
+      renderCell: (params) => (
+        <Typography
+          sx={{
+            color: params.id === "new" ? "grey.500" : "initial",
+          }}
+        >
+          {params?.row?.id}
+        </Typography>
+      ),
     },
     {
       field: "type",
@@ -126,17 +139,17 @@ export const useAccountsTableColumns = () => {
       editable: true,
       renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
       valueGetter: ({ value }) => {
-        typeof value === "object" ? value.category : value;
+        return typeof value === "object" ? value.category : value;
       },
     },
     {
-      field: "firstName",
+      field: "first_name",
       headerName: "First Name",
       width: 150,
       editable: true,
     },
-    { field: "lastName", headerName: "Last Name", width: 150, editable: true },
-    { field: "govId", headerName: "Goverment ID", width: 150, editable: true },
+    { field: "last_name", headerName: "Last Name", width: 150, editable: true },
+    { field: "government_id", headerName: "Goverment ID", width: 150, editable: true },
     {
       field: "mobileNumber",
       headerName: "Mobile Number",
