@@ -41,7 +41,7 @@ function App() {
       <ThemeProvider theme={responsiveFontSizes(theme)}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CssBaseline />
-          <SnackbarProvider>
+          <SnackbarProvider autoHideDuration={2000}>
             <RouterProvider router={router} />
           </SnackbarProvider>
         </LocalizationProvider>

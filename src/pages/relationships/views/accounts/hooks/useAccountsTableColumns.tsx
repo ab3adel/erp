@@ -149,13 +149,22 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     { field: "last_name", headerName: "Last Name", width: 150, editable: true },
-    { field: "government_id", headerName: "Goverment ID", width: 150, editable: true },
     {
-      field: "mobileNumber",
-      headerName: "Mobile Number",
+      field: "government_id",
+      headerName: "Goverment ID",
       width: 150,
       editable: true,
-      valueGetter: ({ value }) => value || "+252 1233134",
+    },
+    {
+      field: "contacts",
+      headerName: "Mobile Number",
+      width: 150,
+      valueGetter: (params) => {
+        const value = params.row.contacts
+          ? params.row.contacts[0]?.contact_info
+          : "";
+        return value;
+      },
     },
     { field: "district", headerName: "District", width: 150, editable: true },
     {

@@ -7,6 +7,7 @@ import {
   IconButton,
   Grid,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
@@ -150,21 +151,27 @@ export const AccountFarms = () => {
 
             {selectedFarm === farm.id ? (
               <Box>
-                <IconButton onClick={handleSaveFarm}>
-                  <SaveIcon />
-                </IconButton>
-                <IconButton onClick={() => handleDeleteFarm(farm.id)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Tooltip title="Save">
+                  <IconButton onClick={handleSaveFarm}>
+                    <SaveIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <IconButton onClick={() => handleDeleteFarm(farm.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
               </Box>
             ) : (
-              <IconButton
-                onClick={() => {
-                  handleEditFarm(farm.id);
-                }}
-              >
-                <EditIcon />
-              </IconButton>
+              <Tooltip title="Edit">
+                <IconButton
+                  onClick={() => {
+                    handleEditFarm(farm.id);
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Box>
           <Divider />
@@ -299,9 +306,11 @@ export const AccountFarms = () => {
             <Typography variant="body1" sx={{ color: "grey.600" }}>
               Documents
             </Typography>
-            <IconButton>
-              <FileUploadIcon sx={{ color: "grey.600" }} />
-            </IconButton>
+            <Tooltip title="Upload">
+              <IconButton>
+                <FileUploadIcon sx={{ color: "grey.600" }} />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
       ))}

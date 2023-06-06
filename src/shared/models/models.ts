@@ -15,7 +15,6 @@ export interface Account {
   category?: string;
   completeness?: number;
   status?: string;
-  tags?: string;
   subscription_type?: string;
   address1?: string;
   address2?: any;
@@ -41,6 +40,10 @@ export interface Account {
   created_at?: string;
   updated_at?: string;
   accountType?: AccountType;
+  currency?: string;
+  farms?: Farm[];
+  contacts?: Contact[];
+  tags?: Tag[];
 }
 
 export interface AccountType {
@@ -49,4 +52,29 @@ export interface AccountType {
   category: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface Farm {
+  id: string;
+  average_tree_age: number;
+  farm_name: string;
+  size: number;
+  spacing: number;
+  varietals: string[];
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export interface Contact {
+  id: number;
+  contact_info: string;
+  type: string;
+  is_primary?: string;
+  account: Account;
+  created_at: Date;
+  updated_at: Date;
 }

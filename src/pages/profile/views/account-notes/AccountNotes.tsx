@@ -20,9 +20,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tooltip,
 } from "@mui/material";
-import AddFile from "@mui/icons-material/NoteAdd";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddFile from "@mui/icons-material/NoteAddOutlined";
+import DeleteIcon from "@mui/icons-material/DeleteOutline";
 
 interface Note {
   title: string;
@@ -77,16 +78,20 @@ export const AccountNotes: React.FC = () => {
         <Toolbar>
           <Typography variant="h6">My Notes</Typography>
           <Box sx={{ flexGrow: 1, textAlign: "right" }}>
-            <IconButton
-              sx={{ mr: 1 }}
-              color="primary"
-              onClick={() => setOpenDialog(true)}
-            >
-              <AddFile />
-            </IconButton>
-            <IconButton color="error">
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title="Add">
+              <IconButton
+                sx={{ mr: 1 }}
+                color="primary"
+                onClick={() => setOpenDialog(true)}
+              >
+                <AddFile />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete">
+              <IconButton color="error">
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>
@@ -118,13 +123,15 @@ export const AccountNotes: React.FC = () => {
                   secondary={note.creationDate}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    aria-label="delete"
-                    onClick={() => handleDeleteNote(note)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
+                  <Tooltip title="Delete">
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleDeleteNote(note)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </ListItemSecondaryAction>
               </ListItem>
             ))}

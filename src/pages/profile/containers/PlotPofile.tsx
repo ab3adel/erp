@@ -23,20 +23,7 @@ export const PlotProfile = () => {
       </Box>
       <Grid container spacing={3} mb={1}>
         <Grid item xs={12} md={3}>
-          <UserProfileInfo
-            userData={{
-              name: "John Doe",
-              accountId: "123456789",
-              type: "Plot",
-              progressValue: 50,
-              mobile: "+1 9876543210",
-              whatsapp: "+1 9876543210",
-              email: "mostafamilly6@gmail.com",
-              subscription: "SMS",
-              govId: "123456789",
-              language: "English",
-            }}
-          />
+          <UserProfileInfo />
         </Grid>
         <Grid item xs={12} md={9}>
           <CurvedTabs

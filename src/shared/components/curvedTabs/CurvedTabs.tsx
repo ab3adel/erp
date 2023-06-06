@@ -101,6 +101,8 @@ export const CurvedTabs = ({
   } = useCurvedTabs({
     localStorageKey,
     tabs,
+    canDelete,
+    canDrag,
   });
 
   const handleDeleteTab = () => {
@@ -116,7 +118,8 @@ export const CurvedTabs = ({
         navigate(value);
       }}
       value={location.pathname + location.search}
-      scrollButtons
+      variant="scrollable"
+      scrollButtons={false}
     >
       {children}
     </CurvedTabList>

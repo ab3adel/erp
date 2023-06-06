@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
   Alert,
+  Tooltip,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -25,6 +26,8 @@ import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useState } from "react";
 import { TagsSelect } from "@/shared/components/TagsSelect";
+import { saveAccount } from "../graphql/mutations/saveAccount";
+import { AccountInput } from "../types";
 
 const tags = [
   {
@@ -59,6 +62,16 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
+  const newRow = apiRef.current.getRowModels().get("new");
+  const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
+  const [edit] = useGenericMutation<
+    {
+      updateOrInsertAccount: {
+        id: number;
+      };
+    },
+    { input: AccountInput }
+  >(saveAccount, { refetchQueries: ["AccountsQuery"] });
 
   const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -85,6 +98,16 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
                 variant="text"
                 startIcon={<DoneIcon />}
                 disabled={rowsSelection.length !== 1}
+                onClick={() => {
+                  edit({
+                    variables: {
+                      input: {
+                        id: selectedRow.id,
+                        status: "active",
+                      },
+                    },
+                  });
+                }}
               >
                 APPROVE
               </Button>
@@ -115,15 +138,31 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Button
-              variant="text"
-              startIcon={<SaveIcon />}
-              onClick={() => {
-                dispatch({ type: "SAVE_ACCOUNT" });
+            <Tooltip
+              open={isDisabled}
+              title="Please fill Account Name , Account type , Address1 fields"
+              slotProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "error.main",
+                    color: "common.white",
+                  },
+                },
               }}
             >
-              Save row
-            </Button>
+              <span>
+                <Button
+                  variant="text"
+                  startIcon={<SaveIcon />}
+                  onClick={() => {
+                    dispatch({ type: "SAVE_ACCOUNT" });
+                  }}
+                  disabled={isDisabled}
+                >
+                  Save row
+                </Button>
+              </span>
+            </Tooltip>
             <Button
               variant="text"
               startIcon={<DeleteIcon />}

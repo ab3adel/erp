@@ -77,12 +77,12 @@ export const AccountTransactions = () => {
   return (
     <Box p={2}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box display="flex" flexDirection="column" rowGap={1}>
+        <Box display="flex" flexDirection="column" rowGap={1} ml={4}>
           <VolunteerActivismOutlinedIcon
             fontSize="large"
             sx={{ color: "primary.main" }}
           />
-          <Typography variant="body1" sx={{ color: "text.seconadry" }}>
+          <Typography variant="body1" sx={{ color: "text.secondary" }}>
             Total Harvest
           </Typography>
           <Typography variant="h5">1000 KG</Typography>
