@@ -21,7 +21,7 @@ export const FarmerProfile = () => {
           Accounts
         </Button>
       </Box>
-      <Grid container spacing={3} mb={1}>
+      <Grid container spacing={3} mb={1} justifyContent="space-between">
         <Grid item xs={12} md={3}>
           <UserProfileInfo
             userData={{
