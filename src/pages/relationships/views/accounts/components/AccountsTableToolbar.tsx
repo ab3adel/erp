@@ -26,6 +26,8 @@ import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useState } from "react";
 import { TagsSelect } from "@/shared/components/TagsSelect";
+import { saveAccount } from "../graphql/mutations/saveAccount";
+import { AccountInput } from "../types";
 
 const tags = [
   {
@@ -62,6 +64,15 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const selectedRow = selectedRows.next().value;
   const newRow = apiRef.current.getRowModels().get("new");
   const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
+  const [edit] = useGenericMutation<
+    {
+      updateOrInsertAccount: {
+        id: number;
+      };
+    },
+    { input: AccountInput }
+  >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+
   const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
@@ -87,6 +98,16 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
                 variant="text"
                 startIcon={<DoneIcon />}
                 disabled={rowsSelection.length !== 1}
+                onClick={() => {
+                  edit({
+                    variables: {
+                      input: {
+                        id: selectedRow.id,
+                        status: "active",
+                      },
+                    },
+                  });
+                }}
               >
                 APPROVE
               </Button>
