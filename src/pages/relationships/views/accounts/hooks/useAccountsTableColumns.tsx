@@ -156,10 +156,15 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     {
-      field: "mobileNumber",
+      field: "contacts",
       headerName: "Mobile Number",
       width: 150,
-      valueGetter: ({ value }) => value || "+252 1233134",
+      valueGetter: (params) => {
+        const value = params.row.contacts
+          ? params.row.contacts[0]?.contact_info
+          : "";
+        return value;
+      },
     },
     { field: "district", headerName: "District", width: 150, editable: true },
     {

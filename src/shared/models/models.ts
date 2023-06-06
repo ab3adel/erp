@@ -40,9 +40,10 @@ export interface Account {
   created_at?: string;
   updated_at?: string;
   accountType?: AccountType;
-  currency: string;
-  farms: Farm[];
-  tags: Tag[];
+  currency?: string;
+  farms?: Farm[];
+  contacts?: Contact[];
+  tags?: Tag[];
 }
 
 export interface AccountType {
@@ -66,4 +67,14 @@ export interface Tag {
   id: string;
   name: string;
   color: string;
+}
+
+export interface Contact {
+  id: number;
+  contact_info: string;
+  type: string;
+  is_primary?: string;
+  account: Account;
+  created_at: Date;
+  updated_at: Date;
 }

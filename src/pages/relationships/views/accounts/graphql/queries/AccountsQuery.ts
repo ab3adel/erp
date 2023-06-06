@@ -45,6 +45,12 @@ export const accountsQuery = gql`
           created_at
           updated_at
         }
+        contacts {
+          id
+          contact_info
+          type
+          is_primary
+        }
       }
       paginatorInfo {
         count

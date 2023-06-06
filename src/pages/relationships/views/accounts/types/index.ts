@@ -1,4 +1,4 @@
-import { Account, PaginatorInfo } from "@/shared/models/models";
+import { Account, Contact, PaginatorInfo } from "@/shared/models/models";
 
 export interface AccountsResponse {
   accounts: {
@@ -19,6 +19,7 @@ export type AccountRow = {
   completeness?: number;
   status?: string;
   address1?: string;
+  contacts?: Contact[];
 };
 
 export interface AccountInput {
