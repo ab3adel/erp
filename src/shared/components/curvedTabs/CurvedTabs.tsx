@@ -118,7 +118,8 @@ export const CurvedTabs = ({
         navigate(value);
       }}
       value={location.pathname + location.search}
-      scrollButtons
+      variant="scrollable"
+      scrollButtons={false}
     >
       {children}
     </CurvedTabList>
