@@ -13,18 +13,37 @@ import { Account } from "@/pages/settings/views/account/Account";
 import { General } from "@/pages/settings/views/account/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
-import { AccountsCustomView } from "@/pages/relationships/views/custom-view";
-import { AgentProfile } from "@/pages/agent-profile/AgentProfile";
-import { AgentFarms } from "@/pages/agent-profile/views/farms/AgentFarms";
-import { BuyerProfile } from "@/pages/buyer-profile/BuyerProfile";
-import { FarmerProfle } from "@/pages/farmer-profile/FarmerProfle";
-import { PlotProfile } from "@/pages/plot-profile/PlotProfile";
-import { FarmerFarms } from "@/pages/farmer-profile/views/farms/FarmerFarms";
-import { FarmerCosts } from "@/pages/farmer-profile/views/costs/FarmerCosts";
-import { AgentCosts } from "@/pages/agent-profile/views/costs/AgentCosts";
-import { AgentTransactions } from "@/pages/agent-profile/views/transactions/AgentTransactions";
-import { FarmerTransactions } from "@/pages/farmer-profile/views/transactions/FarmerTransactions";
-import { AgentNotes } from "@/pages/agent-profile/views/notes/AgentNotes";
+import {
+  AccountCosts,
+  AccountFarms,
+  AccountHistory,
+  AccountNotes,
+  AccountTransactions,
+  AgentProfile,
+  BuyerProfile,
+  FarmerProfile,
+  PlotProfile,
+} from "@/pages/profile";
+import { AccountsCustomView } from "@/pages/relationships/views/accounts/AccountsCustomView";
+
+const ProfileChildrenRoutes = [
+  {
+    index: true,
+    element: <AccountFarms />,
+  },
+  {
+    path: "costs",
+    element: <AccountCosts />,
+  },
+  {
+    path: "transactions",
+    element: <AccountTransactions />,
+  },
+  {
+    path: "notes",
+    element: <AccountNotes />,
+  },
+];
 
 export const router = createBrowserRouter([
   {
@@ -101,24 +120,7 @@ export const router = createBrowserRouter([
       {
         path: ":id/agent-profile",
         element: <AgentProfile />,
-        children: [
-          {
-            index: true,
-            element: <AgentFarms />,
-          },
-          {
-            path: "costs",
-            element: <AgentCosts />,
-          },
-          {
-            path: "transactions",
-            element: <AgentTransactions />,
-          },
-          {
-            path: "notes",
-            element: <AgentNotes />,
-          },
-        ],
+        children: ProfileChildrenRoutes,
       },
       {
         path: ":id/buyer-profile",
@@ -126,59 +128,27 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <AgentTransactions />,
+            element: <AccountTransactions />,
           },
           {
             path: "notes",
-            element: <AgentNotes />,
+            element: <AccountNotes />,
           },
         ],
       },
       {
         path: ":id/farmer-profile",
-        element: <FarmerProfle />,
-        children: [
-          {
-            index: true,
-            element: <FarmerFarms />,
-          },
-          {
-            path: "costs",
-            element: <FarmerCosts />,
-          },
-          {
-            path: "transactions",
-            element: <FarmerTransactions />,
-          },
-          {
-            path: "notes",
-            element: <AgentNotes />,
-          },
-        ],
+        element: <FarmerProfile />,
+        children: ProfileChildrenRoutes,
       },
       {
         path: ":id/plot-profile",
         element: <PlotProfile />,
         children: [
           {
-            index: true,
-            element: <AgentFarms />,
-          },
-          {
-            path: "costs",
-            element: <div>costs</div>,
-          },
-          {
-            path: "transactions",
-            element: <AgentTransactions />,
-          },
-          {
-            path: "notes",
-            element: <AgentNotes />,
-          },
-          {
+            ...ProfileChildrenRoutes,
             path: "history",
-            element: <div>history</div>,
+            element: <AccountHistory />,
           },
         ],
       },

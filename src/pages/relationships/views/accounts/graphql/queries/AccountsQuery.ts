@@ -9,7 +9,11 @@ export const accountsQuery = gql`
         category
         completeness
         status
-        tags
+        tags {
+          name
+          color
+          id
+        }
         subscription_type
         address1
         address2

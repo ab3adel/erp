@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const deleteAccount = gql`
-  mutation removeAccount($id: ID!) {
+  mutation removeAccount($id: Int!) {
     deleteAccount(id: $id) {
-      __typename
+      id
     }
   }
 `;

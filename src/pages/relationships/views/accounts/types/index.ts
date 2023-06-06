@@ -18,4 +18,5 @@ export type AccountRow = {
   district?: string;
   completeness?: number;
   status?: string;
+  address1?: string;
 };

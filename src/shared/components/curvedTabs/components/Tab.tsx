@@ -22,12 +22,10 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
     "&::after": {
       boxShadow: "3px 3px 4px rgba(36, 40, 40, 0.12)",
       border: "none",
-      top: "0px",
     },
     "&::before": {
       boxShadow: "-3px 3px 4px rgba(36, 40, 40, 0.12)",
       border: "none",
-      top: "0px",
     },
   },
   "&::before , &::after": {
@@ -43,7 +41,6 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
     borderRadius: "12px 0 0 0",
     transform: "skew(-24deg)",
     left: "-11px",
-    top: "-1px",
     borderLeft: "1px solid #b8b8b8",
     borderTop: "1px solid #b8b8b8",
   },
@@ -52,7 +49,6 @@ export const CurvedTab = styled(Tab)(({ theme }) => ({
     transform: "skew(24deg)",
     right: "-11px",
     zIndex: 1,
-    top: "-1px",
     borderRight: "1px solid #b8b8b8",
     borderTop: "1px solid #b8b8b8",
   },

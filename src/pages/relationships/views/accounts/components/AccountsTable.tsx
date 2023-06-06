@@ -44,7 +44,7 @@ export const AccountsTable = ({
 
   return (
     <div style={{ width: "100%" }}>
-      <div style={{ height: "68vh", width: "100%" }}>
+      <div style={{ height: "63vh", width: "100%" }}>
         <DataGridPro
           unstable_headerFilters
           loading={loading}

@@ -71,7 +71,7 @@ const rows = [
   },
 ];
 
-export const AgentTransactions = () => {
+export const AccountTransactions = () => {
   const columns = useReceiptionsTableColumns();
 
   return (

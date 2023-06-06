@@ -43,7 +43,7 @@ const initialNotes: Note[] = [
   },
 ];
 
-export const AgentNotes: React.FC = () => {
+export const AccountNotes: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [newNote, setNewNote] = useState<Note>({

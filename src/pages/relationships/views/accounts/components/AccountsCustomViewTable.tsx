@@ -1,4 +1,3 @@
-import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import {
   DataGridPro,
   GridColumnVisibilityModel,
@@ -12,6 +11,7 @@ import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTab
 import { useSearchParams } from "react-router-dom";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
+import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -22,7 +22,8 @@ export const AccountsCustomViewTable = ({
     page: 0,
     pageSize: 10,
   });
-  const { rows, loading, paginationInfo } = useAccountsTableRows();
+  const { rows, loading, paginationInfo } =
+    useAccountsTableRows(paginationModel);
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { getColumnVisibiltyModelByTabParam, getColumnsByTabParam } =
     useCurvedTabs({
@@ -31,6 +32,7 @@ export const AccountsCustomViewTable = ({
 
   const [params] = useSearchParams();
   const tabParam = params.get("tab");
+
   const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
   const columnsValue = getColumnsByTabParam(tabParam!);
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columnsValue!);

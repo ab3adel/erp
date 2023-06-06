@@ -1,18 +1,42 @@
-import { GridColDef } from "@mui/x-data-grid-pro";
+import {
+  GridColDef,
+  GridEditInputCell,
+  GridRenderEditCellParams,
+} from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography, Link, Chip } from "@mui/material";
+import { Box, Typography, Link, Chip, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AccountRow } from "../types";
+import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
+import { useLazyQuery } from "@apollo/client";
+import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
 ) {
+  let color:
+    | "primary"
+    | "secondary"
+    | "error"
+    | "info"
+    | "success"
+    | "warning"
+    | "inherit";
+
+  if (props.value < 30) {
+    color = "error";
+  } else if (props.value > 30 && props.value <= 70) {
+    color = "warning";
+  } else {
+    color = "success";
+  }
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
+        <LinearProgress variant="determinate" {...props} color={color} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
         <Typography variant="body2" color="text.secondary">{`${Math.round(
@@ -25,11 +49,21 @@ function LinearProgressWithLabel(
 
 export const useAccountsTableColumns = () => {
   const navigate = useNavigate();
+  const [queryFn] = useLazyQuery<
+    {
+      accounts: {
+        data: { id: string }[];
+      };
+    },
+    {
+      name: string;
+    }
+  >(accountNameSearch);
 
   const columns: GridColDef<AccountRow>[] = [
     {
       field: "name",
-      headerName: "Name",
+      headerName: "Account Name",
       width: 150,
       editable: true,
       renderCell: (params) => (
@@ -45,8 +79,56 @@ export const useAccountsTableColumns = () => {
           {params.value}
         </Link>
       ),
+      preProcessEditCellProps: async (params) => {
+        const value = params.props.value;
+        console.log("HI");
+        const { data } = await queryFn({
+          variables: {
+            name: value,
+          },
+        });
+        let hasError = false;
+
+        if (data) {
+          hasError = data?.accounts.data.length > 0;
+        }
+
+        return {
+          ...params.props,
+          error: hasError ? "The user is already exists" : "",
+        };
+      },
+      renderEditCell: (props: GridRenderEditCellParams) => (
+        <Tooltip
+          open={!!props.error}
+          title={props.error}
+          slotProps={{
+            tooltip: {
+              sx: {
+                backgroundColor: props.error ? "error.main" : "inherit",
+              },
+            },
+          }}
+        >
+          <GridEditInputCell {...props} />
+        </Tooltip>
+      ),
     },
-    { field: "type", headerName: "Type", width: 150, editable: true },
+    {
+      field: "id",
+      headerName: "Account ID",
+      width: 150,
+    },
+    {
+      field: "type",
+      headerName: "Account Type",
+      width: 150,
+      editable: true,
+      renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
+      valueGetter: ({ value }) => {
+        typeof value === "object" ? value.category : value;
+      },
+    },
     {
       field: "firstName",
       headerName: "First Name",
@@ -54,23 +136,26 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     { field: "lastName", headerName: "Last Name", width: 150, editable: true },
-    { field: "govId", headerName: "Gov ID", width: 150, editable: true },
+    { field: "govId", headerName: "Goverment ID", width: 150, editable: true },
     {
       field: "mobileNumber",
       headerName: "Mobile Number",
       width: 150,
       editable: true,
+      valueGetter: ({ value }) => value || "+252 1233134",
     },
     { field: "district", headerName: "District", width: 150, editable: true },
     {
-      field: "completeness",
-      headerName: "Completeness",
-      width: 200,
-      renderCell: ({ value }) => <LinearProgressWithLabel value={value} />,
+      field: "address1",
+      headerName: "Address 1",
+      width: 150,
+      editable: true,
     },
+
     {
       field: "status",
       headerName: "Status",
+      type: "singleSelect",
       width: 150,
       editable: true,
       renderCell: ({ value }) => {
@@ -106,6 +191,14 @@ export const useAccountsTableColumns = () => {
         }
         return <Chip label={value} color={color} />;
       },
+      valueOptions: ["active", "inactive", "pending", "archived"],
+    },
+    {
+      field: "completeness",
+      headerName: "Completeness",
+      type: "number",
+      width: 200,
+      renderCell: ({ value }) => <LinearProgressWithLabel value={value || 0} />,
     },
   ];
   return columns;

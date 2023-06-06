@@ -25,7 +25,7 @@ type Farm = {
   averageTreeAge: "";
 };
 
-export const AgentFarms = () => {
+export const AccountFarms = () => {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [newFarm, setNewFarm] = useState<Farm>({
     id: "",

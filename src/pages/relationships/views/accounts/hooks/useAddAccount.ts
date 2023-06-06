@@ -1,7 +1,7 @@
 import React from "react";
 import { useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
-import { Account } from "../types";
+import { AccountRow } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
@@ -27,23 +27,21 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
         setIsRowAdded(false);
         break;
       case "SAVE_ACCOUNT": {
-        const row = ref.current.getRowModels().get("new") as Record<
-          string,
-          any
-        >;
-        if (row) {
+        const newRow = ref.current.getRowModels().get("new") as AccountRow;
+        console.log(newRow);
+        if (newRow) {
+          const { id, ...data } = newRow;
+
           save({
             variables: {
-              data: {
-                completeness: row.completeness,
-                district: row.district,
-                firstName: row.firstName,
-                govId: row.govrmentId as number,
-                lastName: row.lastName,
-                mobileNumber: row.mobileNumber,
-                name: row.name,
-                status: row.status,
-                type: row.type,
+              input: {
+                name: data.name,
+                address1: data.address1 || "",
+                district: data.district,
+                first_name: data.firstName,
+                last_name: data.lastName,
+                type_id:
+                  (newRow.type as unknown as { value: number }).value || 1,
               },
             },
           });
@@ -73,5 +71,36 @@ export type Action =
   | SaveReceiptAction;
 
 type Variables = {
-  data: Account["attributes"];
+  input: AccountInput;
 };
+
+interface AccountInput {
+  id?: number;
+  name?: string;
+  status?: string;
+  subscription_type?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  country?: string;
+  currency?: string;
+  district?: string;
+  government_id?: string;
+  language?: string;
+  region?: string;
+  zone?: string;
+  state?: string;
+  unit_of_measurement?: string;
+  date_of_birth?: string;
+  education_level?: string;
+  first_name?: string;
+  last_name?: string;
+  gender?: string;
+  marital_status?: string;
+  members_in_household?: number;
+  read_literate?: string;
+  write_literate?: string;
+  total_children?: number;
+
+  type_id?: number;
+}

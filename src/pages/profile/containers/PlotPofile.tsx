@@ -2,9 +2,9 @@ import { Box, Button, Grid, Paper } from "@mui/material";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { UserProfileInfo } from "@/shared/components/UserProfileInfo";
+import { UserProfileInfo } from "@/pages/profile/components/UserProfileInfo";
 
-export const FarmerProfle = () => {
+export const PlotProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   return (
@@ -27,7 +27,7 @@ export const FarmerProfle = () => {
             userData={{
               name: "John Doe",
               accountId: "123456789",
-              type: "Farmer",
+              type: "Plot",
               progressValue: 50,
               mobile: "+1 9876543210",
               whatsapp: "+1 9876543210",
@@ -42,23 +42,27 @@ export const FarmerProfle = () => {
           <CurvedTabs
             tabs={[
               {
-                label: "FARMS",
-                value: `/${id}/farmer-profile`,
+                label: "AREA",
+                value: `/${id}/plot-profile`,
               },
               {
                 label: "COSTS",
-                value: `/${id}/farmer-profile/costs`,
+                value: `/${id}/plot-profile/costs`,
               },
               {
                 label: "TRANSACTIONS",
-                value: `/${id}/farmer-profile/transactions`,
+                value: `/${id}/plot-profile/transactions`,
+              },
+              {
+                label: "HISTORY",
+                value: `/${id}/plot-profile/history`,
               },
               {
                 label: "NOTES",
-                value: `/${id}/farmer-profile/notes`,
+                value: `/${id}/plot-profile/notes`,
               },
             ]}
-            localStorageKey="farmer-profile"
+            localStorageKey="plot-profile"
             canDelete={false}
             canDrag={false}
           />
