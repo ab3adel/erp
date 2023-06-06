@@ -88,7 +88,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
       variant="outlined"
       sx={{
         p: 2,
-        maxWidth: 300,
+        maxWidth: {
+          xs: "100%",
+          md: 300,
+        },
         width: "100%",
         height: "100%",
         overflow: "auto",
