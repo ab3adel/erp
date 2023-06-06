@@ -1,9 +1,9 @@
 import React from "react";
 import { useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
-import { AccountRow } from "../types";
+import { AccountInput, AccountRow } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
-import { Account } from "@/shared/models/models";
+import { enqueueSnackbar } from "notistack";
 
 export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
@@ -17,6 +17,9 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
     switch (action.type) {
       case "ADD_ACCOUNT": {
         const rowsModels = ref.current.getRowModels();
+        if (rowsModels.get("new")) {
+          return;
+        }
         const rows = Array.from(rowsModels.values());
         rows.unshift(row);
         ref.current.setRows(rows);
@@ -29,13 +32,30 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
         break;
       case "SAVE_ACCOUNT": {
         const newRow = ref.current.getRowModels().get("new") as AccountRow;
+        console.log(newRow);
         if (newRow) {
           const { id, ...data } = newRow;
           save({
             variables: {
               input: {
-                address1: data.address1 as string,
+                name: data.name,
+                address1: data.address1 || "",
+                district: data.district,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                type_id:
+                  (newRow.type as unknown as { value: number }).value || 0,
               },
+            },
+            onCompleted: () => {
+              enqueueSnackbar("Saved Successfully", {
+                variant: "success",
+                anchorOrigin: {
+                  vertical: "top",
+                  horizontal: "center",
+                },
+              });
+              setIsRowAdded(false);
             },
           });
         }
@@ -64,5 +84,5 @@ export type Action =
   | SaveReceiptAction;
 
 type Variables = {
-  input: Partial<Account>;
+  input: AccountInput;
 };

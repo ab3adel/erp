@@ -14,15 +14,19 @@ import SaveIcon from "@mui/icons-material/SaveOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import _ from "lodash";
+import { useGenericMutation } from "@/shared";
+import { saveFarm } from "./graphql/mutations/SaveFarm";
+import { FarmInput } from "./types";
+import { useParams } from "react-router-dom";
 
 type Farm = {
   id: string;
-  name: "";
-  totalSize: "";
-  numberOfTrees: "";
+  name: string;
+  totalSize: number;
+  numberOfTrees: number;
   verticals: "";
-  spacing: "";
-  averageTreeAge: "";
+  spacing: number;
+  averageTreeAge: number;
 };
 
 export const AccountFarms = () => {
@@ -30,30 +34,35 @@ export const AccountFarms = () => {
   const [newFarm, setNewFarm] = useState<Farm>({
     id: "",
     name: "",
-    totalSize: "",
-    numberOfTrees: "",
+    totalSize: 0,
+    numberOfTrees: 0,
     verticals: "",
-    spacing: "",
-    averageTreeAge: "",
+    spacing: 0,
+    averageTreeAge: 0,
   });
+  const { id } = useParams();
   const [selectedFarm, setSelectedFarm] = useState<string>();
+  const [mutate] = useGenericMutation<{
+    farms: FarmInput[];
+    id: number;
+  }>(saveFarm);
 
   const handleAddFarm = () => {
     const id = _.uniqueId();
+
     setFarms((prevFarms) => [{ ...newFarm, id }, ...prevFarms]);
     setNewFarm({
       name: "",
-      totalSize: "",
-      numberOfTrees: "",
+      totalSize: 0,
+      numberOfTrees: 0,
       verticals: "",
-      spacing: "",
-      averageTreeAge: "",
+      spacing: 0,
+      averageTreeAge: 0,
       id,
     });
     setSelectedFarm(id);
   };
 
-  console.log(farms);
   const handleDeleteFarm = (id: string) => {
     setFarms((prevFarms) => prevFarms.filter((farm) => farm.id !== id));
   };
@@ -68,6 +77,22 @@ export const AccountFarms = () => {
     updatedFarms[updatedFarms.length - 1] = newFarm;
     setFarms(updatedFarms);
     setSelectedFarm(undefined);
+
+    const farmInput: FarmInput = {
+      id: parseInt(newFarm.id),
+      average_tree_age: Number(newFarm.averageTreeAge) || 0,
+      farm_name: newFarm.name,
+      size: Number(newFarm.totalSize) || 0,
+      spacing: Number(newFarm.spacing) || 0,
+      varietals: newFarm.verticals,
+    };
+
+    mutate({
+      variables: {
+        farms: [farmInput],
+        id: Number(id),
+      },
+    });
   };
 
   const handleFarmInputChange = (
@@ -81,13 +106,23 @@ export const AccountFarms = () => {
   };
 
   return (
-    <Box p={3}>
+    <Box p={3} minHeight="70vh">
       <Box display="flex" justifyContent="right" my={1}>
         <Button startIcon={<AddIcon />} onClick={handleAddFarm}>
           ADD NEW FARM
         </Button>
       </Box>
-
+      {!farms.length && (
+        <Box
+          width="100%"
+          height="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Typography>There are no farms</Typography>
+        </Box>
+      )}
       {farms.map((farm) => (
         <Box key={farm.id} mt={4}>
           <Box
@@ -141,6 +176,7 @@ export const AccountFarms = () => {
                   name="totalSize"
                   label="Total Size"
                   value={newFarm.totalSize}
+                  type="number"
                   onChange={handleFarmInputChange}
                   fullWidth
                   required
@@ -151,6 +187,7 @@ export const AccountFarms = () => {
                   variant="filled"
                   name="numberOfTrees"
                   label="Number of trees"
+                  type="number"
                   value={newFarm.numberOfTrees}
                   onChange={handleFarmInputChange}
                   fullWidth
@@ -173,6 +210,7 @@ export const AccountFarms = () => {
                   variant="filled"
                   name="spacing"
                   label="Spacing (m)"
+                  type="number"
                   value={newFarm.spacing}
                   onChange={handleFarmInputChange}
                   fullWidth
@@ -184,6 +222,7 @@ export const AccountFarms = () => {
                   variant="filled"
                   name="averageTreeAge"
                   label="Average tree age"
+                  type="number"
                   value={newFarm.averageTreeAge}
                   onChange={handleFarmInputChange}
                   fullWidth
@@ -255,17 +294,17 @@ export const AccountFarms = () => {
               </Grid>
             </Grid>
           )}
+          <Divider sx={{ mt: 3 }} />
+          <Box display="flex" mt={1} justifyContent="space-between">
+            <Typography variant="body1" sx={{ color: "grey.600" }}>
+              Documents
+            </Typography>
+            <IconButton>
+              <FileUploadIcon sx={{ color: "grey.600" }} />
+            </IconButton>
+          </Box>
         </Box>
       ))}
-
-      <Box mt={3} display="flex" justifyContent="space-between">
-        <Typography variant="body1" sx={{ color: "grey.600" }}>
-          Documents
-        </Typography>
-        <IconButton>
-          <FileUploadIcon sx={{ color: "grey.600" }} />
-        </IconButton>
-      </Box>
     </Box>
   );
 };

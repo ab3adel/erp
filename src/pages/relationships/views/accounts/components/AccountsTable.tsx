@@ -11,9 +11,11 @@ import { useState } from "react";
 import { Action } from "../hooks/useAddAccount";
 import { useCurvedTabs } from "@/shared/components/curvedTabs/hooks/useCurvedTabs";
 import { CreateViewForm } from "./CreateViewForm";
-import { GenericDialog, useDialog } from "@/shared";
+import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
+import { saveAccount } from "../graphql/mutations/saveAccount";
+import { AccountInput } from "../types";
 
 export const AccountsTable = ({
   apiRef,
@@ -33,7 +35,14 @@ export const AccountsTable = ({
   const { closeDialog, isDialogOpen, openDialog } = useDialog<"save_view">();
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
-
+  const [edit] = useGenericMutation<
+    {
+      updateOrInsertAccount: {
+        id: number;
+      };
+    },
+    Variables
+  >(saveAccount, { refetchQueries: ["AccountsQuery"] });
   const handleCreateView = (form: {
     label: string;
     type: "personal" | "shared";
@@ -80,6 +89,34 @@ export const AccountsTable = ({
               setOpenColumnsDialog,
             },
           }}
+          processRowUpdate={(newRow, oldRow) => {
+            const updatedValues: Record<string, any> = {};
+            if (newRow.id === "new") {
+              return Promise.resolve(newRow);
+            }
+            for (const key in newRow) {
+              if (newRow[key] !== oldRow[key] && key !== "type") {
+                updatedValues[key] = newRow[key];
+              }
+            }
+
+            return edit({
+              variables: {
+                input: {
+                  ...updatedValues,
+                  id: newRow.id,
+                  ...(newRow.type && {
+                    type_id: newRow.type.value,
+                  }),
+                },
+              },
+            }).then((value) => {
+              return value.data?.updateOrInsertAccount;
+            });
+          }}
+          onProcessRowUpdateError={(error) => {
+            console.log(error);
+          }}
         />
       </div>
       <GenericDialog
@@ -118,4 +155,8 @@ type AccountsTableProps = {
   apiRef: React.MutableRefObject<GridApiPro>;
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
+};
+
+type Variables = {
+  input: AccountInput;
 };

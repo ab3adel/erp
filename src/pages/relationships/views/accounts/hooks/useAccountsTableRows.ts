@@ -11,6 +11,7 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
       page: paginationModel.page + 1,
     },
   });
+
   const rows = useMemo(
     (): AccountRow[] =>
       data?.accounts.data.map((account) => ({
@@ -35,9 +36,7 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
         date_of_birth: account.date_of_birth,
         education_level: account.education_level,
         last_name: account.last_name,
-        firstName: account.first_name,
-        govId: account.government_id,
-        lastName: account.last_name,
+        first_name: account.first_name,
         marital_status: account.marital_status,
         type: account.accountType?.category,
       })) || [],

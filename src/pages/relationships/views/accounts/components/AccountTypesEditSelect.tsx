@@ -12,10 +12,17 @@ export const AccountTypesEditSelect = (
 
   const handleChange = (e: SelectChangeEvent<number>) => {
     const account = data?.accountTypes.data.find(
-      (account) => account.category === e.target.value
+      (type) => type.id === e.target.value
     );
-    apiRef.current.setEditCellValue({ id, field, value: e.target.value });
-    apiRef.current.updateRows([{ id, type: account?.category }]);
+    apiRef.current.setEditCellValue({
+      id,
+      field,
+      value: {
+        category: account?.category,
+        value: e.target.value,
+      },
+    });
+    apiRef.current.updateRows([{ id, type: e.target.value }]);
   };
 
   const handleRef = (element: HTMLSpanElement) => {
@@ -28,9 +35,14 @@ export const AccountTypesEditSelect = (
   };
 
   return (
-    <Select ref={handleRef} value={value} onChange={handleChange} fullWidth>
+    <Select
+      ref={handleRef}
+      defaultValue={value}
+      onChange={handleChange}
+      fullWidth
+    >
       {data?.accountTypes?.data?.map?.((type) => (
-        <MenuItem key={type.id} value={type.category}>
+        <MenuItem key={type.id} value={type.id}>
           {type.category}
         </MenuItem>
       ))}
