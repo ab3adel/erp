@@ -20,39 +20,47 @@ import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import { useState } from "react";
 import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
+import { useQuery } from "@apollo/client";
+import { accountProfile } from "../graphql/queries/accountProfile";
+import { Account } from "@/shared/models/models";
+import { useParams } from "react-router-dom";
 
-interface UserData {
-  name?: string;
-  accountId?: string;
-  type?: string;
-  progressValue?: number;
-  mobile?: string;
-  whatsapp?: string;
-  email?: string;
-  subscription?: string;
-  govId?: string;
-  language?: string;
-}
-
-interface UserProfileInfoProps {
-  userData: UserData;
-}
-
-export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
-  userData,
-}) => {
+export const UserProfileInfo: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
-  const [updatedContactDetails, setUpdatedContactDetails] = useState({
-    mobile: userData.mobile,
-    whatsapp: userData.whatsapp,
-    email: userData.email,
-    subscription: userData.subscription,
-    language: userData.language,
-  });
+  const { id } = useParams();
+
+  const [updatedContactDetails, setUpdatedContactDetails] = useState<{
+    email: string | undefined;
+    language: string | undefined;
+    mobile: string | undefined;
+    subscription_type: string | undefined;
+    whatsapp: string | undefined;
+  }>();
+  const [updatedLocationDetails, setUpdatedLocationDetails] = useState<{
+    government_id: string;
+  }>();
+
+  const { data } = useQuery<{ account: Account }, { id: number }>(
+    accountProfile,
+    {
+      variables: {
+        id: Number(id),
+      },
+      onCompleted: (data) => {
+        setUpdatedContactDetails({
+          email: "mostafa@gmail.com",
+          language: data.account.language,
+          mobile: "953434343",
+          subscription_type: data.account.subscription_type,
+          whatsapp: "953434343",
+        });
+        setUpdatedLocationDetails({
+          government_id: data.account.government_id,
+        });
+      },
+    }
+  );
   const [locationDetailsEditMode, setLocationDetailsEditMode] = useState(false);
-  const [updatedLocationDetails, setUpdatedLocationDetails] = useState({
-    govId: userData.govId,
-  });
 
   const handleSave = () => {
     // Save the updated contact details
@@ -69,19 +77,6 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
     // Disable the editing mode and update the state
     setLocationDetailsEditMode(false);
   };
-
-  const {
-    name,
-    accountId,
-    type,
-    progressValue,
-    mobile,
-    whatsapp,
-    email,
-    subscription,
-    govId,
-    language,
-  } = userData;
 
   return (
     <Paper
@@ -121,7 +116,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
             sx={{ color: "common.black" }}
             gutterBottom
           >
-            {name}
+            {data?.account.name}
           </Typography>
           <Typography
             variant="body2"
@@ -129,18 +124,18 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
             fontSize={12}
             sx={{ color: "text.secondary", mb: 1 }}
           >
-            Account ID : {accountId}
+            Account ID : {data?.account.id}
           </Typography>
           <Typography
             variant="body2"
             fontWeight={500}
             sx={{ color: "primary.main", mb: 1 }}
           >
-            {type}
+            {data?.account.accountType?.category}
           </Typography>
           <Box display="flex" columnGap={2} justifyContent="center">
             <CircularProgressWithLabel
-              value={progressValue || 0}
+              value={data?.account.completeness || 0}
               color="secondary"
             />
             <IconButton
@@ -189,10 +184,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                 label="Mobile"
                 fullWidth
                 sx={{ mb: 1 }}
-                value={updatedContactDetails.mobile}
+                value={updatedContactDetails?.mobile}
                 onChange={(e) =>
                   setUpdatedContactDetails({
-                    ...updatedContactDetails,
+                    ...updatedContactDetails!,
                     mobile: e.target.value,
                   })
                 }
@@ -215,7 +210,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    {mobile}
+                    943454523
                   </Typography>
                 </Box>
               </Box>
@@ -228,10 +223,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                 label="Whatsapp"
                 fullWidth
                 sx={{ mb: 1 }}
-                value={updatedContactDetails.whatsapp}
+                value={updatedContactDetails?.whatsapp}
                 onChange={(e) =>
                   setUpdatedContactDetails({
-                    ...updatedContactDetails,
+                    ...updatedContactDetails!,
                     whatsapp: e.target.value,
                   })
                 }
@@ -254,7 +249,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    {whatsapp}
+                    943454523
                   </Typography>
                 </Box>
               </Box>
@@ -267,10 +262,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                 label="Email"
                 fullWidth
                 sx={{ mb: 1 }}
-                value={updatedContactDetails.email}
+                value={updatedContactDetails?.email}
                 onChange={(e) =>
                   setUpdatedContactDetails({
-                    ...updatedContactDetails,
+                    ...updatedContactDetails!,
                     email: e.target.value,
                   })
                 }
@@ -293,7 +288,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    {email}
+                    mostafamilly6@gmail.com
                   </Typography>
                 </Box>
               </Box>
@@ -306,11 +301,11 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                 label="Subscription"
                 fullWidth
                 sx={{ mb: 1 }}
-                value={updatedContactDetails.subscription}
+                value={updatedContactDetails?.subscription_type}
                 onChange={(e) =>
                   setUpdatedContactDetails({
-                    ...updatedContactDetails,
-                    subscription: e.target.value,
+                    ...updatedContactDetails!,
+                    subscription_type: e.target.value,
                   })
                 }
               />
@@ -332,7 +327,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    {subscription}
+                    {data?.account.subscription_type}
                   </Typography>
                 </Box>
               </Box>
@@ -345,10 +340,10 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                 label="Language"
                 fullWidth
                 sx={{ mb: 1 }}
-                value={updatedContactDetails.language}
+                value={updatedContactDetails?.language}
                 onChange={(e) =>
                   setUpdatedContactDetails({
-                    ...updatedContactDetails,
+                    ...updatedContactDetails!,
                     language: e.target.value,
                   })
                 }
@@ -371,7 +366,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    {language}
+                    {data?.account.language}
                   </Typography>
                 </Box>
               </Box>
@@ -408,11 +403,11 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                     label="Government ID"
                     fullWidth
                     sx={{ mb: 1 }}
-                    value={updatedLocationDetails.govId}
+                    value={updatedLocationDetails?.government_id}
                     onChange={(e) =>
                       setUpdatedLocationDetails({
                         ...updatedLocationDetails,
-                        govId: e.target.value,
+                        government_id: e.target.value,
                       })
                     }
                   />
@@ -432,7 +427,7 @@ export const UserProfileInfo: React.FC<UserProfileInfoProps> = ({
                       fontWeight={500}
                       sx={{ color: "grey.700" }}
                     >
-                      {govId}
+                      {data?.account.government_id}
                     </Typography>
                   </Box>
                 )}

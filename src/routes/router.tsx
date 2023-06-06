@@ -145,8 +145,8 @@ export const router = createBrowserRouter([
         path: ":id/plot-profile",
         element: <PlotProfile />,
         children: [
+          ...ProfileChildrenRoutes,
           {
-            ...ProfileChildrenRoutes,
             path: "history",
             element: <AccountHistory />,
           },
