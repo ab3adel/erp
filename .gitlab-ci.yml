@@ -44,11 +44,13 @@ dev:
     - whoami
     - cd /var/www/mc-erp2/dev/mc-erp2.0-frontend-dev
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
-    - echo "Application successfully deployed."
-    - npm install --force
-    - echo "The libraries have been updated successfully."
-    - npx vite build
-    - echo "Application successfully built."
+    - echo "pull changes successfully"
+    - docker-compose up -d
+#    - echo "Application successfully deployed."
+#    - npm install --force
+#    - echo "The libraries have been updated successfully."
+#    - npx vite build
+    - echo "Application run successfully in container"
   only:
     - dev
 
@@ -62,11 +64,13 @@ test:
     - whoami
     - cd /var/www/mc-erp2/test/mc-erp2.0-frontend-test
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git test
-    - echo "Application successfully deployed."
-    - npm install --force
-    - echo "The libraries have been updated successfully."
-    - npx vite build
-    - echo "Application successfully built."
+    - echo "pull changes successfully"
+    - docker-compose up -d
+#    - echo "Application successfully deployed."
+#    - npm install --force
+#    - echo "The libraries have been updated successfully."
+#    - npx vite build
+    - echo "Application run successfully in container"
 
   only:
     - test
@@ -82,11 +86,13 @@ staging:
     - whoami
     - cd /var/www/mc-erp2/staging/mc-erp2.0-frontend-staging
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git staging
-    - echo "Application successfully deployed."
-    - npm install --force
-    - echo "The libraries have been updated successfully."
-    - npx vite build
-    - echo "Application successfully built."
+    - echo "pull changes successfully"
+    - docker-compose up -d
+#    - echo "Application successfully deployed."
+#    - npm install --force
+#    - echo "The libraries have been updated successfully."
+#    - npx vite build
+    - echo "Application run successfully in container"
 
   only:
     - staging
