@@ -61,6 +61,7 @@ export const RelationShips = () => {
             columnVisibiltyModel: JSON.parse(view.query || "{}")
               .columnVisibiltyModel,
             columns: JSON.parse(view.query || "{}").columns,
+            filterModel: JSON.parse(view.query || "{}").filterModel,
           })) || []),
         ]}
         localStorageKey="relationships"

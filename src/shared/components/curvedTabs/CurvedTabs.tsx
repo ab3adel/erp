@@ -12,7 +12,11 @@ import React, { ReactNode, useState } from "react";
 import DragIndicatorOutlined from "@mui/icons-material/DragIndicatorOutlined";
 import { useCurvedTabs } from "./hooks/useCurvedTabs";
 import { GenericDialog } from "..";
-import { GridColDef, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
+import {
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridFilterModel,
+} from "@mui/x-data-grid-pro";
 
 const DragHandle = SortableHandle<{ hover: boolean }>(
   ({ hover }: { hover: boolean }) => (
@@ -169,6 +173,7 @@ type CurvedTabsProps = {
     label: string;
     value: string;
     columnVisibiltyModel?: GridColumnVisibilityModel;
+    filterModel?: GridFilterModel;
     columns?: GridColDef[];
   }>;
   canDrag?: boolean;

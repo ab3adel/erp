@@ -3,6 +3,7 @@ import {
   GridColumnVisibilityModel,
   GridColDef,
   GridPaginationModel,
+  GridFilterModel,
 } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
 import { useState } from "react";
@@ -12,6 +13,7 @@ import { useSearchParams } from "react-router-dom";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
+import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -25,19 +27,27 @@ export const AccountsCustomViewTable = ({
   const { rows, loading, paginationInfo } =
     useAccountsTableRows(paginationModel);
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
-  const { getColumnVisibiltyModelByTabParam, getColumnsByTabParam } =
-    useCurvedTabs({
-      localStorageKey: "relationships",
-    });
+  const {
+    getColumnVisibiltyModelByTabParam,
+    getColumnsByTabParam,
+    getGridFilterModelByTabParam,
+  } = useCurvedTabs({
+    localStorageKey: "relationships",
+  });
+  const rawColumns = useAccountsTableColumns();
 
   const [params] = useSearchParams();
   const tabParam = params.get("tab");
 
   const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
+  const defaultFilterModel = getGridFilterModelByTabParam(tabParam!);
   const columnsValue = getColumnsByTabParam(tabParam!);
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columnsValue!);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
   const [model, setModel] = useState<GridColumnVisibilityModel>(defaultModel!);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>(
+    defaultFilterModel!
+  );
 
   return (
     <div style={{ width: "100%" }}>
@@ -48,13 +58,19 @@ export const AccountsCustomViewTable = ({
           columnVisibilityModel={model}
           onColumnVisibilityModelChange={(newModel) => setModel(newModel)}
           loading={loading}
+          filterModel={filterModel}
+          onFilterModelChange={(newModel) => setFilterModel(newModel)}
           rowCount={paginationInfo?.total || 0}
           paginationModel={paginationModel}
           onPaginationModelChange={(newModel) => {
             setPaginationModel(newModel);
           }}
           rows={rows}
-          columns={columnsState || []}
+          columns={
+            rawColumns.filter((col) =>
+              columnsState.find((colState) => colState.field === col.field)
+            ) || []
+          }
           apiRef={apiRef}
           pageSizeOptions={[10, 25, 50]}
           rowSelectionModel={rowsSelection}
