@@ -1,9 +1,44 @@
-import { Box, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
 import { Outlet } from "react-router-dom";
 import { CurvedTabsContainer } from "@/shared/components/curvedTabs/CurvedTabsContainer";
+import { useQuery } from "@apollo/client";
+import { accountsCustomViews } from "./views/accounts/graphql/queries/AccountsCustomViews";
+import { UserView } from "@/shared/models/models";
 
 export const RelationShips = () => {
+  const userId = localStorage.getItem("token")
+    ? localStorage.getItem("token")?.split("|")[0]
+    : "";
+  const { data, loading } = useQuery<
+    {
+      views_user: UserView[];
+    },
+    {
+      id: number;
+      module: string;
+    }
+  >(accountsCustomViews, {
+    variables: {
+      id: Number(userId),
+      module: "relationships",
+    },
+  });
+
+  if (loading) {
+    return (
+      <Box
+        height="100%"
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Box position="relative">
       <Typography
@@ -19,6 +54,14 @@ export const RelationShips = () => {
             label: "Accounts",
             value: "/relationships/accounts",
           },
+          ...(data?.views_user.map((view) => ({
+            id: Number(view.id),
+            label: view.name,
+            value: `/relationships/customview/?tab=${view.name}`,
+            columnVisibiltyModel: JSON.parse(view.query || "{}")
+              .columnVisibiltyModel,
+            columns: JSON.parse(view.query || "{}").columns,
+          })) || []),
         ]}
         localStorageKey="relationships"
       />

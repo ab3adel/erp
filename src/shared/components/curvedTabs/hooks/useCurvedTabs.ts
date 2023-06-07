@@ -1,3 +1,7 @@
+import { createView } from "@/pages/relationships/views/accounts/graphql/mutations/createView";
+import { deleteView } from "@/pages/relationships/views/accounts/graphql/mutations/deleteView";
+import { useGenericMutation } from "@/shared";
+import { useMutation } from "@apollo/client";
 import { GridColDef, GridColumnVisibilityModel } from "@mui/x-data-grid-pro";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -11,6 +15,7 @@ export const useCurvedTabs = ({
 }: Params) => {
   const [value, setValue] = useLocalStorage<
     {
+      id?: number;
       value: string;
       label: string;
       columnVisibiltyModel?: GridColumnVisibilityModel;
@@ -18,6 +23,20 @@ export const useCurvedTabs = ({
     }[]
   >(localStorageKey, tabs);
   const { pathname } = useLocation();
+  const [mutateFn] = useMutation<
+    unknown,
+    {
+      name: string;
+      module: string;
+      is_shared: boolean;
+      created_by: number;
+      query: string;
+    }
+  >(createView);
+  const userId = localStorage.getItem("token")
+    ? localStorage.getItem("token")?.split("|")[0]
+    : "";
+  const [deleteFn] = useGenericMutation<unknown, { id: number }>(deleteView);
 
   useEffect(() => {
     const value = localStorage.getItem(localStorageKey);
@@ -41,20 +60,39 @@ export const useCurvedTabs = ({
   };
 
   // delete a tab
-  const deleteTab = (index: number) => {
+  const deleteTab = (index: number, id?: number) => {
     const newTabs = [...value];
     newTabs.splice(index, 1);
     setValue(newTabs);
+    if (id) {
+      deleteFn({
+        variables: {
+          id,
+        },
+      });
+    }
   };
   // add a tab
   const createTab = (
     label: string,
     columnVisibiltyModel: GridColumnVisibilityModel,
-    columns: GridColDef[]
+    columns: GridColDef[],
+    is_shared?: boolean
   ) => {
     const newTabs = [...value];
-
-    console.log(columnVisibiltyModel);
+    mutateFn({
+      variables: {
+        created_by: Number(userId),
+        is_shared: is_shared || false,
+        module: localStorageKey,
+        name: label.toLowerCase().replace(/\s/g, "-"),
+        query: JSON.stringify({
+          columnVisibiltyModel,
+          columns,
+        }),
+      },
+      refetchQueries: ["UserViews"],
+    });
     newTabs.push({
       value:
         "/" +
@@ -102,7 +140,13 @@ export const useCurvedTabs = ({
 
 type Params = {
   localStorageKey: string;
-  tabs?: { value: string; label: string }[];
+  tabs?: {
+    id?: number;
+    value: string;
+    label: string;
+    columnVisibiltyModel?: GridColumnVisibilityModel;
+    columns?: GridColDef[];
+  }[];
   canDrag?: boolean;
   canDelete?: boolean;
 };

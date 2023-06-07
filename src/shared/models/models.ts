@@ -78,3 +78,18 @@ export interface Contact {
   created_at: Date;
   updated_at: Date;
 }
+
+export type UserView = {
+  id: string;
+  name: string;
+  module: string;
+  is_shared: boolean;
+  query: string;
+  preferences: Preference[];
+};
+
+export type Preference = {
+  id: string;
+  is_closed: boolean;
+  order: number;
+};
