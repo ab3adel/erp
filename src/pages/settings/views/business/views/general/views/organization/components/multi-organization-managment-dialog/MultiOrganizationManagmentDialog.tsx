@@ -1,81 +1,108 @@
-import { Dialog } from "@material-ui/core";
 import {
+  Dialog,
   Box,
   Button,
+  ButtonProps,
+  DialogProps,
   Divider,
-  Grid,
   IconButton,
   Typography,
+  TypographyProps,
 } from "@mui/material";
 import closeIcon from "@/assets/images/close.svg";
 import multiOrganizationActivateScreenshot from "@/assets/images/multi-organization-activate-screenshot.png";
 import BuldingIcon from "@/assets/images/building-icon.svg";
 
 const MultiOrganizationManagmentDialog = () => {
+  const DialogProps: DialogProps = {
+    open: true,
+    fullWidth: true,
+    maxWidth: "lg",
+    PaperProps: { style: { maxHeight: "none" } },
+  };
+
+  const mainHeaderTypographyProps: TypographyProps = {
+    sx: {
+      fontWeight: 600,
+      fontSize: 24,
+      color: "rgba(36, 40, 40, 0.87)",
+    },
+  };
+
+  const mainParagraphTypographyProps: TypographyProps = {
+    sx: {
+      fontWeight: "500",
+      color: "rgba(36, 40, 40, 0.6)",
+    },
+  };
+
+  const contactUsButtonProps: ButtonProps = {
+    sx: {
+      fontSize: 15,
+      fontWeight: 500,
+    },
+    disableElevation: false,
+  };
+
+  const mainImageProps: React.DetailedHTMLProps<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    HTMLImageElement
+  > = {
+    src: multiOrganizationActivateScreenshot,
+    alt: "multi-organization activating screenshot",
+  };
+
+  const secondaryHeaderProps: TypographyProps = {
+    variant: "h6",
+    fontWeight: 500,
+    color: "rgba(36, 40, 40, 0.87)",
+  };
+
+  const secondaryParagraphProps: TypographyProps = {
+    fontWeight: 500,
+    color: "rgba(36, 40, 40, 0.6)",
+    fontSize: 16,
+  };
+
   return (
-    <Dialog
-      open={true}
-      fullWidth
-      maxWidth="lg"
-      PaperProps={{ style: { maxHeight: "none" } }}
-    >
+    <Dialog {...DialogProps}>
       <Box px={3} py={2}>
         <Box textAlign="right">
           <IconButton size="small">
             <img src={closeIcon} />
           </IconButton>
         </Box>
+
         <Box display="flex" alignItems="center" my={2}>
           <Box width="100%">
-            <Typography
-              sx={{
-                fontWeight: 600,
-                fontSize: 24,
-                color: "rgba(36, 40, 40, 0.87)",
-              }}
-            >
+            <Typography {...mainHeaderTypographyProps}>
               Unlock the Power of Multi-Organization Management
             </Typography>
 
-            <Typography
-              sx={{ fontWeight: "500", color: "rgba(36, 40, 40, 0.6)" }}
-            >
+            <Typography {...mainParagraphTypographyProps}>
               Contact our customer success team today to learn more and unlock
               this exclusive feature!
             </Typography>
           </Box>
 
           <Box flexShrink={0}>
-            <Button sx={{ fontSize: 15 }} disableElevation={false}>
-              contact us
-            </Button>
+            <Button {...contactUsButtonProps}>contact us</Button>
           </Box>
         </Box>
-        <Divider />
+        <Box my={4}>
+          <Divider />
+        </Box>
         <Box mt={2} display="flex" gap={5} alignItems="center">
-          <img
-            src={multiOrganizationActivateScreenshot}
-            alt="multi-organiztion activating screenshot"
-          />
+          <img {...mainImageProps} />
 
-          <Box display="flex" flexDirection="column" gap={2}>
+          <Box display="flex" flexDirection="column" gap={2} maxWidth={350}>
             <img src={BuldingIcon} alt="building icon" width={47} />
 
-            <Typography
-              variant="h6"
-              fontWeight={500}
-              color="rgba(36, 40, 40, 0.87);
-"
-            >
+            <Typography {...secondaryHeaderProps}>
               Effortlessly manage multiple organizations
             </Typography>
 
-            <Typography
-              variant="body1"
-              fontWeight={500}
-              color="rgba(36, 40, 40, 0.6)"
-              fontSize={16}
-            >
+            <Typography {...secondaryParagraphProps}>
               Access each organization's data separately and together,
               streamline collaboration, and simplify administration.
             </Typography>
