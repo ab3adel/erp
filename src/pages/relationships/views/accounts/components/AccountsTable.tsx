@@ -47,7 +47,7 @@ export const AccountsTable = ({
     label: string;
     type: "personal" | "shared";
   }) => {
-    createTab(form.label, model!, columnsState);
+    createTab(form.label, model!, columnsState, form.type === "shared");
     closeDialog();
   };
 
