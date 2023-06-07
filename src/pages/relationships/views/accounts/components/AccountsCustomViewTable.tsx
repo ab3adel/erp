@@ -68,7 +68,7 @@ export const AccountsCustomViewTable = ({
           rows={rows}
           columns={
             rawColumns.filter((col) =>
-              columnsState.find((colState) => colState.field === col.field)
+              columnsState?.find((colState) => colState.field === col.field)
             ) || []
           }
           apiRef={apiRef}
