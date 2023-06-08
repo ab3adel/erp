@@ -43,7 +43,7 @@ export const AccountTypesEditSelect = (
     >
       {data?.accountTypes?.data?.map?.((type) => (
         <MenuItem key={type.id} value={type.id}>
-          {type.category}
+          {type.name}
         </MenuItem>
       ))}
     </Select>
