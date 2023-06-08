@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const accountsCustomViews = gql`
-  query UserViews($id: ID!, $module: String!) {
-    views_user(user_id: $id, module: $module) {
+  query UserViews($module: String!) {
+    views_user(module: $module) {
       id
       name
       module
