@@ -15,7 +15,7 @@ export const useNavsItem = () => {
       icon: <CorporateFareIcon sx={{ color: "inherit" }} />,
       expanded: true,
       children: [
-        { label: "General", nodeId: "/settings/business/general" },
+        { label: "General", nodeId: "/settings/business/general/organization" },
         { label: "Origin Customization", nodeId: "/settings/origin" },
       ],
     },
