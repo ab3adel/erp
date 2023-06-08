@@ -1,13 +1,13 @@
-import NavigateBackContainer from "@/pages/settings/components/NavigateBackContainer";
 import PageSectionContainer from "@/pages/settings/components/SectionContainer";
 import Header from "./components/Header";
 import { Box } from "@mui/material";
 import EditForm from "./components/EditForm";
+import NavigationContainer from "./containers/NavigationContainer";
 
 const Edit = () => {
   return (
     <PageSectionContainer>
-      <NavigateBackContainer backLabel="Organization" />
+      <NavigationContainer />
 
       <Box mt={2}>
         <Header />

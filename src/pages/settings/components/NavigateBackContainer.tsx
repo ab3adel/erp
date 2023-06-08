@@ -5,16 +5,21 @@ import { Button } from "@material-ui/core";
 
 interface NavigateBackContainerProps {
   backLabel?: string;
+  onNavigateBackClick?: () => void;
 }
 
 const NavigateBackContainer: FunctionComponent<NavigateBackContainerProps> = (
   props
 ) => {
-  const { backLabel } = props;
+  const { backLabel, onNavigateBackClick } = props;
 
   return (
     <Toolbar disableGutters>
-      <Button variant="text" startIcon={<img src={arrowLeftIcon} />}>
+      <Button
+        variant="text"
+        onClick={onNavigateBackClick}
+        startIcon={<img src={arrowLeftIcon} />}
+      >
         {backLabel}
       </Button>
     </Toolbar>
