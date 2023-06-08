@@ -1,6 +1,7 @@
 import {
-  GridToolbarContainer, GridToolbarProps,
-  useGridApiContext
+  GridToolbarContainer,
+  GridToolbarProps,
+  useGridApiContext,
 } from "@mui/x-data-grid-pro";
 import {
   Box,
@@ -34,6 +35,7 @@ import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
+import { Tag } from "@/shared/models/models";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -50,6 +52,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
+
   const newRow = apiRef.current.getRowModels().get("new");
   const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
   const [edit] = useGenericMutation<
@@ -82,6 +85,39 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       variables: { id },
       onCompleted: () => {
         closeDialog();
+      },
+    });
+  };
+
+  const handleAddTag = (tag: Tag) => {
+    edit({
+      variables: {
+        input: {
+          id: Number(selectedRow.id),
+          tags: [
+            ...selectedRow.tags.map((tag: Tag) => ({
+              ...tag,
+              id: Number(tag.id),
+            })),
+            { ...tag, id: Number(tag.id) },
+          ],
+        },
+      },
+    });
+  };
+
+  const handleDeleteTag = (tag: Tag) => {
+    edit({
+      variables: {
+        input: {
+          id: Number(selectedRow.id),
+          tags: selectedRow.tags
+            .filter((t: Tag) => tag.id !== t.id)
+            .map((t: Tag) => ({
+              ...t,
+              id: Number(t.id),
+            })),
+        },
       },
     });
   };
@@ -283,7 +319,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
-      <TagsSelect anchorEl={anchorEl} open={Boolean(selectedRow)} />
+      <TagsSelect
+        anchorEl={anchorEl}
+        open={Boolean(selectedRow)}
+        selectedTags={selectedRow?.tags}
+        onRemoveTag={handleDeleteTag}
+        onSelectTag={handleAddTag}
+      />
 
       <Snackbar
         open={showSnackbar}
