@@ -29,12 +29,14 @@ interface TagDropdownProps {
   onDelete: (tag: Tag) => void;
   onSearch: (query: string) => void;
   anchorEl: HTMLElement | null;
+  open: boolean;
 }
 export const TagsSelect: React.FC<TagDropdownProps> = ({
   tags,
   onDelete,
   onSearch,
   anchorEl,
+  open,
 }) => {
   const [inputValue, setInputValue] = useState("");
 
@@ -52,7 +54,11 @@ export const TagsSelect: React.FC<TagDropdownProps> = ({
   };
 
   return (
-    <Popper open={Boolean(anchorEl)} anchorEl={anchorEl} sx={{ zIndex: 2 }}>
+    <Popper
+      open={Boolean(anchorEl) && open}
+      anchorEl={anchorEl}
+      sx={{ zIndex: 2 }}
+    >
       <Paper
         sx={{
           width: "200px",

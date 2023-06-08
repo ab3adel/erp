@@ -305,6 +305,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       </GenericDialog>
       <TagsSelect
         anchorEl={anchorEl}
+        open={Boolean(selectedRow)}
         onDelete={(tag) => {
           setFilteredTags(filterdTags.filter((t) => t.id !== tag.id));
         }}
