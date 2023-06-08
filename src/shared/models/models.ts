@@ -50,3 +50,12 @@ export interface AccountType {
   created_at: string;
   updated_at: string;
 }
+
+export interface IOrganization {
+  id: number;
+  city: string;
+  currency: string;
+  language: string;
+  plan: string;
+  team_members?: number;
+}

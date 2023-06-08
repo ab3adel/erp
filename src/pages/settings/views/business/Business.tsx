@@ -3,9 +3,7 @@ import { FunctionComponent } from "react";
 import { Outlet } from "react-router-dom";
 import { Box, Paper } from "@mui/material";
 
-interface BussinessProps {}
-
-const Bussiness: FunctionComponent<BussinessProps> = () => {
+const Bussiness: FunctionComponent = () => {
   return (
     <Box>
       <CurvedTabs

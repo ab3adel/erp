@@ -28,6 +28,7 @@ import {
 import { AccountsCustomView } from "@/pages/relationships/views/accounts/AccountsCustomView";
 import Business from "@/pages/settings/views/business/Business";
 import Organization from "@/pages/settings/views/business/views/general/views/organization/Organization";
+import Edit from "@/pages/settings/views/business/views/general/views/organization/views/edit/Edit";
 
 const ProfileChildrenRoutes = [
   {
@@ -125,7 +126,15 @@ export const router = createBrowserRouter([
               {
                 path: "general",
                 element: <GeneralBusiness />,
-                children: [{ element: <Organization />, path: "organization" }],
+                children: [
+                  {
+                    path: "organization",
+                    children: [
+                      { element: <Organization />, index: true },
+                      { element: <Edit />, path: "edit" },
+                    ],
+                  },
+                ],
               },
             ],
           },
