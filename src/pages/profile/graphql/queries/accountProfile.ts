@@ -52,6 +52,11 @@ export const accountProfile = gql`
         contact_info
         is_primary
       }
+      notes {
+        id
+        note_title
+        note_body
+      }
     }
   }
 `;

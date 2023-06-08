@@ -2,6 +2,7 @@ import {
   Account,
   Contact,
   Farm,
+  Note,
   PaginatorInfo,
   Tag,
 } from "@/shared/models/models";
@@ -59,4 +60,5 @@ export type AccountInput = {
   contacts?: Partial<Contact>[];
   type_id?: number;
   tags?: Tag[];
+  notes?: Note[];
 };

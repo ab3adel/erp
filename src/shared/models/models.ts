@@ -44,6 +44,7 @@ export interface Account {
   farms?: Farm[];
   contacts?: Contact[];
   tags?: Tag[];
+  notes?: Note[];
 }
 
 export interface AccountType {
@@ -92,4 +93,13 @@ export type Preference = {
   id: string;
   is_closed: boolean;
   order: number;
+};
+
+export type Note = {
+  id: number;
+  note_title: string;
+  note_body: string;
+  account: Account;
+  created_at: Date;
+  updated_at: Date;
 };

@@ -8,67 +8,127 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  Button,
   Box,
   Container,
   Grid,
   Paper,
   Divider,
   TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Tooltip,
 } from "@mui/material";
 import AddFile from "@mui/icons-material/NoteAddOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
-
-interface Note {
-  title: string;
-  content: string;
-  creationDate: string;
-}
-
-const initialNotes: Note[] = [
-  {
-    title: "Note 1",
-    content: "This is the content of note 1",
-    creationDate: "2023-05-30",
-  },
-  {
-    title: "Note 2",
-    content: "This is the content of note 2",
-    creationDate: "2023-05-29",
-  },
-];
+import SaveIcon from "@mui/icons-material/SaveOutlined";
+import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import { Account, Note } from "@/shared/models/models";
+import { accountProfile } from "../../graphql/queries/accountProfile";
+import _ from "lodash";
+import { useGenericMutation } from "@/shared";
+import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
+import { AccountInput } from "@/pages/relationships/views/accounts/types";
 
 export const AccountNotes: React.FC = () => {
-  const [notes, setNotes] = useState<Note[]>(initialNotes);
+  const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
-  const [newNote, setNewNote] = useState<Note>({
-    title: "",
-    content: "",
-    creationDate: "",
+  const [isEditModeActive, setIsEditModeActive] = useState(false);
+  const { id } = useParams();
+
+  const [edit] = useGenericMutation<
+    {
+      updateOrInsertAccount: {
+        id: number;
+      };
+    },
+    Variables
+  >(saveAccount, { refetchQueries: ["accountProfile"] });
+
+  useQuery<{ account: Account }, { id: number }>(accountProfile, {
+    variables: {
+      id: Number(id),
+    },
+    onCompleted: (data) => {
+      setNotes(data.account.notes || []);
+    },
   });
-  const [openDialog, setOpenDialog] = useState(false);
 
   const handleNoteClick = (note: Note) => {
-    setSelectedNote(note);
+    if (selectedNote === note) {
+      setSelectedNote(null);
+      setIsEditModeActive(false);
+    } else {
+      setSelectedNote(note);
+      setIsEditModeActive(false);
+    }
   };
 
   const handleDeleteNote = (note: Note) => {
     const updatedNotes = notes.filter((n) => n !== note);
     setNotes(updatedNotes);
     setSelectedNote(null);
+    setIsEditModeActive(false);
   };
 
   const handleAddNote = () => {
-    if (newNote.title && newNote.content && newNote.creationDate) {
-      setNotes([...notes, newNote]);
-      setNewNote({ title: "", content: "", creationDate: "" });
-      setOpenDialog(false);
+    const newNoteData = {
+      note_title: `Note title`,
+      note_body: `Note content`,
+      created_at: new Date(),
+      id: _.uniqueId("newNote") as any,
+    } as Note;
+    setNotes([...notes, newNoteData]);
+    setSelectedNote(newNoteData);
+    setIsEditModeActive(true);
+  };
+
+  const handleNoteTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (selectedNote) {
+      setSelectedNote({
+        ...selectedNote,
+        note_title: event.target.value,
+      });
+    }
+  };
+
+  const handleNoteContentChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (selectedNote) {
+      setSelectedNote({
+        ...selectedNote,
+        note_body: event.target.value,
+      });
+    }
+  };
+
+  const handleSaveNote = () => {
+    if (selectedNote) {
+      edit({
+        variables: {
+          input: {
+            id: Number(id),
+            notes: [
+              ...(notes
+                .filter((note) => !String(note.id).includes("newNote"))
+                .map((note) => ({
+                  id: note.id,
+                  note_body: note.note_body,
+                  note_title: note.note_title,
+                })) as Note[]),
+              {
+                ...(!String(selectedNote.id).includes("newNote") && {
+                  id: selectedNote.id,
+                }),
+                note_title: selectedNote.note_title,
+                note_body: selectedNote.note_body,
+              } as Note,
+            ],
+          },
+        },
+      });
+      setIsEditModeActive(false);
     }
   };
 
@@ -82,20 +142,33 @@ export const AccountNotes: React.FC = () => {
               <IconButton
                 sx={{ mr: 1 }}
                 color="primary"
-                onClick={() => setOpenDialog(true)}
+                onClick={handleAddNote}
               >
                 <AddFile />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton color="error">
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
+            {selectedNote && (
+              <Tooltip title="Delete">
+                <IconButton
+                  sx={{ mr: 1 }}
+                  onClick={() => handleDeleteNote(selectedNote)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {isEditModeActive && (
+              <Tooltip title="Delete">
+                <IconButton onClick={handleSaveNote}>
+                  <SaveIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
       <Divider />
+
       <div style={{ display: "flex", position: "relative" }}>
         <Drawer
           variant="permanent"
@@ -113,26 +186,15 @@ export const AccountNotes: React.FC = () => {
           <List>
             {notes.map((note) => (
               <ListItem
-                key={note.title}
+                key={note.note_title}
                 button
                 selected={selectedNote === note}
                 onClick={() => handleNoteClick(note)}
               >
                 <ListItemText
-                  primary={note.title}
-                  secondary={note.creationDate}
+                  primary={note.note_title}
+                  secondary={note.created_at?.toISOString()?.split("T")?.[0]}
                 />
-                <ListItemSecondaryAction>
-                  <Tooltip title="Delete">
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleDeleteNote(note)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Tooltip>
-                </ListItemSecondaryAction>
               </ListItem>
             ))}
           </List>
@@ -143,12 +205,40 @@ export const AccountNotes: React.FC = () => {
               <Paper elevation={0}>
                 {selectedNote ? (
                   <Box p={2}>
-                    <Typography variant="h5" sx={{ mb: 2 }}>
-                      {selectedNote.title}
-                    </Typography>
-                    <Typography variant="body1">
-                      {selectedNote.content}
-                    </Typography>
+                    {isEditModeActive ? (
+                      <TextField
+                        variant="standard"
+                        sx={{ mb: 8 }}
+                        value={selectedNote.note_title}
+                        onChange={handleNoteTitleChange}
+                        fullWidth
+                      />
+                    ) : (
+                      <Typography
+                        variant="h5"
+                        sx={{ mb: 2 }}
+                        onClick={() => setIsEditModeActive(true)}
+                      >
+                        {selectedNote.note_title}
+                      </Typography>
+                    )}
+                    {isEditModeActive ? (
+                      <TextField
+                        variant="standard"
+                        value={selectedNote.note_body}
+                        onChange={handleNoteContentChange}
+                        fullWidth
+                        multiline
+                        rows={6}
+                      />
+                    ) : (
+                      <Typography
+                        variant="body1"
+                        onClick={() => setIsEditModeActive(true)}
+                      >
+                        {selectedNote.note_body}
+                      </Typography>
+                    )}
                   </Box>
                 ) : (
                   <Box p={2}>
@@ -160,59 +250,10 @@ export const AccountNotes: React.FC = () => {
           </Grid>
         </Container>
       </div>
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Add New Note</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Title"
-            variant="filled"
-            value={newNote.title}
-            onChange={(e) =>
-              setNewNote({
-                ...newNote,
-                title: e.target.value,
-              })
-            }
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Content"
-            variant="filled"
-            multiline
-            rows={4}
-            value={newNote.content}
-            onChange={(e) =>
-              setNewNote({
-                ...newNote,
-                content: e.target.value,
-              })
-            }
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Creation Date"
-            variant="filled"
-            type="date"
-            value={newNote.creationDate}
-            onChange={(e) =>
-              setNewNote({
-                ...newNote,
-                creationDate: e.target.value,
-              })
-            }
-            fullWidth
-            margin="normal"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleAddNote} variant="contained" color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
+};
+
+type Variables = {
+  input: AccountInput;
 };
