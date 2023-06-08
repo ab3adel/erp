@@ -1,8 +1,6 @@
 import {
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarProps,
-  useGridApiContext,
+  GridToolbarContainer, GridToolbarProps,
+  useGridApiContext
 } from "@mui/x-data-grid-pro";
 import {
   Box,
@@ -31,29 +29,11 @@ import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useEffect, useState } from "react";
-import { TagsSelect } from "@/shared/components/TagsSelect";
+import { TagsSelect } from "@/shared/components/tags/TagsSelect";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
-
-const tags = [
-  {
-    id: "1",
-    label: "Tag 1",
-    color: "#3f51b5",
-  },
-  {
-    id: "2",
-    label: "Tag 2",
-    color: "#f50057",
-  },
-  {
-    id: "3",
-    label: "Tag 3",
-    color: "#4caf50",
-  },
-];
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -64,7 +44,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     { id: string }
   >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
   const [isMerged, setIsMerged] = useState(false);
-  const [filterdTags, setFilteredTags] = useState(tags);
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const apiRef = useGridApiContext();
@@ -303,19 +283,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
-      <TagsSelect
-        anchorEl={anchorEl}
-        open={Boolean(selectedRow)}
-        onDelete={(tag) => {
-          setFilteredTags(filterdTags.filter((t) => t.id !== tag.id));
-        }}
-        onSearch={(search) => {
-          setFilteredTags(
-            tags.filter((tag) => tag.label.toLowerCase().includes(search))
-          );
-        }}
-        tags={filterdTags}
-      />
+      <TagsSelect anchorEl={anchorEl} open={Boolean(selectedRow)} />
 
       <Snackbar
         open={showSnackbar}
