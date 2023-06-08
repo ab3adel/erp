@@ -39,6 +39,9 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
         first_name: account.first_name,
         marital_status: account.marital_status,
         type: account.accountType?.category,
+        mobileNumber: account.contacts?.find(
+          (contact) => contact.type === "phone"
+        )?.contact_info,
       })) || [],
     [data]
   );

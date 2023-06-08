@@ -85,7 +85,6 @@ export const useAccountsTableColumns = () => {
       ),
       preProcessEditCellProps: async (params) => {
         const value = params.props.value;
-        console.log("HI");
         const { data } = await queryFn({
           variables: {
             name: value,
@@ -156,15 +155,9 @@ export const useAccountsTableColumns = () => {
       editable: true,
     },
     {
-      field: "contacts",
+      field: "mobileNumber",
       headerName: "Mobile Number",
       width: 150,
-      valueGetter: (params) => {
-        const value = params.row.contacts
-          ? params.row.contacts[0]?.contact_info
-          : "";
-        return value;
-      },
     },
     { field: "district", headerName: "District", width: 150, editable: true },
     {

@@ -73,7 +73,7 @@ export interface Contact {
   id: number;
   contact_info: string;
   type: string;
-  is_primary?: string;
+  is_primary?: boolean;
   account: Account;
   created_at: Date;
   updated_at: Date;
