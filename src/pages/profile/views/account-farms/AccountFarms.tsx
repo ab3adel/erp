@@ -19,6 +19,10 @@ import { useGenericMutation } from "@/shared";
 import { saveFarm } from "./graphql/mutations/SaveFarm";
 import { FarmInput } from "./types";
 import { useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@apollo/client";
+import { Account } from "@/shared/models/models";
+import { accountProfile } from "../../graphql/queries/accountProfile";
+import { deleteFarm } from "./graphql/mutations/deleteFarm";
 
 type Farm = {
   id: string;
@@ -32,6 +36,7 @@ type Farm = {
 
 export const AccountFarms = () => {
   const [farms, setFarms] = useState<Farm[]>([]);
+
   const [newFarm, setNewFarm] = useState<Farm>({
     id: "",
     name: "",
@@ -42,14 +47,42 @@ export const AccountFarms = () => {
     averageTreeAge: 0,
   });
   const { id } = useParams();
+  useQuery<{ account: Account }, { id: number }>(accountProfile, {
+    variables: {
+      id: Number(id),
+    },
+    onCompleted: (data) => {
+      setFarms(
+        (data.account.farms?.map((farm) => ({
+          averageTreeAge: farm.average_tree_age,
+          id: farm.id,
+          name: farm.farm_name,
+          numberOfTrees: farm.average_tree_age,
+          spacing: farm.spacing,
+          totalSize: farm.size,
+          verticals: farm.varietals,
+        })) || []) as Farm[]
+      );
+    },
+  });
   const [selectedFarm, setSelectedFarm] = useState<string>();
   const [mutate] = useGenericMutation<{
     farms: FarmInput[];
     id: number;
-  }>(saveFarm);
+  }>(saveFarm, {
+    refetchQueries: ["accountProfile"],
+  });
+  const [deleteFarmFn] = useMutation<
+    unknown,
+    {
+      id: number;
+    }
+  >(deleteFarm, {
+    refetchQueries: ["accountProfile"],
+  });
 
   const handleAddFarm = () => {
-    const id = _.uniqueId();
+    const id = _.uniqueId("newFarm");
 
     setFarms((prevFarms) => [{ ...newFarm, id }, ...prevFarms]);
     setNewFarm({
@@ -66,6 +99,11 @@ export const AccountFarms = () => {
 
   const handleDeleteFarm = (id: string) => {
     setFarms((prevFarms) => prevFarms.filter((farm) => farm.id !== id));
+    deleteFarmFn({
+      variables: {
+        id: Number(id),
+      },
+    });
   };
 
   const handleEditFarm = (id: string) => {
@@ -74,13 +112,11 @@ export const AccountFarms = () => {
   };
 
   const handleSaveFarm = () => {
-    const updatedFarms = [...farms];
-    updatedFarms[updatedFarms.length - 1] = newFarm;
-    setFarms(updatedFarms);
     setSelectedFarm(undefined);
-
     const farmInput: FarmInput = {
-      id: parseInt(newFarm.id),
+      ...(!String(newFarm.id).includes("newFarm") && {
+        id: parseInt(newFarm.id),
+      }),
       average_tree_age: Number(newFarm.averageTreeAge) || 0,
       farm_name: newFarm.name,
       size: Number(newFarm.totalSize) || 0,
