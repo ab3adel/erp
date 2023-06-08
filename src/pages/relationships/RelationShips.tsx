@@ -7,20 +7,15 @@ import { accountsCustomViews } from "./views/accounts/graphql/queries/AccountsCu
 import { UserView } from "@/shared/models/models";
 
 export const RelationShips = () => {
-  const userId = localStorage.getItem("token")
-    ? localStorage.getItem("token")?.split("|")[0]
-    : "";
   const { data, loading } = useQuery<
     {
       views_user: UserView[];
     },
     {
-      id: number;
       module: string;
     }
   >(accountsCustomViews, {
     variables: {
-      id: Number(userId),
       module: "relationships",
     },
   });
