@@ -15,12 +15,18 @@ import {
   Typography,
   Alert,
   Tooltip,
+  MenuItem,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
-import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
+import {
+  DropDownMenu,
+  GenericDialog,
+  useDialog,
+  useGenericMutation,
+} from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
@@ -28,6 +34,8 @@ import { useEffect, useState } from "react";
 import { TagsSelect } from "@/shared/components/TagsSelect";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
 
 const tags = [
   {
@@ -72,6 +80,12 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     },
     { input: AccountInput }
   >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+  const columns = apiRef.current
+    .getAllColumns()
+    .map((clm) => clm.field)
+    .filter((c) => !["__check__", "type", "mobileNumber"].includes(c));
+
+  const { downloadReport } = useDownloadReport();
 
   useEffect(() => {
     setAnchorEl(null);
@@ -193,7 +207,48 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         Save view
       </Button>
       <Divider orientation="vertical" />
-      <GridToolbarExport variant="text" />
+      <DropDownMenu
+        button={(props) => (
+          <Button
+            {...props}
+            variant="text"
+            startIcon={<FileDownloadOutlinedIcon />}
+          >
+            Export
+          </Button>
+        )}
+      >
+        <MenuItem
+          onClick={() => {
+            downloadReport("excel", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .xls
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            downloadReport("csv", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .csv
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            downloadReport("pdf", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .pdf
+        </MenuItem>
+      </DropDownMenu>
       <Button
         variant="text"
         startIcon={<ViewWeekIcon />}
