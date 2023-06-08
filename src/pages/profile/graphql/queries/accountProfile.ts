@@ -46,6 +46,17 @@ export const accountProfile = gql`
         name
         color
       }
+      contacts {
+        id
+        type
+        contact_info
+        is_primary
+      }
+      notes {
+        id
+        note_title
+        note_body
+      }
     }
   }
 `;

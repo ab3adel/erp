@@ -44,6 +44,7 @@ export interface Account {
   farms?: Farm[];
   contacts?: Contact[];
   tags?: Tag[];
+  notes?: Note[];
 }
 
 export interface AccountType {
@@ -60,7 +61,7 @@ export interface Farm {
   farm_name: string;
   size: number;
   spacing: number;
-  varietals: string[];
+  varietals: string;
 }
 
 export interface Tag {
@@ -73,8 +74,32 @@ export interface Contact {
   id: number;
   contact_info: string;
   type: string;
-  is_primary?: string;
+  is_primary?: boolean;
   account: Account;
   created_at: Date;
   updated_at: Date;
 }
+
+export type UserView = {
+  id: string;
+  name: string;
+  module: string;
+  is_shared: boolean;
+  query: string;
+  preferences: Preference[];
+};
+
+export type Preference = {
+  id: string;
+  is_closed: boolean;
+  order: number;
+};
+
+export type Note = {
+  id: number;
+  note_title: string;
+  note_body: string;
+  account: Account;
+  created_at: Date;
+  updated_at: Date;
+};

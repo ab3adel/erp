@@ -4,6 +4,7 @@ import {
   DataGridPro,
   GridColDef,
   GridColumnVisibilityModel,
+  GridFilterModel,
   GridPaginationModel,
 } from "@mui/x-data-grid-pro";
 import { AccountsTableToolbar } from "./AccountsTableToolbar";
@@ -32,6 +33,7 @@ export const AccountsTable = ({
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
   const [model, setModel] = useState<GridColumnVisibilityModel>();
+  const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const { closeDialog, isDialogOpen, openDialog } = useDialog<"save_view">();
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
@@ -47,7 +49,13 @@ export const AccountsTable = ({
     label: string;
     type: "personal" | "shared";
   }) => {
-    createTab(form.label, model!, columnsState);
+    createTab(
+      form.label,
+      model!,
+      columnsState,
+      filterModel,
+      form.type === "shared"
+    );
     closeDialog();
   };
 
@@ -61,6 +69,10 @@ export const AccountsTable = ({
           paginationModel={paginationModel}
           onPaginationModelChange={(newModel) => {
             setPaginationModel(newModel);
+          }}
+          filterModel={filterModel}
+          onFilterModelChange={(newModel) => {
+            setFilterModel(newModel);
           }}
           pagination
           pageSizeOptions={[10, 25, 50]}

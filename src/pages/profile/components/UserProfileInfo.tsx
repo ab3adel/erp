@@ -25,6 +25,9 @@ import { useQuery } from "@apollo/client";
 import { accountProfile } from "../graphql/queries/accountProfile";
 import { Account } from "@/shared/models/models";
 import { useParams } from "react-router-dom";
+import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
+import { useGenericMutation } from "@/shared";
+import { AccountInput } from "@/pages/relationships/views/accounts/types";
 
 export const UserProfileInfo: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
@@ -40,6 +43,14 @@ export const UserProfileInfo: React.FC = () => {
   const [updatedLocationDetails, setUpdatedLocationDetails] = useState<{
     government_id: string;
   }>();
+  const [edit] = useGenericMutation<
+    {
+      updateOrInsertAccount: {
+        id: number;
+      };
+    },
+    Variables
+  >(saveAccount, { refetchQueries: ["AccountsQuery", "accountProfile"] });
 
   const { data } = useQuery<{ account: Account }, { id: number }>(
     accountProfile,
@@ -49,11 +60,17 @@ export const UserProfileInfo: React.FC = () => {
       },
       onCompleted: (data) => {
         setUpdatedContactDetails({
-          email: "mostafa@gmail.com",
+          email: data.account.contacts?.find(
+            (contact) => contact.type === "email"
+          )?.contact_info,
           language: data.account.language,
-          mobile: "953434343",
+          mobile: data.account.contacts?.find(
+            (contact) => contact.type === "phone"
+          )?.contact_info,
           subscription_type: data.account.subscription_type,
-          whatsapp: "953434343",
+          whatsapp: data.account.contacts?.find(
+            (contact) => contact.type === "whatsapp"
+          )?.contact_info,
         });
         setUpdatedLocationDetails({
           government_id: data.account.government_id,
@@ -63,19 +80,61 @@ export const UserProfileInfo: React.FC = () => {
   );
   const [locationDetailsEditMode, setLocationDetailsEditMode] = useState(false);
 
-  const handleSave = () => {
-    // Save the updated contact details
-    // You can implement your logic here, such as making an API call to update the contact details in the backend
+  const getAccountContact = (type: string) => {
+    return data?.account.contacts?.find((contact) => contact.type === type);
+  };
 
-    // Disable the editing mode and update the state
+  const handleSave = () => {
+    const updatedAccount: AccountInput = {
+      id: Number(id),
+      contacts: [
+        {
+          ...(getAccountContact("phone") && {
+            id: getAccountContact("phone")?.id,
+          }),
+          type: "phone",
+          contact_info: updatedContactDetails?.mobile,
+          is_primary: true,
+        },
+        {
+          ...(getAccountContact("whatsapp") && {
+            id: getAccountContact("whatsapp")?.id,
+          }),
+          type: "whatsapp",
+          contact_info: updatedContactDetails?.whatsapp,
+          is_primary: true,
+        },
+        {
+          ...(getAccountContact("email") && {
+            id: getAccountContact("email")?.id,
+          }),
+          type: "email",
+          contact_info: updatedContactDetails?.email,
+          is_primary: true,
+        },
+      ],
+      subscription_type: updatedContactDetails?.subscription_type,
+      language: updatedContactDetails?.language,
+    };
+    edit({
+      variables: {
+        input: updatedAccount,
+      },
+    });
     setEditMode(false);
   };
 
   const handleSaveLocationDetails = () => {
-    // Save the updated location details
-    // You can implement your logic here, such as making an API call to update the location details in the backend
+    const updatedLocationInput: AccountInput = {
+      id: Number(id),
+      government_id: updatedLocationDetails?.government_id,
+    };
 
-    // Disable the editing mode and update the state
+    edit({
+      variables: {
+        input: updatedLocationInput,
+      },
+    });
     setLocationDetailsEditMode(false);
   };
 
@@ -219,7 +278,11 @@ export const UserProfileInfo: React.FC = () => {
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    943454523
+                    {
+                      data?.account.contacts?.find(
+                        (contact) => contact.type === "phone"
+                      )?.contact_info
+                    }
                   </Typography>
                 </Box>
               </Box>
@@ -258,7 +321,11 @@ export const UserProfileInfo: React.FC = () => {
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    943454523
+                    {
+                      data?.account.contacts?.find(
+                        (contact) => contact.type === "whatsapp"
+                      )?.contact_info
+                    }
                   </Typography>
                 </Box>
               </Box>
@@ -297,7 +364,11 @@ export const UserProfileInfo: React.FC = () => {
                     fontWeight={500}
                     sx={{ color: "grey.700" }}
                   >
-                    mostafamilly6@gmail.com
+                    {
+                      data?.account.contacts?.find(
+                        (contact) => contact.type === "email"
+                      )?.contact_info
+                    }
                   </Typography>
                 </Box>
               </Box>
@@ -453,4 +524,8 @@ export const UserProfileInfo: React.FC = () => {
       </Box>
     </Paper>
   );
+};
+
+type Variables = {
+  input: AccountInput;
 };

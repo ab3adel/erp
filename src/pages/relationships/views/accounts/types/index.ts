@@ -1,4 +1,11 @@
-import { Account, Contact, PaginatorInfo } from "@/shared/models/models";
+import {
+  Account,
+  Contact,
+  Farm,
+  Note,
+  PaginatorInfo,
+  Tag,
+} from "@/shared/models/models";
 
 export interface AccountsResponse {
   accounts: {
@@ -22,7 +29,7 @@ export type AccountRow = {
   contacts?: Contact[];
 };
 
-export interface AccountInput {
+export type AccountInput = {
   id?: number;
   name?: string;
   status?: string;
@@ -49,5 +56,9 @@ export interface AccountInput {
   read_literate?: string;
   write_literate?: string;
   total_children?: number;
+  farms?: Farm[];
+  contacts?: Partial<Contact>[];
   type_id?: number;
-}
+  tags?: Tag[];
+  notes?: Note[];
+};

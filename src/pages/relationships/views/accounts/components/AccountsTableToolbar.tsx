@@ -24,7 +24,7 @@ import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TagsSelect } from "@/shared/components/TagsSelect";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
@@ -72,6 +72,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     },
     { input: AccountInput }
   >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [selectedRow?.id]);
 
   const handleTagButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
