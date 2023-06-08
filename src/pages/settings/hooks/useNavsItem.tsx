@@ -11,11 +11,11 @@ export const useNavsItem = () => {
     },
     {
       label: "Businsess Account",
-      nodeId: "/settings/businsess_account",
+      nodeId: "/settings/business",
       icon: <CorporateFareIcon sx={{ color: "inherit" }} />,
       expanded: true,
       children: [
-        { label: "General", nodeId: "/settings/general" },
+        { label: "General", nodeId: "/settings/business/general" },
         { label: "Origin Customization", nodeId: "/settings/origin" },
       ],
     },

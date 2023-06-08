@@ -11,6 +11,7 @@ import { SettingsNavs } from "@/pages/settings/components/SettingsNavs";
 import { Settings } from "@/pages/settings/Settings";
 import { Account } from "@/pages/settings/views/account/Account";
 import { General } from "@/pages/settings/views/account/views/general/General";
+import GeneralBusiness from "@/pages/settings/views/business/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
 import {
@@ -25,6 +26,8 @@ import {
   PlotProfile,
 } from "@/pages/profile";
 import { AccountsCustomView } from "@/pages/relationships/views/accounts/AccountsCustomView";
+import Business from "@/pages/settings/views/business/Business";
+import Organization from "@/pages/settings/views/business/views/general/views/organization/Organization";
 
 const ProfileChildrenRoutes = [
   {
@@ -112,6 +115,17 @@ export const router = createBrowserRouter([
               {
                 path: "security",
                 element: <Security />,
+              },
+            ],
+          },
+          {
+            path: "business",
+            element: <Business />,
+            children: [
+              {
+                path: "general",
+                element: <GeneralBusiness />,
+                children: [{ element: <Organization />, path: "organization" }],
               },
             ],
           },

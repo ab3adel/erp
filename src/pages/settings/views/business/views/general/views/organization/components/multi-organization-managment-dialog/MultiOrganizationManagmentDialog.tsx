@@ -15,7 +15,7 @@ import BuldingIcon from "@/assets/images/building-icon.svg";
 
 const MultiOrganizationManagmentDialog = () => {
   const DialogProps: DialogProps = {
-    open: true,
+    open: false,
     fullWidth: true,
     maxWidth: "lg",
     PaperProps: { style: { maxHeight: "none" } },
