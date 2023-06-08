@@ -245,7 +245,7 @@ export const UserProfileInfo: React.FC = () => {
         </Box>
         <Divider />
         <Box mt={2} display="flex" flexDirection="column" rowGap={1}>
-          <Box>
+          <Box mb={2}>
             {editMode ? (
               <TextField
                 variant="filled"
@@ -288,7 +288,7 @@ export const UserProfileInfo: React.FC = () => {
               </Box>
             )}
           </Box>
-          <Box>
+          <Box mb={2}>
             {editMode ? (
               <TextField
                 variant="filled"
@@ -331,7 +331,7 @@ export const UserProfileInfo: React.FC = () => {
               </Box>
             )}
           </Box>
-          <Box>
+          <Box mb={2}>
             {editMode ? (
               <TextField
                 variant="filled"
@@ -374,7 +374,7 @@ export const UserProfileInfo: React.FC = () => {
               </Box>
             )}
           </Box>
-          <Box>
+          <Box mb={2}>
             {editMode ? (
               <TextField
                 variant="filled"
@@ -413,7 +413,7 @@ export const UserProfileInfo: React.FC = () => {
               </Box>
             )}
           </Box>
-          <Box>
+          <Box mb={2}>
             {editMode ? (
               <TextField
                 variant="filled"
