@@ -12,9 +12,7 @@ import {
   Switch,
   TextField,
   Typography,
-  Alert,
-  Tooltip,
-  MenuItem,
+  Alert, MenuItem
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -172,31 +170,17 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Tooltip
-              open={isDisabled}
-              title="Please fill Account Name , Account type , Address1 fields"
-              slotProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "error.main",
-                    color: "common.white",
-                  },
-                },
+            <Button
+              variant="text"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                dispatch({ type: "SAVE_ACCOUNT" });
               }}
+              disabled={isDisabled}
             >
-              <span>
-                <Button
-                  variant="text"
-                  startIcon={<SaveIcon />}
-                  onClick={() => {
-                    dispatch({ type: "SAVE_ACCOUNT" });
-                  }}
-                  disabled={isDisabled}
-                >
-                  Save row
-                </Button>
-              </span>
-            </Tooltip>
+              Save row
+            </Button>
+
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
