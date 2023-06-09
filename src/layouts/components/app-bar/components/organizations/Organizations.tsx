@@ -5,11 +5,11 @@ import {
   MenuItem,
   MenuProps,
   ButtonProps,
+  styled,
 } from "@mui/material";
 import { FunctionComponent } from "react";
 import arrowDownIcon from "@/assets/images/arrow-down.svg";
 
-import { styled } from "@mui/material";
 import { useLogic } from "./Organizations.logic";
 
 export const OrganizationButton = styled(Button)(() => ({

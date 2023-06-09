@@ -15,10 +15,10 @@ const Bussiness: FunctionComponent = () => {
             label: "Organization",
             value: "/settings/business/general/organization",
           },
-          // {
-          //   label: "TEAM",
-          //   value: "/settings/account/notifications",
-          // },
+          {
+            label: "TEAM",
+            value: "/settings/business/general/teams",
+          },
           // {
           //   label: "Branding",
           //   value: "/settings/account/security",
