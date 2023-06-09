@@ -1,6 +1,5 @@
 import {
   GridToolbarContainer,
-  GridToolbarExport,
   GridToolbarProps,
   useGridApiContext,
 } from "@mui/x-data-grid-pro";
@@ -13,39 +12,28 @@ import {
   Switch,
   TextField,
   Typography,
-  Alert,
-  Tooltip,
+  Alert, MenuItem
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
-import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
+import {
+  DropDownMenu,
+  GenericDialog,
+  useDialog,
+  useGenericMutation,
+} from "@/shared";
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
 import { useEffect, useState } from "react";
-import { TagsSelect } from "@/shared/components/TagsSelect";
+import { TagsSelect } from "@/shared/components/tags/TagsSelect";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
-
-const tags = [
-  {
-    id: "1",
-    label: "Tag 1",
-    color: "#3f51b5",
-  },
-  {
-    id: "2",
-    label: "Tag 2",
-    color: "#f50057",
-  },
-  {
-    id: "3",
-    label: "Tag 3",
-    color: "#4caf50",
-  },
-];
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
+import { Tag } from "@/shared/models/models";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -56,12 +44,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     { id: string }
   >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
   const [isMerged, setIsMerged] = useState(false);
-  const [filterdTags, setFilteredTags] = useState(tags);
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
+
   const newRow = apiRef.current.getRowModels().get("new");
   const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
   const [edit] = useGenericMutation<
@@ -72,6 +61,12 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     },
     { input: AccountInput }
   >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+  const columns = apiRef.current
+    .getAllColumns()
+    .map((clm) => clm.field)
+    .filter((c) => !["__check__", "type", "mobileNumber"].includes(c));
+
+  const { downloadReport } = useDownloadReport();
 
   useEffect(() => {
     setAnchorEl(null);
@@ -88,6 +83,39 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       variables: { id },
       onCompleted: () => {
         closeDialog();
+      },
+    });
+  };
+
+  const handleAddTag = (tag: Tag) => {
+    edit({
+      variables: {
+        input: {
+          id: Number(selectedRow.id),
+          tags: [
+            ...selectedRow.tags.map((tag: Tag) => ({
+              ...tag,
+              id: Number(tag.id),
+            })),
+            { ...tag, id: Number(tag.id) },
+          ],
+        },
+      },
+    });
+  };
+
+  const handleDeleteTag = (tag: Tag) => {
+    edit({
+      variables: {
+        input: {
+          id: Number(selectedRow.id),
+          tags: selectedRow.tags
+            .filter((t: Tag) => tag.id !== t.id)
+            .map((t: Tag) => ({
+              ...t,
+              id: Number(t.id),
+            })),
+        },
       },
     });
   };
@@ -142,31 +170,17 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Tooltip
-              open={isDisabled}
-              title="Please fill Account Name , Account type , Address1 fields"
-              slotProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "error.main",
-                    color: "common.white",
-                  },
-                },
+            <Button
+              variant="text"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                dispatch({ type: "SAVE_ACCOUNT" });
               }}
+              disabled={isDisabled}
             >
-              <span>
-                <Button
-                  variant="text"
-                  startIcon={<SaveIcon />}
-                  onClick={() => {
-                    dispatch({ type: "SAVE_ACCOUNT" });
-                  }}
-                  disabled={isDisabled}
-                >
-                  Save row
-                </Button>
-              </span>
-            </Tooltip>
+              Save row
+            </Button>
+
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -193,7 +207,48 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         Save view
       </Button>
       <Divider orientation="vertical" />
-      <GridToolbarExport variant="text" />
+      <DropDownMenu
+        button={(props) => (
+          <Button
+            {...props}
+            variant="text"
+            startIcon={<FileDownloadOutlinedIcon />}
+          >
+            Export
+          </Button>
+        )}
+      >
+        <MenuItem
+          onClick={() => {
+            downloadReport("excel", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .xls
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            downloadReport("csv", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .csv
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            downloadReport("pdf", {
+              columns,
+              table_name: "accounts",
+            });
+          }}
+        >
+          Download .pdf
+        </MenuItem>
+      </DropDownMenu>
       <Button
         variant="text"
         startIcon={<ViewWeekIcon />}
@@ -250,15 +305,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       </GenericDialog>
       <TagsSelect
         anchorEl={anchorEl}
-        onDelete={(tag) => {
-          setFilteredTags(filterdTags.filter((t) => t.id !== tag.id));
-        }}
-        onSearch={(search) => {
-          setFilteredTags(
-            tags.filter((tag) => tag.label.toLowerCase().includes(search))
-          );
-        }}
-        tags={filterdTags}
+        open={Boolean(selectedRow)}
+        selectedTags={selectedRow?.tags}
+        onRemoveTag={handleDeleteTag}
+        onSelectTag={handleAddTag}
       />
 
       <Snackbar

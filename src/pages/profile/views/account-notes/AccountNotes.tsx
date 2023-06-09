@@ -15,6 +15,8 @@ import {
   Divider,
   TextField,
   Tooltip,
+  ListItemButton,
+  InputBase,
 } from "@mui/material";
 import AddFile from "@mui/icons-material/NoteAddOutlined";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
@@ -27,11 +29,24 @@ import _ from "lodash";
 import { useGenericMutation } from "@/shared";
 import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
 import { AccountInput } from "@/pages/relationships/views/accounts/types";
+import SearchIcon from "@mui/icons-material/Search";
+import { deleteNote } from "./graphql/mutations/deleteNote";
 
 export const AccountNotes: React.FC = () => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [isEditModeActive, setIsEditModeActive] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const filterNotes =
+    searchValue.trim() !== ""
+      ? notes.filter((note) =>
+          note.note_title.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      : notes;
+  const [deleteFn] = useGenericMutation<unknown, { id: number }>(deleteNote, {
+    refetchQueries: ["accountProfile"],
+  });
+
   const { id } = useParams();
 
   const [edit] = useGenericMutation<
@@ -67,6 +82,13 @@ export const AccountNotes: React.FC = () => {
     setNotes(updatedNotes);
     setSelectedNote(null);
     setIsEditModeActive(false);
+    if (!id?.includes("newNote")) {
+      deleteFn({
+        variables: {
+          id: Number(selectedNote?.id),
+        },
+      });
+    }
   };
 
   const handleAddNote = () => {
@@ -111,7 +133,11 @@ export const AccountNotes: React.FC = () => {
             id: Number(id),
             notes: [
               ...(notes
-                .filter((note) => !String(note.id).includes("newNote"))
+                .filter(
+                  (note) =>
+                    !String(note.id).includes("newNote") ||
+                    note.id !== selectedNote.id
+                )
                 .map((note) => ({
                   id: note.id,
                   note_body: note.note_body,
@@ -133,7 +159,7 @@ export const AccountNotes: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ minHeight: "70vh" }}>
       <AppBar position="static" color="transparent" elevation={0}>
         <Toolbar>
           <Typography variant="h6">My Notes</Typography>
@@ -158,7 +184,7 @@ export const AccountNotes: React.FC = () => {
               </Tooltip>
             )}
             {isEditModeActive && (
-              <Tooltip title="Delete">
+              <Tooltip title="Save">
                 <IconButton onClick={handleSaveNote}>
                   <SaveIcon />
                 </IconButton>
@@ -168,37 +194,73 @@ export const AccountNotes: React.FC = () => {
         </Toolbar>
       </AppBar>
       <Divider />
-
       <div style={{ display: "flex", position: "relative" }}>
-        <Drawer
-          variant="permanent"
-          anchor="left"
-          sx={{
-            width: 200,
-          }}
-          PaperProps={{
-            sx: {
-              position: "absolute",
+        {notes.length !== 0 && (
+          <Drawer
+            variant="permanent"
+            anchor="left"
+            sx={{
               width: 200,
-            },
-          }}
-        >
-          <List>
-            {notes.map((note) => (
-              <ListItem
-                key={note.note_title}
-                button
-                selected={selectedNote === note}
-                onClick={() => handleNoteClick(note)}
-              >
-                <ListItemText
-                  primary={note.note_title}
-                  secondary={note.created_at?.toISOString()?.split("T")?.[0]}
-                />
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
+            }}
+            PaperProps={{
+              sx: {
+                position: "absolute",
+                width: 200,
+              },
+            }}
+          >
+            <List sx={{ mt: -1 }}>
+              <InputBase
+                startAdornment={
+                  <SearchIcon sx={{ mr: 1, color: "text.secondary" }} />
+                }
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+                sx={{ p: 1.5 }}
+                placeholder="Search"
+              />
+              <Divider />
+              {filterNotes.map((note) => (
+                <ListItemButton
+                  key={note.note_title}
+                  disableRipple
+                  selected={selectedNote === note}
+                  onClick={() => handleNoteClick(note)}
+                  sx={{
+                    borderBottom: "1px solid #0000001f",
+                  }}
+                >
+                  <ListItemText
+                    secondary={note.created_at?.toISOString()?.split("T")?.[0]}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: "common.black",
+                        fontSize: 20,
+                      }}
+                    >
+                      {note.note_title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: "text.secondary",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {note.note_body}
+                    </Typography>
+                  </ListItemText>
+                </ListItemButton>
+              ))}
+            </List>
+          </Drawer>
+        )}
         <Container>
           <Grid container spacing={2} height={"100vh"}>
             <Grid item xs={12} sm={12}>
@@ -241,7 +303,12 @@ export const AccountNotes: React.FC = () => {
                     )}
                   </Box>
                 ) : (
-                  <Box p={2}>
+                  <Box
+                    p={2}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
                     <Typography variant="h5">No note selected</Typography>
                   </Box>
                 )}
