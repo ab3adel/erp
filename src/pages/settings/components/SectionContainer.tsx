@@ -3,14 +3,15 @@ import { FunctionComponent, ReactNode } from "react";
 
 interface PageSectionContainerProps {
   children?: ReactNode;
+  disableGutter?: boolean;
 }
 
 const PageSectionContainer: FunctionComponent<PageSectionContainerProps> = (
   props
 ) => {
-  const { children } = props;
+  const { children, disableGutter } = props;
   return (
-    <Box mx="24px" py={4}>
+    <Box mx={!disableGutter ? "24px" : undefined} py={4}>
       {children}
     </Box>
   );

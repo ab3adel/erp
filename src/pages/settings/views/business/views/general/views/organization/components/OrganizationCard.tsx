@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import {
   Box,
   Button,
@@ -19,10 +19,11 @@ interface OrganizationCardProps {
   name: string;
   onEditClick?: () => void;
   onAddNewTeamMemberClick?: () => void;
+  footer: ReactNode;
 }
 
 const OrganizationCard: FunctionComponent<OrganizationCardProps> = (props) => {
-  const { data, name, onAddNewTeamMemberClick, onEditClick } = props;
+  const { data, name, onAddNewTeamMemberClick, onEditClick, footer } = props;
 
   const columns: DataGridProProps["columns"] = [
     { headerName: "City", field: "city", flex: 1, sortable: false },
@@ -45,53 +46,42 @@ const OrganizationCard: FunctionComponent<OrganizationCardProps> = (props) => {
   ];
 
   return (
-    <>
-      <Box component={Paper} variant="outlined" p={2} overflow="hidden">
-        <DataGridPro
-          disableColumnSelector
-          disableColumnMenu
-          disableColumnReorder
-          disableRowSelectionOnClick
-          columns={columns}
-          rows={data}
-          getRowClassName={() => ""}
-          sx={{
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: "transparent !important",
-            },
-          }}
-          slots={{
-            toolbar: () => (
-              <Toolbar
-                variant="dense"
-                disableGutters
-                sx={{ justifyContent: "space-between", mb: 3 }}
-              >
-                <Box display="flex" gap={2}>
-                  <img src={buildingIcon} width={20} />
+    <Box component={Paper} variant="outlined" p={2} overflow="hidden">
+      <DataGridPro
+        disableColumnSelector
+        disableColumnMenu
+        disableColumnReorder
+        disableRowSelectionOnClick
+        columns={columns}
+        rows={data}
+        getRowClassName={() => ""}
+        sx={{
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: "transparent !important",
+          },
+        }}
+        hideFooter
+        slots={{
+          toolbar: () => (
+            <Toolbar
+              variant="dense"
+              disableGutters
+              sx={{ justifyContent: "space-between", mb: 3 }}
+            >
+              <Box display="flex" gap={2}>
+                <img src={buildingIcon} width={20} />
 
-                  <Typography variant="body1">{name}</Typography>
-                </Box>
-                <IconButton onClick={onEditClick}>
-                  <img src={penIcon} alt="pen icon" />
-                </IconButton>
-              </Toolbar>
-            ),
-            footer: () => (
-              <Box pt={2}>
-                <Button
-                  onClick={onAddNewTeamMemberClick}
-                  variant="outlined"
-                  startIcon={<img src={userPlusIcon} />}
-                >
-                  new team member
-                </Button>
+                <Typography variant="body1">{name}</Typography>
               </Box>
-            ),
-          }}
-        />
-      </Box>
-    </>
+              <IconButton onClick={onEditClick}>
+                <img src={penIcon} alt="pen icon" />
+              </IconButton>
+            </Toolbar>
+          ),
+        }}
+      />
+      {footer}
+    </Box>
   );
 };
 

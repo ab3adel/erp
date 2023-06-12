@@ -6,6 +6,7 @@ import {
   MenuProps,
   ButtonProps,
   styled,
+  Box,
 } from "@mui/material";
 import { FunctionComponent } from "react";
 import arrowDownIcon from "@/assets/images/arrow-down.svg";
@@ -16,12 +17,9 @@ export const OrganizationButton = styled(Button)(() => ({
   color: "black !important",
   textTransform: "capitalize",
   fontSize: 13,
-  lineHeight: 22,
 }));
 
-interface OrganizationProps {}
-
-const Organization: FunctionComponent<OrganizationProps> = () => {
+const Organization: FunctionComponent = () => {
   const { anchorEl, handleCloseMenu, handleSetAnchorEl } = useLogic();
 
   const menuProps: MenuProps = {
@@ -46,7 +44,7 @@ const Organization: FunctionComponent<OrganizationProps> = () => {
   };
 
   return (
-    <>
+    <Box>
       <OrganizationButton {...buttonProps}>
         long miles burundi
       </OrganizationButton>
@@ -58,7 +56,7 @@ const Organization: FunctionComponent<OrganizationProps> = () => {
           <ListItemText primary="Organization 1" />
         </MenuItem>
       </Menu>
-    </>
+    </Box>
   );
 };
 

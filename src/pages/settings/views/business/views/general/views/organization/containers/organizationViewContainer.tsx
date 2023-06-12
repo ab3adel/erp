@@ -2,6 +2,8 @@ import { FunctionComponent } from "react";
 import OrganizationCard from "../components/OrganizationCard";
 import { IOrganization } from "@/shared/models/models";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
+import AddTeamMemberButtonContainer from "../../../containers/AddTeamMemberButtonContainer";
 
 const OrganizationViewContainer: FunctionComponent = () => {
   const data: IOrganization[] = [
@@ -26,6 +28,11 @@ const OrganizationViewContainer: FunctionComponent = () => {
         data={data}
         name="Long Miles Burundi"
         onEditClick={handleNavigateEdit}
+        footer={
+          <Box mt={2}>
+            <AddTeamMemberButtonContainer />
+          </Box>
+        }
       />
     </>
   );

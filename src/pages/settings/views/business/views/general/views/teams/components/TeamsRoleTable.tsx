@@ -80,6 +80,7 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
 
   return (
     <DataGridPro
+      hideFooter
       rowHeight={70}
       disableColumnSelector
       disableColumnMenu
@@ -87,19 +88,6 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       disableRowSelectionOnClick
       columns={columns}
       rows={data}
-      slots={{
-        footer: () => (
-          <Box pt={2}>
-            <Button
-              onClick={onAddNewTeamMemberClick}
-              variant="outlined"
-              startIcon={<PersonAddOutlinedIcon />}
-            >
-              new team member
-            </Button>
-          </Box>
-        ),
-      }}
     />
   );
 };

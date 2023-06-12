@@ -11,7 +11,6 @@ import { SettingsNavs } from "@/pages/settings/components/SettingsNavs";
 import { Settings } from "@/pages/settings/Settings";
 import { Account } from "@/pages/settings/views/account/Account";
 import { General } from "@/pages/settings/views/account/views/general/General";
-import GeneralBusiness from "@/pages/settings/views/business/views/general/General";
 import { Notificationts } from "@/pages/settings/views/account/views/notifications/Notificationts";
 import { Security } from "@/pages/settings/views/account/views/security/Security";
 import {
@@ -30,6 +29,7 @@ import Business from "@/pages/settings/views/business/Business";
 import Organization from "@/pages/settings/views/business/views/general/views/organization/Organization";
 import Edit from "@/pages/settings/views/business/views/general/views/organization/views/edit/Edit";
 import Teams from "@/pages/settings/views/business/views/general/views/teams/Teams";
+import Create from "@/pages/settings/views/business/views/general/views/teams/view/create/Create";
 
 const ProfileChildrenRoutes = [
   {
@@ -126,7 +126,6 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "general",
-                element: <GeneralBusiness />,
                 children: [
                   {
                     path: "organization",
@@ -137,7 +136,11 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "teams",
-                    element: <Teams />,
+
+                    children: [
+                      { element: <Teams />, index: true },
+                      { element: <Create />, path: "add" },
+                    ],
                   },
                 ],
               },

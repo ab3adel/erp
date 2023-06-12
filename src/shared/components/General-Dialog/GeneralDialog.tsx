@@ -1,46 +1,38 @@
-import { Dialog, DialogContent, Typography, Box } from "@mui/material";
-import { FunctionComponent } from "react";
-import Header from "./Header";
-import DialogActions from "./DialogActions";
+import { Dialog, DialogContent } from "@mui/material";
+import { FunctionComponent, ReactNode } from "react";
+import Header, { DialogHeaderProps } from "./DialogHeader";
+import DialogActions, { DialogActionsProps } from "./DialogActions";
 
-interface GeneralDialogProps {}
+export interface GeneralDialogProps {
+  headerProps?: DialogHeaderProps;
+  actionsProps?: DialogActionsProps;
+  children?: ReactNode;
+  open: boolean;
+}
 
-const GeneralDialog: FunctionComponent<GeneralDialogProps> = () => {
+const GeneralDialog: FunctionComponent<GeneralDialogProps> = (props) => {
+  const { actionsProps, headerProps, children, open } = props;
+
   return (
     <Dialog
-      open={true}
       PaperProps={{
         elevation: 4,
-
-        style: { borderRadius: 4, paddingBottom: 0, width: "auto" },
+        style: {
+          borderRadius: 4,
+          paddingBottom: 0,
+          width: "auto",
+          maxWidth: "none",
+        },
       }}
+      open={open}
     >
-      <Header />
+      {headerProps && <Header {...headerProps} />}
 
-      <DialogContent style={{ marginTop: 20, minWidth: "none" }}>
-        <Box maxWidth={450}>
-          <Typography variant="body1" fontWeight={400} fontSize={16}>
-            You are about to remove{" "}
-            <Typography display="inline-block" fontWeight={700}>
-              Olivia Roe
-            </Typography>{" "}
-            from the "
-            <Typography display="inline-block" fontWeight={700}>
-              Long Miles Burundi
-            </Typography>
-            " organization. This action is irreversible.{" "}
-            <Typography sx={{ mt: 3 }}>
-              <Typography display="inline" fontWeight={700}>
-                olivia@longmiles.com
-              </Typography>{" "}
-              will no longer have access to this organization, and any content
-              created by this user will be permanently deleted.
-            </Typography>
-          </Typography>
-        </Box>
+      <DialogContent dividers style={{ marginTop: 0, minWidth: "none" }}>
+        {children}
       </DialogContent>
 
-      <DialogActions />
+      {actionsProps && <DialogActions {...actionsProps} />}
     </Dialog>
   );
 };

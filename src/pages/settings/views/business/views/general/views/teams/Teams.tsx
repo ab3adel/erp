@@ -6,12 +6,18 @@ import StarOutline from "@mui/icons-material/StarOutline";
 import BusinessIcon from "@mui/icons-material/Business";
 import { Box } from "@mui/material";
 import TeamsRoleTable from "./components/TeamsRoleTable";
-import GeneralDialog from "@/shared/components/General-Dialog/GeneralDialog";
+import RemoveMemberDialog from "./components/RemoveMemberDialog";
+import AddOwnerDialog from "./components/AddOwnerDialog";
+import DeactivateMemberDialog from "./components/DeactivateMemberDialog";
+import AddTeamMemberButtonContainer from "../../containers/AddTeamMemberButtonContainer";
 
 const Teams: FunctionComponent = () => {
   return (
     <PageSectionContainer>
-      <GeneralDialog />
+      <RemoveMemberDialog open={false} />
+      <AddOwnerDialog open={false} />
+      <DeactivateMemberDialog open={false} />
+
       <HeaderToolbar
         leftComponent={
           <Typography
@@ -55,6 +61,9 @@ const Teams: FunctionComponent = () => {
           },
         ]}
       />
+      <Box mt={2}>
+        <AddTeamMemberButtonContainer />
+      </Box>
     </PageSectionContainer>
   );
 };

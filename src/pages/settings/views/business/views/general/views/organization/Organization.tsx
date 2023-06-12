@@ -15,8 +15,9 @@ const Organization: FunctionComponent = () => {
           </Button>
         }
       />
-
-      <OrganizationViewContainer />
+      <Box mt={2}>
+        <OrganizationViewContainer />
+      </Box>
     </PageSectionContainer>
   );
 };
