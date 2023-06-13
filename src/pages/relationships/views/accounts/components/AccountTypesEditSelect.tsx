@@ -2,27 +2,25 @@ import { useQuery } from "@apollo/client";
 import { Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { GridRenderCellParams, useGridApiContext } from "@mui/x-data-grid-pro";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
+import { Account } from "@/shared/models/models";
 
 export const AccountTypesEditSelect = (
-  props: GridRenderCellParams<any, number>
+  props: GridRenderCellParams<any, Account["accountType"]>
 ) => {
   const { id, value, field } = props;
   const apiRef = useGridApiContext();
   const { data } = useQuery<AccountTypes>(accountTypes);
 
   const handleChange = (e: SelectChangeEvent<number>) => {
-    const account = data?.accountTypes.data.find(
+    const accountType = data?.accountTypes.data.find(
       (type) => type.id === e.target.value
     );
     apiRef.current.setEditCellValue({
       id,
       field,
-      value: {
-        category: account?.category,
-        value: e.target.value,
-      },
+      value: accountType,
     });
-    apiRef.current.updateRows([{ id, type: e.target.value }]);
+    apiRef.current.updateRows([{ id, accountType }]);
   };
 
   const handleRef = (element: HTMLSpanElement) => {
@@ -35,12 +33,7 @@ export const AccountTypesEditSelect = (
   };
 
   return (
-    <Select
-      ref={handleRef}
-      defaultValue={value}
-      onChange={handleChange}
-      fullWidth
-    >
+    <Select ref={handleRef} value={value?.id} onChange={handleChange} fullWidth>
       {data?.accountTypes?.data?.map?.((type) => (
         <MenuItem key={type.id} value={type.id}>
           {type.name}

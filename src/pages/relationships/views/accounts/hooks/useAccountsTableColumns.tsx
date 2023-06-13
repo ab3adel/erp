@@ -6,23 +6,13 @@ import {
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import {
-  Box,
-  Typography,
-  Link,
-  Chip,
-  Tooltip,
-  Autocomplete,
-} from "@mui/material";
+import { Box, Typography, Link, Chip, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AccountRow } from "../types";
 import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
 import { useLazyQuery } from "@apollo/client";
 import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
-import { useState } from "react";
 import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSelect";
-
-const counties = ["USA", "Canada", "Australia", "Germany", "Japan", "India"];
+import { Account } from "@/shared/models/models";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -71,7 +61,7 @@ export const useAccountsTableColumns = () => {
     }
   >(accountNameSearch);
 
-  const columns: GridColDef<AccountRow>[] = [
+  const columns: GridColDef<Account>[] = [
     {
       field: "name",
       headerName: "Account Name",
@@ -86,7 +76,9 @@ export const useAccountsTableColumns = () => {
           onClick={() => {
             if (params.row.id.toString() !== "new") {
               navigate(
-                `/${params.id}/${params.row?.type?.toLowerCase()}-profile`
+                `/${
+                  params.id
+                }/${params.row?.accountType?.category?.toLowerCase()}-profile`
               );
             }
           }}
@@ -143,13 +135,13 @@ export const useAccountsTableColumns = () => {
       ),
     },
     {
-      field: "type",
+      field: "accountType",
       headerName: "Account Type",
       width: 150,
       editable: true,
       renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
-      valueGetter: ({ value }) => {
-        return typeof value === "object" ? value.category : value;
+      valueGetter: (params) => {
+        return params.row.accountType?.name;
       },
     },
     {
@@ -165,6 +157,77 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
     },
+    {
+      field: "education_level",
+      headerName: "Education Level",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: [
+        "Unknown",
+        "Primary",
+        "Secondary",
+        "University",
+        "Technical",
+        "training",
+        "None",
+      ],
+    },
+    {
+      field: "marital_status",
+      headerName: "Marital Status",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Single", "Married", "Widow", "Unknown"],
+    },
+    {
+      field: "members_in_household",
+      headerName: "Members In Household",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "total_children",
+      headerName: "Total Children",
+      width: 150,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "members_in_household",
+      headerName: "Members In Household",
+      type: "number",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "read_literate",
+      headerName: "Read Literate",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Yes", "Some", "No"],
+    },
+
+    {
+      field: "write_literate",
+      headerName: "Write Literate",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["Yes", "Some", "No"],
+    },
+    {
+      field: "subscription_type",
+      headerName: "Subscription Type",
+      width: 150,
+      editable: true,
+      type: "singleSelect",
+      valueOptions: ["SMS", "Whatsapp", "None"],
+    },
+
     {
       field: "mobileNumber",
       headerName: "Mobile Number",
