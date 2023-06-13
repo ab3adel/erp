@@ -57,7 +57,7 @@ export const useAccountsTableColumns = () => {
       };
     },
     {
-      name: string;
+      filter: Partial<Account>;
     }
   >(accountNameSearch);
 
@@ -90,7 +90,9 @@ export const useAccountsTableColumns = () => {
         const value = params.props.value;
         const { data } = await queryFn({
           variables: {
-            name: value,
+            filter: {
+              name: value,
+            },
           },
         });
         let hasError = false;
@@ -101,17 +103,17 @@ export const useAccountsTableColumns = () => {
 
         return {
           ...params.props,
-          error: hasError ? "The user is already exists" : "",
+          hasError: hasError ? "The user is already exists" : "",
         };
       },
-      renderEditCell: (props: GridRenderEditCellParams) => (
+      renderEditCell: ({ hasError, ...props }: GridRenderEditCellParams) => (
         <Tooltip
-          open={!!props.error}
-          title={props.error}
+          open={!!hasError}
+          title={hasError}
           slotProps={{
             tooltip: {
               sx: {
-                backgroundColor: props.error ? "error.main" : "inherit",
+                backgroundColor: hasError ? "error.main" : "inherit",
               },
             },
           }}
@@ -194,13 +196,6 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       type: "number",
-    },
-    {
-      field: "members_in_household",
-      headerName: "Members In Household",
-      type: "number",
-      width: 150,
-      editable: true,
     },
     {
       field: "read_literate",
