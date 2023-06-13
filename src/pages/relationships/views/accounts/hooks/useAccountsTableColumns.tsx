@@ -6,12 +6,23 @@ import {
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-import { Box, Typography, Link, Chip, Tooltip } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Link,
+  Chip,
+  Tooltip,
+  Autocomplete,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AccountRow } from "../types";
 import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
 import { useLazyQuery } from "@apollo/client";
 import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
+import { useState } from "react";
+import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSelect";
+
+const counties = ["USA", "Canada", "Australia", "Germany", "Japan", "India"];
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -166,7 +177,47 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
     },
-
+    {
+      field: "address2",
+      headerName: "Address 2",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "date_of_birth",
+      headerName: "Birth Date",
+      width: 150,
+      type: "date",
+      editable: true,
+      valueGetter: ({ value }) => (value ? new Date(value) : ""),
+    },
+    {
+      field: "city",
+      headerName: "City",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "country",
+      headerName: "Country",
+      width: 200,
+      editable: true,
+      renderEditCell: (props) => <AccountsCountryEditSelect {...props} />,
+    },
+    {
+      field: "currency",
+      headerName: "Currency",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "gender",
+      headerName: "Gender",
+      width: 150,
+      type: "singleSelect",
+      valueOptions: ["female", "male", "other", "unknown"],
+      editable: true,
+    },
     {
       field: "status",
       headerName: "Status",

@@ -39,6 +39,8 @@ export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
         first_name: account.first_name,
         marital_status: account.marital_status,
         type: account.accountType?.category,
+        currency: account.currency,
+        gender : account.gender,
         mobileNumber: account.contacts?.find(
           (contact) => contact.type === "phone"
         )?.contact_info,

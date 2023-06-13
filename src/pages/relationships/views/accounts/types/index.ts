@@ -27,6 +27,9 @@ export type AccountRow = {
   status?: string;
   address1?: string;
   contacts?: Contact[];
+  currency?: string;
+  education_level?: string;
+  gender?: string;
 };
 
 export type AccountInput = {
