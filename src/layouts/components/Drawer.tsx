@@ -10,6 +10,7 @@ import {
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useMatches, useNavigate } from "react-router-dom";
 import { useNavigationTreeItems } from "../hooks/useNavigationsItems";
+import MultiOrganizationManagmentDialog from "@/pages/settings/views/business/views/general/views/organization/components/multi-organization-managment-dialog/MultiOrganizationManagmentDialog";
 
 export const Drawer = () => {
   const [dasboardNavs, ...navs] = useNavigationTreeItems();
@@ -35,6 +36,7 @@ export const Drawer = () => {
       variant="permanent"
       anchor="left"
     >
+      <MultiOrganizationManagmentDialog />
       <Toolbar />
       {customNavs ? (
         (customNavs.handle as Handle).navs
