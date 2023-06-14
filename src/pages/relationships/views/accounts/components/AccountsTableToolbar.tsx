@@ -152,6 +152,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               TAG
             </Button>
+            <TagsSelect
+              anchorEl={anchorEl}
+              open={Boolean(selectedRow)}
+              selectedTags={selectedRow?.tags}
+              onRemoveTag={handleDeleteTag}
+              onSelectTag={handleAddTag}
+            />
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -181,13 +188,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               Save row
             </Button>
-            <TagsSelect
-              anchorEl={anchorEl}
-              open={Boolean(selectedRow)}
-              selectedTags={selectedRow?.tags}
-              onRemoveTag={handleDeleteTag}
-              onSelectTag={handleAddTag}
-            />
+
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
