@@ -53,7 +53,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const selectedRow = selectedRows.next().value;
 
   const newRow = apiRef.current.getRowModels().get("new");
-  const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
+  const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.accountType;
   const [edit] = useGenericMutation<
     {
       updateOrInsertAccount: {
