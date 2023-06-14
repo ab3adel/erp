@@ -137,10 +137,13 @@ export const AccountsTable = ({
         color="#fff"
         hideCloseButton={false}
         dialog={{
-          title: "Save View",
+          title: "Create new saved view",
           closeButton: {
             label: "Cancel",
             color: "inherit",
+            sx: {
+              visibility: "hidden",
+            },
           },
           submitButton: {
             label: "Save",

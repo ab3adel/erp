@@ -223,7 +223,7 @@ export const useAccountsTableColumns = () => {
     },
     {
       field: "region",
-      headerName: "Region",
+      headerName: "Zone",
       width: 150,
       editable: true,
       group: "location details",
