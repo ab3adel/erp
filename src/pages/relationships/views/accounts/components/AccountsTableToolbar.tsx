@@ -53,7 +53,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
-
+  const [isDeleteCancelled, setIsDeleteCancelled] = useState(false);
   const newRow = apiRef.current.getRowModels().get("new") as Account;
   const isDisabled = !isAccountRowValid(newRow);
   const [edit] = useGenericMutation<
@@ -301,7 +301,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             bgcolor: (theme) => `${theme.palette.error.main} !important`,
           },
         }}
-        onSubmit={handleDeleteAccount}
+        onSubmit={() => {
+          setShowSnackbar(true);
+          closeDialog();
+        }}
       >
         <Typography variant="body1" sx={{ color: "common.black" }}>
           There are existing transactions and surveys attached to the account.
@@ -334,23 +337,29 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           vertical: "top",
         }}
         autoHideDuration={5000}
-        onClose={() => setShowSnackbar(false)}
+        onClose={() => {
+          setShowSnackbar(false);
+          setIsDeleteCancelled(false);
+          handleDeleteAccount();
+        }}
       >
         <Alert
           severity="error"
-          onClose={() => setShowSnackbar(false)}
           action={
             <Button
               color="inherit"
-              size="small"
               variant="text"
-              onClick={() => setShowSnackbar(false)}
+              onClick={() => {
+                setShowSnackbar(false);
+                setIsDeleteCancelled(true);
+              }}
+              sx={{ zIndex: 1 }}
             >
               UNDO
             </Button>
           }
         >
-          Account deleted
+          Delteing account
         </Alert>
       </Snackbar>
     </GridToolbarContainer>
