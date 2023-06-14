@@ -25,6 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/pages/relationships/views/accounts/utils/.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
