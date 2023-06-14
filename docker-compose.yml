@@ -11,3 +11,12 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+
+  storybook:
+    build:
+      context: .
+      dockerfile: SB.Dockerfile
+    ports:
+      - 6005:6006
+    environment:
+      - NODE_ENV=development
