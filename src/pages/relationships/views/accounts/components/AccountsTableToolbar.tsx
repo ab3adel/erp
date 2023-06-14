@@ -12,7 +12,8 @@ import {
   Switch,
   TextField,
   Typography,
-  Alert, MenuItem
+  Alert,
+  MenuItem,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -180,7 +181,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               Save row
             </Button>
-
+            <TagsSelect
+              anchorEl={anchorEl}
+              open={Boolean(selectedRow)}
+              selectedTags={selectedRow?.tags}
+              onRemoveTag={handleDeleteTag}
+              onSelectTag={handleAddTag}
+            />
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -303,13 +310,6 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
-      <TagsSelect
-        anchorEl={anchorEl}
-        open={Boolean(selectedRow)}
-        selectedTags={selectedRow?.tags}
-        onRemoveTag={handleDeleteTag}
-        onSelectTag={handleAddTag}
-      />
 
       <Snackbar
         open={showSnackbar}
