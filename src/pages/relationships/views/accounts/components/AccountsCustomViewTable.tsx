@@ -14,6 +14,7 @@ import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
+import { Account } from "@/shared/models/models";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -67,8 +68,11 @@ export const AccountsCustomViewTable = ({
           }}
           rows={rows}
           columns={
-            rawColumns.filter((col) =>
-              columnsState?.find((colState) => colState.field === col.field)
+            columnsState.map(
+              (col) =>
+                rawColumns?.find(
+                  (colState) => colState.field === col.field
+                ) as GridColDef<Account>
             ) || []
           }
           apiRef={apiRef}

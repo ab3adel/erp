@@ -30,6 +30,9 @@ export const ButtonStylesOverrides: Components<
       paddingTop: "8px",
       paddingBottom: "8px",
     },
+    endIcon: {
+      marginLeft: 4,
+    },
     contained: ({ ownerState, theme }) => {
       const color = ownerState.color ?? "inherit";
       return {

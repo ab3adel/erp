@@ -103,3 +103,18 @@ export type Note = {
   created_at: Date;
   updated_at: Date;
 };
+export interface IOrganization {
+  id: number;
+  city: string;
+  currency: string;
+  language: string;
+  plan: string;
+  team_members?: number;
+}
+
+export interface IAssignedRoles {
+  id: number;
+  entity: { name: string; email: string };
+  modules: "module_a" | "module_b" | "module_c"[];
+  permissions: "read" | "write" | "admin" | "customized" | "owner"[];
+}

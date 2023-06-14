@@ -38,6 +38,7 @@ export const accountsQuery = gql`
         total_children
         created_at
         updated_at
+        currency
         accountType {
           id
           name

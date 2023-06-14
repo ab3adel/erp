@@ -6,12 +6,14 @@ import {
   InputBase,
   Avatar,
   MenuItem,
+  Divider,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import MainLogo from "@/assets/images/main_logo.svg";
 import { DropDownMenu } from "@/shared";
-import { useSignout } from "../hooks/useSignout";
+import { useSignout } from "../../hooks/useSignout";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Organization from "./components/organizations/Organizations";
 
 export const AppBar = () => {
   const signout = useSignout();
@@ -23,9 +25,23 @@ export const AppBar = () => {
       elevation={0}
     >
       <Toolbar>
-        <IconButton sx={{ flexGrow: 1, justifyContent: "start" }}>
-          <img src={MainLogo} alt="logo" />
-        </IconButton>
+        <Box
+          sx={{
+            flexGrow: 1,
+            justifyContent: "start",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <IconButton>
+            <img src={MainLogo} alt="logo" />
+          </IconButton>
+          <Box sx={{ mx: 2 }}>
+            <Divider orientation="vertical" style={{ height: "30px" }} />
+          </Box>
+          <Organization />
+        </Box>
+
         <Box display="flex" columnGap={3} alignItems="center">
           <InputBase
             placeholder="Search"

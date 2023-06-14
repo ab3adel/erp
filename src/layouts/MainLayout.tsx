@@ -1,5 +1,5 @@
 import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
-import { AppBar } from "./components/AppBar";
+import { AppBar } from "./components/app-bar/AppBar";
 import { Outlet, redirect } from "react-router-dom";
 import { Drawer } from "./components/Drawer";
 

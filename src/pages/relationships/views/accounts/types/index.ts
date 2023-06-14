@@ -14,21 +14,6 @@ export interface AccountsResponse {
   };
 }
 
-export type AccountRow = {
-  id: number;
-  name?: string;
-  type?: string;
-  first_name?: string;
-  last_name?: string;
-  government_id?: string;
-  mobileNumber?: string;
-  district?: string;
-  completeness?: number;
-  status?: string;
-  address1?: string;
-  contacts?: Contact[];
-};
-
 export type AccountInput = {
   id?: number;
   name?: string;

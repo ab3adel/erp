@@ -98,8 +98,6 @@ export const CurvedTabs = ({
 }: CurvedTabsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTab, setSelectedTab] = useState<number>();
-  const [selectedId, setSelectedId] = useState<number>();
   const {
     orderTab,
     value: sortedTabs,
@@ -110,11 +108,6 @@ export const CurvedTabs = ({
     canDelete,
     canDrag,
   });
-
-  const handleDeleteTab = () => {
-    deleteTab(selectedTab || 0, selectedId);
-    setSelectedTab(undefined);
-  };
 
   const SortableCurvedTabList = SortableContainer<{
     children: ReactNode;
@@ -142,27 +135,10 @@ export const CurvedTabs = ({
           canDrag={canDrag}
           canDelete={canDelete}
           onDelete={() => {
-            setSelectedTab(index);
-            setSelectedId(tab.id);
+            deleteTab(index, tab.id);
           }}
         />
       ))}
-      <GenericDialog
-        open={selectedTab !== undefined}
-        onClose={() => setSelectedTab(undefined)}
-        onSubmit={handleDeleteTab}
-        dialog={{
-          title: "Delete Tab",
-          submitButton: {
-            label: "Delete",
-          },
-        }}
-      >
-        <Box>
-          Are you sure you want to delete the tab{" "}
-          <b>{sortedTabs[selectedTab || 0]?.label}</b>?
-        </Box>
-      </GenericDialog>
     </SortableCurvedTabList>
   );
 };
