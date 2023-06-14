@@ -14,6 +14,7 @@ import { MuiLinkStylesOverrides } from "./Link";
 import { ChipStylesOverrides } from "./Chip";
 import { TextFieldStylesOverrides } from "./TextField";
 import "@mui/x-data-grid/themeAugmentation";
+import { AlertStylesOverrides } from "./Alert";
 
 export const componentOverrides: Components<Theme> = {
   MuiCssBaseline: CssBaselineOverrides,
@@ -30,4 +31,5 @@ export const componentOverrides: Components<Theme> = {
   MuiLink: MuiLinkStylesOverrides,
   MuiChip: ChipStylesOverrides,
   MuiTextField: TextFieldStylesOverrides,
+  MuiAlert: AlertStylesOverrides,
 };
