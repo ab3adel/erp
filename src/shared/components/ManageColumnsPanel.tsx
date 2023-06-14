@@ -16,6 +16,7 @@ import {
   Typography,
   Avatar,
   InputBase,
+  Box,
 } from "@mui/material";
 import {
   SortableContainer,
@@ -100,6 +101,8 @@ export const ManageColumnsPanel = ({
   const filterdColumns = columns.filter((column) =>
     column.headerName?.toLowerCase().includes(search.toLowerCase())
   );
+  const groups = [...new Set(columns.map((column) => column.group))];
+
   const onSortEnd = ({
     oldIndex,
     newIndex,
@@ -164,27 +167,53 @@ export const ManageColumnsPanel = ({
             }
           />
           <FormControl variant="standard">
-            <FormLabel sx={{ color: "text.secondary" }}>Columns</FormLabel>
             <FormGroup>
-              {filterdColumns.map((column) => (
-                <FormControlLabel
-                  key={column.field}
-                  control={
-                    <Checkbox
-                      checked={state.some((c) => c.field === column.field)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setState([...state, column]);
-                        } else {
-                          setState(
-                            state.filter((c) => c.field !== column.field)
-                          );
-                        }
-                      }}
-                    />
-                  }
-                  label={column.headerName}
-                />
+              {groups.map((group) => (
+                <Box key={group}>
+                  <Typography
+                    sx={{
+                      color: "text.secondary",
+                      textTransform: "uppercase",
+                      fontSize: 12,
+                    }}
+                  >
+                    {group}
+                  </Typography>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    rowGap={1}
+                    alignItems="left"
+                    mb={1}
+                  >
+                    {filterdColumns
+                      .filter((column) => column.group === group)
+                      .map((column) => (
+                        <FormControlLabel
+                          key={column.field}
+                          control={
+                            <Checkbox
+                              checked={state.some(
+                                (c) => c.field === column.field
+                              )}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setState([...state, column]);
+                                } else {
+                                  setState(
+                                    state.filter(
+                                      (c) => c.field !== column.field
+                                    )
+                                  );
+                                }
+                              }}
+                            />
+                          }
+                          label={column.headerName}
+                        />
+                      ))}
+                  </Box>
+                </Box>
               ))}
             </FormGroup>
           </FormControl>
@@ -219,7 +248,7 @@ export type ManageColumnsPanelProps = Pick<
   GenericDialogProps,
   "open" | "onClose"
 > & {
-  columns: GridColDef[];
+  columns: (GridColDef & { group?: string })[];
   setColumns: (action: GridColDef[]) => void;
   visibiltyModel: GridColumnVisibilityModel | undefined;
   setVisibiltyModel: (action: GridColumnVisibilityModel) => void;
