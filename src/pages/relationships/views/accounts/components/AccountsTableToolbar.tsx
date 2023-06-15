@@ -37,6 +37,7 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
 import { Account, Tag } from "@/shared/models/models";
 import { isAccountRowValid } from "../utils/isAccountRowValid";
+import { remvoeTagRelation } from "../graphql/mutations/removeTagRelation";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -56,6 +57,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const [isDeleteCancelled, setIsDeleteCancelled] = useState(false);
   const newRow = apiRef.current.getRowModels().get("new") as Account;
   const isDisabled = !isAccountRowValid(newRow);
+  const [removeTag] = useGenericMutation(remvoeTagRelation, {
+    refetchQueries: ["AccountsQuery"],
+  });
+
   const [edit] = useGenericMutation<
     {
       updateOrInsertAccount: {
@@ -108,17 +113,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   };
 
   const handleDeleteTag = (tag: Tag) => {
-    edit({
+    removeTag({
       variables: {
-        input: {
-          id: Number(selectedRow.id),
-          tags: selectedRow.tags
-            .filter((t: Tag) => tag.id !== t.id)
-            .map((t: Tag) => ({
-              ...t,
-              id: Number(t.id),
-            })),
-        },
+        ids: [tag.id],
+        accountId: selectedRow.id,
       },
     });
   };
