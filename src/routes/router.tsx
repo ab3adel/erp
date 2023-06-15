@@ -30,6 +30,7 @@ import Organization from "@/pages/settings/views/business/views/general/views/or
 import Edit from "@/pages/settings/views/business/views/general/views/organization/views/edit/Edit";
 import Teams from "@/pages/settings/views/business/views/general/views/teams/Teams";
 import Create from "@/pages/settings/views/business/views/general/views/teams/view/create/Create";
+import Branding from "@/pages/settings/views/business/views/general/views/branding/views";
 
 const ProfileChildrenRoutes = [
   {
@@ -142,6 +143,10 @@ export const router = createBrowserRouter([
                       { element: <Create />, path: "add" },
                     ],
                   },
+                  {
+                    path: "branding",
+                    element: <Branding />
+                  }
                 ],
               },
             ],
