@@ -48,6 +48,7 @@ export const RelationShips = () => {
           {
             label: "Accounts",
             value: "/relationships/accounts",
+            primary: true,
           },
           ...(data?.views_user.map((view) => ({
             id: Number(view.id),

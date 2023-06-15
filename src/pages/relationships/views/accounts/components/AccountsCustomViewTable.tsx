@@ -15,6 +15,10 @@ import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { useAccountsTableRows } from "../hooks/useAccountsTableRows";
 import { useAccountsTableColumns } from "../hooks/useAccountsTableColumns";
 import { Account } from "@/shared/models/models";
+import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
+import { saveAccount } from "../graphql/mutations/saveAccount";
+import { CreateViewForm } from "./CreateViewForm";
+import { AccountInput } from "../types";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -32,6 +36,7 @@ export const AccountsCustomViewTable = ({
     getColumnVisibiltyModelByTabParam,
     getColumnsByTabParam,
     getGridFilterModelByTabParam,
+    createTab,
   } = useCurvedTabs({
     localStorageKey: "relationships",
   });
@@ -43,12 +48,28 @@ export const AccountsCustomViewTable = ({
   const defaultModel = getColumnVisibiltyModelByTabParam(tabParam!);
   const defaultFilterModel = getGridFilterModelByTabParam(tabParam!);
   const columnsValue = getColumnsByTabParam(tabParam!);
+
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columnsValue!);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
+  const { closeDialog, isDialogOpen, openDialog } = useDialog<"save_view">();
   const [model, setModel] = useState<GridColumnVisibilityModel>(defaultModel!);
   const [filterModel, setFilterModel] = useState<GridFilterModel>(
     defaultFilterModel!
   );
+
+  const handleCreateView = (form: {
+    label: string;
+    type: "personal" | "shared";
+  }) => {
+    createTab(
+      form.label,
+      model!,
+      columnsState,
+      filterModel,
+      form.type === "shared"
+    );
+    closeDialog();
+  };
 
   return (
     <div style={{ width: "100%" }}>
@@ -86,16 +107,76 @@ export const AccountsCustomViewTable = ({
           slots={{
             toolbar: AccountsTableToolbar,
           }}
+          processRowUpdate={(newRow: any, oldRow) => {
+            const updatedValues: Record<string, any> = {};
+            if (newRow.id === "new") {
+              return Promise.resolve(newRow);
+            }
+            for (const key in newRow) {
+              if (newRow[key] !== oldRow[key] && key !== "type") {
+                updatedValues[key] = newRow[key];
+              }
+            }
+            const [edit] = useGenericMutation<
+              {
+                updateOrInsertAccount: {
+                  id: number;
+                };
+              },
+              Variables
+            >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+
+            return edit({
+              variables: {
+                input: {
+                  ...updatedValues,
+                  id: newRow.id,
+                  ...(newRow.type && {
+                    type_id: newRow.type.value,
+                  }),
+                },
+              },
+            }).then((value) => {
+              return value.data?.updateOrInsertAccount;
+            });
+          }}
+          onProcessRowUpdateError={(error) => {
+            console.log(error);
+          }}
           slotProps={{
             toolbar: {
               rowsSelection,
               dispatch,
               isRowAdded,
+              openDialog,
               setOpenColumnsDialog,
             },
           }}
         />
       </div>
+      <GenericDialog
+        open={isDialogOpen("save_view")}
+        onClose={closeDialog}
+        color="#fff"
+        hideCloseButton={false}
+        dialog={{
+          title: "Create new saved view",
+          closeButton: {
+            label: "Cancel",
+            color: "inherit",
+            sx: {
+              visibility: "hidden",
+            },
+          },
+          submitButton: {
+            label: "Save",
+            type: "submit",
+            form: "save_view_form",
+          },
+        }}
+      >
+        <CreateViewForm onSubmit={handleCreateView} />
+      </GenericDialog>
       <ManageColumnsPanel
         open={openColumnsDialog}
         onClose={() => setOpenColumnsDialog(false)}
@@ -112,4 +193,8 @@ type AccountsTableProps = {
   apiRef: React.MutableRefObject<GridApiPro>;
   dispatch: (action: Action) => void;
   isRowAdded: boolean;
+};
+
+type Variables = {
+  input: AccountInput;
 };

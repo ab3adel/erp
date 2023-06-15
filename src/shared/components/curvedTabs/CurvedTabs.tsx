@@ -132,7 +132,7 @@ export const CurvedTabs = ({
           index={index}
           value={tab.value}
           label={tab.label}
-          canDrag={canDrag}
+          canDrag={canDrag && !tab.primary}
           canDelete={canDelete}
           onDelete={() => {
             deleteTab(index, tab.id);
@@ -151,6 +151,7 @@ type CurvedTabsProps = {
     columnVisibiltyModel?: GridColumnVisibilityModel;
     filterModel?: GridFilterModel;
     columns?: GridColDef[];
+    primary?: boolean;
   }>;
   canDrag?: boolean;
   canDelete?: boolean;

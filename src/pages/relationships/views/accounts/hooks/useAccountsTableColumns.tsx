@@ -135,8 +135,10 @@ export const useAccountsTableColumns = () => {
       group: "account details",
       renderCell: (params) => (
         <Typography
+          variant="body2"
           sx={{
-            color: params.id === "new" ? "grey.500" : "initial",
+            fontWeight: 400,
+            color: params.id === "new" ? "grey.500" : "common.black",
           }}
         >
           {params?.row?.id}

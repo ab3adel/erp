@@ -25,6 +25,7 @@ export const useCurvedTabs = ({
       columnVisibiltyModel?: GridColumnVisibilityModel;
       filterModel?: GridFilterModel;
       columns?: GridColDef[];
+      primary?: boolean;
     }[]
   >(localStorageKey, tabs);
   const { pathname } = useLocation();
@@ -164,6 +165,7 @@ type Params = {
     columnVisibiltyModel?: GridColumnVisibilityModel;
     columns?: GridColDef[];
     filterModel?: GridFilterModel;
+    primary?: boolean;
   }[];
   canDrag?: boolean;
   canDelete?: boolean;

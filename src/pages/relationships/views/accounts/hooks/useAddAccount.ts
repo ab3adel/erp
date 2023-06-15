@@ -10,7 +10,7 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
   const [save] = useGenericMutation<{ __typename: string }, Variables>(
     saveAccount,
-    { refetchQueries: ["AccountsQuery"] }
+    { refetchQueries: ["AccountsQuery", "accountProfile"] }
   );
 
   const dispatch = (action: Action) => {

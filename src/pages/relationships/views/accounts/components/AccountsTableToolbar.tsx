@@ -159,16 +159,42 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
               onRemoveTag={handleDeleteTag}
               onSelectTag={handleAddTag}
             />
-            <Button
-              variant="text"
-              startIcon={<DeleteIcon />}
-              disabled={rowsSelection.length !== 1}
-              onClick={() => {
-                openDialog("deleteAccount");
-              }}
-            >
-              DELETE
-            </Button>
+            {rowsSelection.length !== 1 ? (
+              <Tooltip
+                title="Please select only one account"
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "error.main",
+                      color: "common.white",
+                    },
+                  },
+                }}
+              >
+                <span>
+                  <Button
+                    variant="text"
+                    startIcon={<DeleteIcon />}
+                    disabled={rowsSelection.length !== 1}
+                    onClick={() => {
+                      openDialog("deleteAccount");
+                    }}
+                  >
+                    DELETE
+                  </Button>
+                </span>
+              </Tooltip>
+            ) : (
+              <Button
+                variant="text"
+                startIcon={<DeleteIcon />}
+                onClick={() => {
+                  openDialog("deleteAccount");
+                }}
+              >
+                DELETE
+              </Button>
+            )}
           </Box>
           <Divider orientation="vertical" />
         </>
