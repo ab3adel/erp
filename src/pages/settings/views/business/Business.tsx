@@ -19,6 +19,10 @@ const Bussiness: FunctionComponent = () => {
             label: "TEAM",
             value: "/settings/business/general/teams",
           },
+          {
+            label: "Branding",
+            value: "/settings/business/general/branding",
+          },
           // {
           //   label: "Branding",
           //   value: "/settings/account/security",
