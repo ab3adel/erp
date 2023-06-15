@@ -55,7 +55,7 @@ export const AppBar = () => {
             <DropDownMenu
               button={(props) => (
                 <IconButton {...props}>
-                  <Avatar sx={{ width: 38, height: 38 }}>OP</Avatar>
+                  <Avatar sx={{ width: 35, height: 35 }}>OP</Avatar>
                 </IconButton>
               )}
             >

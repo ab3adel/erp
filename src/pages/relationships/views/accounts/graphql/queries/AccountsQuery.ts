@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const accountsQuery = gql`
-  query AccountsQuery($first: Int!, $page: Int!) {
-    accounts(first: $first, page: $page) {
+  query AccountsQuery($first: Int!, $page: Int!, $filter: AccountFilter) {
+    accounts(first: $first, page: $page, AccountFilter: $filter) {
       data {
         id
         name

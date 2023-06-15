@@ -144,6 +144,7 @@ export const useAccountsTableColumns = () => {
           {params?.row?.id}
         </Typography>
       ),
+      align: "right",
     },
     {
       field: "accountType",

@@ -2,14 +2,25 @@ import { useQuery } from "@apollo/client";
 import { accountsQuery } from "../graphql/queries/AccountsQuery";
 import { AccountsResponse } from "../types";
 import { useMemo } from "react";
-import { GridPaginationModel } from "@mui/x-data-grid-pro";
+import { GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
 import { Account } from "@/shared/models/models";
 
-export const useAccountsTableRows = (paginationModel: GridPaginationModel) => {
+export const useAccountsTableRows = (
+  paginationModel: GridPaginationModel,
+  filterModel?: GridFilterModel
+) => {
   const { data, loading } = useQuery<AccountsResponse>(accountsQuery, {
     variables: {
       first: paginationModel.pageSize,
       page: paginationModel.page + 1,
+      filter: filterModel?.items.reduce((acc, item) => {
+        return {
+          ...acc,
+          [item.field]: Number(item.value)
+            ? { min: Number(item.value), max: Number(item.value) }
+            : item.value,
+        };
+      }, {}),
     },
   });
 

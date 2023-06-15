@@ -29,8 +29,7 @@ export const AccountsCustomViewTable = ({
     page: 0,
     pageSize: 10,
   });
-  const { rows, loading, paginationInfo } =
-    useAccountsTableRows(paginationModel);
+
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const {
     getColumnVisibiltyModelByTabParam,
@@ -56,6 +55,10 @@ export const AccountsCustomViewTable = ({
   const [filterModel, setFilterModel] = useState<GridFilterModel>(
     defaultFilterModel!
   );
+  const { rows, loading, paginationInfo } = useAccountsTableRows(
+    paginationModel,
+    filterModel
+  );
 
   const handleCreateView = (form: {
     label: string;
@@ -80,6 +83,7 @@ export const AccountsCustomViewTable = ({
           columnVisibilityModel={model}
           onColumnVisibilityModelChange={(newModel) => setModel(newModel)}
           loading={loading}
+          filterMode="server"
           filterModel={filterModel}
           onFilterModelChange={(newModel) => setFilterModel(newModel)}
           rowCount={paginationInfo?.total || 0}

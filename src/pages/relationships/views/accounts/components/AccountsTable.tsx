@@ -27,13 +27,15 @@ export const AccountsTable = ({
     page: 0,
     pageSize: 10,
   });
-  const { rows, loading, paginationInfo } =
-    useAccountsTableRows(paginationModel);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>();
+  const { rows, loading, paginationInfo } = useAccountsTableRows(
+    paginationModel,
+    filterModel
+  );
   const columns = useAccountsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
   const [model, setModel] = useState<GridColumnVisibilityModel>();
-  const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const { closeDialog, isDialogOpen, openDialog } = useDialog<"save_view">();
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
   const [openColumnsDialog, setOpenColumnsDialog] = useState(false);
@@ -70,6 +72,7 @@ export const AccountsTable = ({
           onPaginationModelChange={(newModel) => {
             setPaginationModel(newModel);
           }}
+          filterMode="server"
           filterModel={filterModel}
           onFilterModelChange={(newModel) => {
             setFilterModel(newModel);
