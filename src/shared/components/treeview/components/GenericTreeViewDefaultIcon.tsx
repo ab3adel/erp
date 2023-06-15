@@ -1,4 +1,4 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export const GenericTreeViewDefaultIcon = ({
@@ -7,12 +7,12 @@ export const GenericTreeViewDefaultIcon = ({
   switch (type) {
     case (type = "collapsed"): {
       return (
-        <KeyboardArrowUpIcon sx={{ color: "common.black" }} />
+        <KeyboardArrowDownIcon sx={{ color: "common.black" }} />
       );
     }
     case (type = "expanded"): {
       return (
-        <KeyboardArrowDownIcon sx={{ color: "common.black" }} />
+        <KeyboardArrowRight sx={{ color: "common.black" }} />
       );
     }
     default: {
