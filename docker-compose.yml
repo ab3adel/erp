@@ -17,6 +17,6 @@ services:
       context: .
       dockerfile: SB.Dockerfile
     ports:
-      - 6005:6006
+      - 5011:6006
     environment:
       - NODE_ENV=development
