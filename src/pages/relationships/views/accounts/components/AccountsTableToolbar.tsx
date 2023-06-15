@@ -115,7 +115,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const handleDeleteTag = (tag: Tag) => {
     removeTag({
       variables: {
-        ids: [tag.id],
+        ids: [Number(tag.id)],
         accountId: selectedRow.id,
       },
     });
