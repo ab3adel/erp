@@ -10,7 +10,7 @@ export const DialogStylesOverrides: Components<Theme>["MuiDialog"] = {
       minWidth: "auto !important",
       paddingBottom: 16,
       borderRadius: 8,
-      boxShadow: theme.shadows[2],
+      boxShadow: theme.shadows[4],
       "& .MuiDialogTitle-root": {
         paddingTop: 16,
         paddingRight: 32,

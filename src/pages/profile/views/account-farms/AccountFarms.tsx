@@ -241,7 +241,7 @@ export const AccountFarms = () => {
                 <TextField
                   variant="filled"
                   name="verticals"
-                  label="Verticals"
+                  label="Varietals"
                   value={newFarm.verticals}
                   onChange={handleFarmInputChange}
                   fullWidth
@@ -305,7 +305,7 @@ export const AccountFarms = () => {
                   sx={{ color: "grey.700" }}
                   fontWeight={600}
                 >
-                  Verticals
+                  Varietals
                 </Typography>
                 <Typography variant="body2" sx={{ color: "common.black" }}>
                   {farm.verticals}

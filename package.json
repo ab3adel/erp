@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@apollo/client": "^3.7.13",
@@ -36,6 +38,13 @@
     "yup": "^1.1.1"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "7.0.20",
+    "@storybook/addon-interactions": "7.0.20",
+    "@storybook/addon-links": "7.0.20",
+    "@storybook/blocks": "7.0.20",
+    "@storybook/react": "7.0.20",
+    "@storybook/react-vite": "7.0.20",
+    "@storybook/testing-library": "0.0.14-next.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.28",
@@ -46,7 +55,10 @@
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "eslint-plugin-storybook": "^0.6.12",
     "jsdom": "^21.1.1",
+    "prop-types": "15.8.1",
+    "storybook": "7.0.20",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
     "vitest": "^0.30.1"

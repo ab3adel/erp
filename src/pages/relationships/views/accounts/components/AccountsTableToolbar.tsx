@@ -12,7 +12,9 @@ import {
   Switch,
   TextField,
   Typography,
-  Alert, MenuItem
+  Alert,
+  MenuItem,
+  Tooltip,
 } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -33,7 +35,8 @@ import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
-import { Tag } from "@/shared/models/models";
+import { Account, Tag } from "@/shared/models/models";
+import { isAccountRowValid } from "../utils/isAccountRowValid";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -50,9 +53,9 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
-
-  const newRow = apiRef.current.getRowModels().get("new");
-  const isDisabled = !newRow?.name || !newRow?.address1 || !newRow?.type;
+  const [isDeleteCancelled, setIsDeleteCancelled] = useState(false);
+  const newRow = apiRef.current.getRowModels().get("new") as Account;
+  const isDisabled = !isAccountRowValid(newRow);
   const [edit] = useGenericMutation<
     {
       updateOrInsertAccount: {
@@ -151,6 +154,13 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             >
               TAG
             </Button>
+            <TagsSelect
+              anchorEl={anchorEl}
+              open={Boolean(selectedRow)}
+              selectedTags={selectedRow?.tags}
+              onRemoveTag={handleDeleteTag}
+              onSelectTag={handleAddTag}
+            />
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -170,17 +180,30 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Button
-              variant="text"
-              startIcon={<SaveIcon />}
-              onClick={() => {
-                dispatch({ type: "SAVE_ACCOUNT" });
+            <Tooltip
+              title="Please fill Account Name , Account type , Address1 , Country , Subscription Type , Currency  fields"
+              slotProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: "error.main",
+                    color: "common.white",
+                  },
+                },
               }}
-              disabled={isDisabled}
             >
-              Save row
-            </Button>
-
+              <span>
+                <Button
+                  variant="text"
+                  startIcon={<SaveIcon />}
+                  onClick={() => {
+                    dispatch({ type: "SAVE_ACCOUNT" });
+                  }}
+                  disabled={isDisabled}
+                >
+                  Save row
+                </Button>
+              </span>
+            </Tooltip>
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -278,7 +301,10 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
             bgcolor: (theme) => `${theme.palette.error.main} !important`,
           },
         }}
-        onSubmit={handleDeleteAccount}
+        onSubmit={() => {
+          setShowSnackbar(true);
+          closeDialog();
+        }}
       >
         <Typography variant="body1" sx={{ color: "common.black" }}>
           There are existing transactions and surveys attached to the account.
@@ -303,13 +329,6 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
-      <TagsSelect
-        anchorEl={anchorEl}
-        open={Boolean(selectedRow)}
-        selectedTags={selectedRow?.tags}
-        onRemoveTag={handleDeleteTag}
-        onSelectTag={handleAddTag}
-      />
 
       <Snackbar
         open={showSnackbar}
@@ -318,23 +337,29 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           vertical: "top",
         }}
         autoHideDuration={5000}
-        onClose={() => setShowSnackbar(false)}
+        onClose={() => {
+          setShowSnackbar(false);
+          setIsDeleteCancelled(false);
+          handleDeleteAccount();
+        }}
       >
         <Alert
           severity="error"
-          onClose={() => setShowSnackbar(false)}
           action={
             <Button
               color="inherit"
-              size="small"
               variant="text"
-              onClick={() => setShowSnackbar(false)}
+              onClick={() => {
+                setShowSnackbar(false);
+                setIsDeleteCancelled(true);
+              }}
+              sx={{ zIndex: 1 }}
             >
               UNDO
             </Button>
           }
         >
-          Account deleted
+          Delteing account
         </Alert>
       </Snackbar>
     </GridToolbarContainer>

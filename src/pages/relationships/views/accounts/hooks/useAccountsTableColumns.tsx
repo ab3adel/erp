@@ -223,7 +223,7 @@ export const useAccountsTableColumns = () => {
     },
     {
       field: "region",
-      headerName: "Region",
+      headerName: "Zone",
       width: 150,
       editable: true,
       group: "location details",
@@ -250,13 +250,13 @@ export const useAccountsTableColumns = () => {
       editable: true,
       type: "singleSelect",
       valueOptions: [
-        "Unknown",
-        "Primary",
-        "Secondary",
-        "University",
-        "Technical",
+        "unknown",
+        "primary",
+        "secondary",
+        "university",
+        "technical",
         "training",
-        "None",
+        "none",
       ],
     },
     {
@@ -266,7 +266,7 @@ export const useAccountsTableColumns = () => {
       editable: true,
       group: "personal details",
       type: "singleSelect",
-      valueOptions: ["Single", "Married", "Widow", "Unknown"],
+      valueOptions: ["single", "married", "widow", "unknown"],
     },
     {
       field: "members_in_household",
@@ -294,7 +294,7 @@ export const useAccountsTableColumns = () => {
 
       editable: true,
       type: "singleSelect",
-      valueOptions: ["Yes", "Some", "No"],
+      valueOptions: ["yes", "some", "no"],
     },
 
     {
@@ -305,7 +305,7 @@ export const useAccountsTableColumns = () => {
 
       editable: true,
       type: "singleSelect",
-      valueOptions: ["Yes", "Some", "No"],
+      valueOptions: ["yes", "some", "no"],
     },
     {
       field: "subscription_type",
@@ -314,7 +314,7 @@ export const useAccountsTableColumns = () => {
       editable: true,
       group: "contact details",
       type: "singleSelect",
-      valueOptions: ["SMS", "Whatsapp", "None"],
+      valueOptions: ["sms", "whatsapp", "none"],
     },
 
     {

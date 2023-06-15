@@ -1,5 +1,11 @@
 import { useFormik } from "formik";
-import { TextField, FormControlLabel, RadioGroup, Radio } from "@mui/material";
+import {
+  TextField,
+  FormControlLabel,
+  RadioGroup,
+  Radio,
+  FormLabel,
+} from "@mui/material";
 
 export const CreateViewForm = ({
   onSubmit,
@@ -33,6 +39,9 @@ export const CreateViewForm = ({
         onBlur={formik.handleBlur}
         sx={{ mb: 2 }}
       />
+      <FormLabel required sx={{ color: "grey.600" }}>
+        Visible to
+      </FormLabel>
       <RadioGroup
         aria-label="type"
         name="type"

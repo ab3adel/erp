@@ -67,7 +67,7 @@ export const GenericDialog = ({
             color="secondary"
             {...closeButtonProps}
             onClick={onClose}
-            sx={{ m: "0px !important" }}
+            sx={{ m: "0px !important", ...closeButtonProps.sx }}
           >
             {closeButtonLabel}
           </Button>

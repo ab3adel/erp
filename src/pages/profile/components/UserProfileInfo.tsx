@@ -8,6 +8,9 @@ import {
   IconButton,
   Divider,
   Tooltip,
+  Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import LocalOfferIcon from "@mui/icons-material/LocalOfferOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
@@ -28,11 +31,18 @@ import { useParams } from "react-router-dom";
 import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
 import { useGenericMutation } from "@/shared";
 import { AccountInput } from "@/pages/relationships/views/accounts/types";
+import { accountTypes } from "@/pages/relationships/views/accounts/graphql/queries/AccountTypesQuery";
 
 export const UserProfileInfo: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const { id } = useParams();
-
+  const { data: types } = useQuery<{
+    accountTypes: {
+      data: Account["accountType"][];
+    };
+  }>(accountTypes);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openAccType = Boolean(anchorEl);
   const [updatedContactDetails, setUpdatedContactDetails] = useState<{
     email: string | undefined;
     language: string | undefined;
@@ -186,13 +196,41 @@ export const UserProfileInfo: React.FC = () => {
           >
             Account ID : {data?.account.id}
           </Typography>
-          <Typography
-            variant="body2"
-            fontWeight={500}
+          <Button
+            variant="text"
             sx={{ color: "primary.main", mb: 1 }}
+            onClick={(e) => {
+              setAnchorEl(anchorEl ? null : e.currentTarget);
+            }}
           >
             {data?.account.accountType?.category}
-          </Typography>
+          </Button>
+          <Menu
+            open={openAccType}
+            anchorEl={anchorEl}
+            onClose={() => {
+              setAnchorEl(null);
+            }}
+          >
+            {types?.accountTypes.data.map((type) => (
+              <MenuItem
+                key={type?.id}
+                onClick={() => {
+                  setAnchorEl(null);
+                  edit({
+                    variables: {
+                      input: {
+                        id: Number(id),
+                        type_id: type?.id as number,
+                      },
+                    },
+                  });
+                }}
+              >
+                {type?.name}
+              </MenuItem>
+            ))}
+          </Menu>
           <Box display="flex" columnGap={2} justifyContent="center">
             <Tooltip title="Completness">
               <CircularProgressWithLabel
