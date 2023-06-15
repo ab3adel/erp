@@ -322,6 +322,8 @@ export const useAccountsTableColumns = () => {
       headerName: "Mobile Number",
       width: 150,
       group: "contact details",
+      valueGetter: ({ row }) =>
+        row.contacts?.find((contact) => contact.type === "phone")?.contact_info,
     },
     {
       field: "district",
