@@ -131,7 +131,9 @@ export const useCurvedTabs = ({
   //get column visibilty model by tab param
   const getGridFilterModelByTabParam = (tabParam: string) => {
     const customViews = getCustomViews();
-    const customView = customViews.find((view) => view.label === tabParam);
+    const customView = customViews.find(
+      (view) => view.label === tabParam.split("-").join(" ")
+    );
     return customView?.filterModel;
   };
 
