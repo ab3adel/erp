@@ -37,7 +37,7 @@ export const GenericDialog = ({
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: hideCloseButton ? "center" : "space-between",
+          justifyContent: hideCloseButton ? "left" : "space-between",
           ...(color && {
             bgcolor: `${color} !important`,
             color: (theme) => `${theme.palette.common.black} !important`,
