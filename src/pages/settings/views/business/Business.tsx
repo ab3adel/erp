@@ -23,14 +23,10 @@ const Bussiness: FunctionComponent = () => {
             label: "Branding",
             value: "/settings/business/general/branding",
           },
-          // {
-          //   label: "Branding",
-          //   value: "/settings/account/security",
-          // },
-          // {
-          //   label: "Branding",
-          //   value: "/settings/account/security",
-          // },
+          {
+            label: "Download Data",
+            value: "/settings/business/general/download-data",
+          },
         ]}
       />
       <Paper elevation={0} sx={{ borderRadius: "0px 0px 12px 12px" }}>
