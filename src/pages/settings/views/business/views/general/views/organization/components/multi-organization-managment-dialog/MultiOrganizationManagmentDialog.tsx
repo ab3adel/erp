@@ -12,10 +12,21 @@ import {
 import closeIcon from "@/assets/images/close.svg";
 import multiOrganizationActivateScreenshot from "@/assets/images/multi-organization-activate-screenshot.png";
 import BuldingIcon from "@/assets/images/building-icon.svg";
+import { FunctionComponent } from "react";
 
-const MultiOrganizationManagmentDialog = () => {
+export interface MultiOrganizationManagmentDialogProps {
+  open?: boolean;
+  contactButtonProps?: ButtonProps;
+  closeButtonProps?: ButtonProps;
+}
+
+const MultiOrganizationManagmentDialog: FunctionComponent<
+  MultiOrganizationManagmentDialogProps
+> = (props) => {
+  const { open, contactButtonProps, closeButtonProps } = props;
+
   const DialogProps: DialogProps = {
-    open: false,
+    open: !!open,
     fullWidth: true,
     maxWidth: "lg",
     PaperProps: { style: { maxHeight: "none" } },
@@ -42,6 +53,7 @@ const MultiOrganizationManagmentDialog = () => {
       fontWeight: 500,
     },
     disableElevation: false,
+    ...contactButtonProps,
   };
 
   const mainImageProps: React.DetailedHTMLProps<
@@ -68,7 +80,7 @@ const MultiOrganizationManagmentDialog = () => {
     <Dialog {...DialogProps}>
       <Box px={3} py={2}>
         <Box textAlign="right">
-          <IconButton size="small">
+          <IconButton size="small" {...closeButtonProps}>
             <img src={closeIcon} />
           </IconButton>
         </Box>
