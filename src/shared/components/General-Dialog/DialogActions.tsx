@@ -1,28 +1,18 @@
 import { FunctionComponent } from "react";
 import MUIDialogActions from "@mui/material/DialogActions";
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 
 export interface DialogActionsProps {
-  confirmLabel?: string;
-  confirmColor?: "danger" | "default";
   cancelLabel?: string;
   onCancelClick?: () => void;
-  onConfirmClick?: () => void;
+  confirmButtonProps?: ButtonProps;
 }
 
 const DialogActions: FunctionComponent<DialogActionsProps> = (props) => {
-  const {
-    confirmColor,
-    confirmLabel,
-    cancelLabel,
-    onCancelClick,
-    onConfirmClick,
-  } = props;
-
-  const confirmTextColor = confirmColor === "danger" ? "#BB2118" : "#008E8F";
+  const { cancelLabel, onCancelClick, confirmButtonProps } = props;
 
   return (
-    <MUIDialogActions disableSpacing style={{ padding: 4, paddingBlock: 12 }}>
+    <MUIDialogActions disableSpacing style={{ padding: 12, paddingBlock: 12 }}>
       <Button
         variant="text"
         sx={{ color: "#24282899" }}
@@ -30,13 +20,7 @@ const DialogActions: FunctionComponent<DialogActionsProps> = (props) => {
       >
         {cancelLabel}
       </Button>
-      <Button
-        variant="text"
-        sx={{ color: confirmTextColor }}
-        onClick={onConfirmClick}
-      >
-        {confirmLabel}
-      </Button>
+      <Button variant="contained" {...confirmButtonProps} />
     </MUIDialogActions>
   );
 };
@@ -45,5 +29,4 @@ export default DialogActions;
 
 DialogActions.defaultProps = {
   cancelLabel: "Cancel",
-  confirmColor: "default",
 };

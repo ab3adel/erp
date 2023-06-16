@@ -5,7 +5,7 @@ export const ButtonStylesOverrides: Components<
 >["MuiButton"] = {
   defaultProps: {
     disableRipple: true,
-    disableElevation: true,
+    disableElevation: false,
     variant: "contained",
     size: "large",
   },

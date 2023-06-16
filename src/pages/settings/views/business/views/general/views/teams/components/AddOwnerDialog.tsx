@@ -8,7 +8,9 @@ import { DialogActionsProps } from "@/shared/components/General-Dialog/DialogAct
 
 interface AddOwnerDialogProps
   extends Pick<GeneralDialogProps, "open">,
-    Pick<DialogActionsProps, "onCancelClick" | "onConfirmClick"> {}
+    Pick<DialogActionsProps, "onCancelClick"> {
+  onConfirmClick: () => void;
+}
 
 const AddOwnerDialog: FunctionComponent<AddOwnerDialogProps> = (props) => {
   const { open, onCancelClick, onConfirmClick } = props;
@@ -18,9 +20,11 @@ const AddOwnerDialog: FunctionComponent<AddOwnerDialogProps> = (props) => {
       open={open}
       headerProps={{ label: "Add Owner" }}
       actionsProps={{
-        confirmLabel: "send invite",
+        confirmButtonProps: {
+          children: "send invite",
+          onClick: onConfirmClick,
+        },
         onCancelClick: onCancelClick,
-        onConfirmClick: onConfirmClick,
       }}
     >
       <Box maxWidth={600} py={1}>

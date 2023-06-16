@@ -7,7 +7,9 @@ import { FunctionComponent } from "react";
 
 interface RemoveMemberDialogProps
   extends Pick<GeneralDialogProps, "open">,
-    Pick<DialogActionsProps, "onCancelClick" | "onConfirmClick"> {}
+    Pick<DialogActionsProps, "onCancelClick"> {
+  onConfirmClick: () => void;
+}
 
 const RemoveMemberDialog: FunctionComponent<RemoveMemberDialogProps> = (
   props
@@ -19,10 +21,12 @@ const RemoveMemberDialog: FunctionComponent<RemoveMemberDialogProps> = (
       open={open}
       headerProps={{ color: "danger", label: "Remove Member?" }}
       actionsProps={{
-        confirmColor: "danger",
-        confirmLabel: "Remove",
+        confirmButtonProps: {
+          children: "Remove",
+          color: "error",
+          onClick: onConfirmClick,
+        },
         onCancelClick,
-        onConfirmClick,
       }}
     >
       <Box maxWidth={420}>

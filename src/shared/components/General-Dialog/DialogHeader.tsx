@@ -24,7 +24,7 @@ const DialogHeader: FunctionComponent<DialogHeaderProps> = (props) => {
       style={{
         background: backgroundColor,
         paddingInline: 24,
-        paddingBlock: 20,
+        paddingBlock: 12,
         height: "auto",
       }}
     >
