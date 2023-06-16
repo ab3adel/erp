@@ -9,6 +9,12 @@ export const meQuery = gql`
       profile {
         language
         date_format
+        email_notifications
+        password_updates
+        security_updates
+        communications
+        Mcultivo_App_updates
+
         avatar {
           src
           file_type

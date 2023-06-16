@@ -1,11 +1,11 @@
 import { Stack, TextField, MenuItem, Box, Button } from "@mui/material";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 // import { DateTimePicker } from "@mui/x-date-pickers";
-import { useMeQuery } from "../hooks/useMeQuery";
+import { useMeQuery } from "../../../hooks/useMeQuery";
 import { languages } from "@/shared/schemas/available-languages";
 import { formats } from "@/shared/schemas/available-date-format";
 import { useFormik } from "formik";
-import { Params } from "../types/profile.types";
+import { Params } from "../../../types/profile.types";
 import { useEffect } from "react";
 
 interface Form extends Pick<Params, "date_format" | "language" | "name"> {

@@ -3,5 +3,5 @@ import { meQuery } from "../graphql/queries/me";
 import { Data } from "../types/me.types";
 
 export const useMeQuery = () => {
-  return useQuery<Data>(meQuery);
+  return useQuery<Data>(meQuery, { fetchPolicy: "cache-and-network" });
 };
