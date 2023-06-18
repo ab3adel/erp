@@ -25,17 +25,17 @@ import {
   PlotProfile,
 } from "@/pages/profile";
 import { AccountsCustomView } from "@/pages/relationships/views/accounts/AccountsCustomView";
-import BusinessGeneral from "@/pages/settings/views/business/views/general/General";
+import BusinessGeneral from "@/pages/settings/views/business/Business";
 import Organization from "@/pages/settings/views/business/views/general/views/organization/Organization";
 import Edit from "@/pages/settings/views/business/views/general/views/organization/views/edit/Edit";
 import Teams from "@/pages/settings/views/business/views/general/views/teams/Teams";
 import Create from "@/pages/settings/views/business/views/general/views/teams/view/create/Create";
-// import Branding from "@/pages/settings/views/business/views/general/views/branding/views";
-// import DownloadData from "@/pages/settings/views/business/views/general/views/download-data";
 import Origin from "@/pages/settings/views/business/views/origin/Origin";
 import Empty from "@/pages/settings/views/business/views/origin/views/empty";
 import SavedSettings from "@/pages/settings/views/business/views/origin/views/saved-settings";
 import OriginWizard from "@/pages/settings/views/business/views/origin/views/wizard";
+import Branding from "@/pages/settings/views/business/views/general/views/branding/views";
+import DownloadData from "@/pages/settings/views/business/views/general/views/download-data";
 
 const ProfileChildrenRoutes = [
   {
@@ -148,14 +148,14 @@ export const router = createBrowserRouter([
                       { element: <Create />, path: "add" },
                     ],
                   },
-                  // {
-                  //   path: "branding",
-                  //   element: <Branding />,
-                  // },
-                  // {
-                  //   path: "download-data",
-                  //   element: <DownloadData />,
-                  // },
+                  {
+                    path: "branding",
+                    element: <Branding />
+                  },
+                  {
+                    path: "download-data",
+                    element: <DownloadData />
+                  }
                 ],
               },
               {
@@ -175,6 +175,33 @@ export const router = createBrowserRouter([
                     path: "saved-settings",
                     element: <SavedSettings />,
                   },
+                ],
+              },
+              {
+                path: "origin-customization",
+                element: <Origin />,
+                children: [
+                  {
+                    // path: "empty",
+                    index: true,
+                    element: <Empty />,
+                  },
+                  {
+                    path: "wizard",
+                    element: <OriginWizard />,
+                  },
+                  {
+                    path: "saved-settings",
+                    element: <SavedSettings />,
+                  },
+                  {
+                    path: "branding",
+                    element: <Branding />
+                  },
+                  {
+                    path: "download-data",
+                    element: <DownloadData />
+                  }
                 ],
               },
             ],
