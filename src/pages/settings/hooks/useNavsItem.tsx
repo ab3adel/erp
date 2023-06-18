@@ -16,7 +16,10 @@ export const useNavsItem = () => {
       expanded: true,
       children: [
         { label: "General", nodeId: "/settings/business/general/organization" },
-        { label: "Origin Customization", nodeId: "/settings/origin" },
+        {
+          label: "Origin Customization",
+          nodeId: "/settings/business/origin-customization",
+        },
       ],
     },
   ];
