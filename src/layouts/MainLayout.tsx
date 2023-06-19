@@ -14,7 +14,7 @@ const loader = () => {
 export const MainLayout = () => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
-      <Box display="flex">
+      <Box display="flex" flexGrow={1}>
         <AppBar />
         <Drawer />
         <Box
