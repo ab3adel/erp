@@ -24,6 +24,10 @@ export const useAddAccount = (ref: React.MutableRefObject<GridApiPro>) => {
         const rows = Array.from(rowsModels.values());
         rows.unshift(row);
         ref.current.setRows(rows);
+        ref.current.startCellEditMode({
+          id: "new",
+          field: "name",
+        });
         setIsRowAdded(true);
         break;
       }
