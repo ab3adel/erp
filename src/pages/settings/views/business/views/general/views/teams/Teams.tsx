@@ -10,8 +10,11 @@ import RemoveMemberDialog from "./components/RemoveMemberDialog";
 import AddOwnerDialog from "./components/AddOwnerDialog";
 import DeactivateMemberDialog from "./components/DeactivateMemberDialog";
 import AddTeamMemberButtonContainer from "../../containers/AddTeamMemberButtonContainer";
+import { useTeams } from "./hooks/useTeams";
 
 const Teams: FunctionComponent = () => {
+  const { data: data } = useTeams();
+
   return (
     <PageSectionContainer>
       <RemoveMemberDialog open={false} />
@@ -51,15 +54,27 @@ const Teams: FunctionComponent = () => {
         <Divider />
       </Box>
 
-      <TeamsRoleTable
-        data={[
+      {/* [
           {
             id: 1,
             entity: { email: "jane@longmilescoffee.com", name: "Jane Doe" },
             modules: ["module_c"],
             permissions: ["owner"],
           },
-        ]}
+        ] */}
+      {}
+      <TeamsRoleTable
+        data={
+          data?.users.data
+            ? data?.users.data.map((item) => ({
+                id: item.id,
+                permissions: item.abilities.map((ability) => ability.title),
+                modules: ["unknown"],
+                entity: { email: item.email, name: item.name },
+                role: item.role,
+              }))
+            : []
+        }
       />
       <Box mt={2}>
         <AddTeamMemberButtonContainer />

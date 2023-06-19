@@ -115,6 +115,7 @@ export interface IOrganization {
 export interface IAssignedRoles {
   id: number;
   entity: { name: string; email: string };
-  modules: "module_a" | "module_b" | "module_c"[];
-  permissions: "read" | "write" | "admin" | "customized" | "owner"[];
+  modules: string[];
+  permissions: string[];
+  role: string;
 }
