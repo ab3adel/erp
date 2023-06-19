@@ -19,7 +19,13 @@ export const MainLayout = () => {
         <Drawer />
         <Box
           component="main"
-          sx={{ flexGrow: 1, px: 3, display: "flex", flexDirection: "column" }}
+          sx={{
+            flexGrow: 1,
+            px: 3,
+            display: "flex",
+            flexDirection: "column",
+            width: "20%",
+          }}
         >
           <Toolbar />
           <Box sx={{ zIndex: 1, position: "relative", flexGrow: 1 }}>
