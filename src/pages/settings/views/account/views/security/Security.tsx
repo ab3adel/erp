@@ -7,57 +7,13 @@ import {
   FormControl,
   FormLabel,
 } from "@mui/material";
-import { useFormik } from "formik";
-import { Params } from "./types/password.types";
 import * as yup from "yup";
-import { usePasswordChangeMutation } from "./hooks/usePasswordChangeMutation";
-import { useSignout } from "@/layouts/hooks/useSignout";
+
 import HelperChecksGenerater from "./components/HelperChecksGenrater";
-
-interface PasswordForm
-  extends Pick<
-    Params,
-    "current_password" | "password" | "password_confirmation"
-  > {}
-
-const passwordChangeSchema = yup.object().shape({
-  current_password: yup.string().required("Current password is required"),
-  password: yup
-    .string()
-    .required("New password is required")
-    .min(8, "Password must be at least 8 characters long")
-    .matches(/[A-Z]/)
-    .matches(/[a-z]/),
-  password_confirmation: yup
-    .string()
-    .required("Confirm password is required")
-    .oneOf([yup.ref("password")], "Passwords do not match"),
-});
+import { useLogic } from "./Security.logic";
 
 export const Security = () => {
-  const [changePassword] = usePasswordChangeMutation();
-
-  const signout = useSignout();
-
-  const form = useFormik<PasswordForm>({
-    validationSchema: passwordChangeSchema,
-    validateOnBlur: false,
-    validateOnChange: false,
-    initialValues: {
-      current_password: "",
-      password: "",
-      password_confirmation: "",
-    },
-    onSubmit: (values, actions) => {
-      changePassword({ variables: values }).then(() => {
-        actions.resetForm();
-        actions.setSubmitting(false);
-
-        //logout  after changing the password so we can use the account with the new one
-        signout();
-      });
-    },
-  });
+  const { form } = useLogic();
 
   return (
     <Box mx="24px" py={4}>

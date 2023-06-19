@@ -3,7 +3,6 @@ import {
   Typography,
   Divider,
   FormControlLabel,
-  Switch,
   FormHelperText,
   Button,
   Checkbox,
