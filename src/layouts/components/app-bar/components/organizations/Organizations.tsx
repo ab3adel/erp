@@ -20,7 +20,14 @@ export const OrganizationButton = styled(Button)(() => ({
 }));
 
 const Organization: FunctionComponent = () => {
-  const { anchorEl, handleCloseMenu, handleSetAnchorEl } = useLogic();
+  const {
+    anchorEl,
+    handleCloseMenu,
+    handleSetAnchorEl,
+    organiztions,
+    selectedOrganiztionId,
+    setSelectedOrg,
+  } = useLogic();
 
   const menuProps: MenuProps = {
     anchorOrigin: {
@@ -46,15 +53,18 @@ const Organization: FunctionComponent = () => {
   return (
     <Box>
       <OrganizationButton {...buttonProps}>
-        long miles burundi
+        {
+          organiztions?.userOrganizations.data.find(
+            (item) => item.id === selectedOrganiztionId
+          )?.company_name
+        }
       </OrganizationButton>
       <Menu {...menuProps}>
-        <MenuItem>
-          <ListItemText primary="Organization 1" />
-        </MenuItem>
-        <MenuItem>
-          <ListItemText primary="Organization 1" />
-        </MenuItem>
+        {organiztions?.userOrganizations.data.map((item) => (
+          <MenuItem key={item.id} onClick={() => setSelectedOrg(item.id)}>
+            <ListItemText primary={item.company_name} />
+          </MenuItem>
+        ))}
       </Menu>
     </Box>
   );
