@@ -13,26 +13,33 @@ const loader = () => {
 
 export const MainLayout = () => {
   return (
-    <Box display="flex" height="100%">
-      <AppBar />
-      <Drawer />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, px: 3 }}
-        width="20%"
-        height="100%"
-      >
-        <Toolbar />
-        <Box sx={{ zIndex: 1, position: "relative", height: "85%" }}>
-          <Outlet />
+    <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Box display="flex" flexGrow={1}>
+        <AppBar />
+        <Drawer />
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, px: 3, display: "flex", flexDirection: "column" }}
+        >
+          <Toolbar />
+          <Box sx={{ zIndex: 1, position: "relative", flexGrow: 1 }}>
+            <Outlet />
+          </Box>
         </Box>
+      </Box>
+
+      <Box
+        sx={{
+          height: "88px",
+          display: "grid",
+          placeContent: "center",
+        }}
+      >
         <Box
           sx={{
-            width: "100%",
+            display: "flex",
             justifyContent: "center",
             zIndex: 0,
-            display: "flex",
-            mt: 1.5,
           }}
         >
           <Typography variant="body1" sx={{ color: "text.secondary" }}>

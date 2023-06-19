@@ -7,6 +7,7 @@ const SECONDARY_COLOR = "#FF8749";
 export const palette: PaletteOptions = {
   primary: {
     main: PRIMARY_COLOR,
+    light: `${PRIMARY_COLOR}14`,
   },
   secondary: {
     main: SECONDARY_COLOR,

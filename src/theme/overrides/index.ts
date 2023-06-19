@@ -13,6 +13,7 @@ import { DataGridStylesOverrides } from "./Datagrid";
 import { MuiLinkStylesOverrides } from "./Link";
 import { ChipStylesOverrides } from "./Chip";
 import { TextFieldStylesOverrides } from "./TextField";
+import { SelectStylesOverrides } from "./Select";
 import "@mui/x-data-grid/themeAugmentation";
 import { AlertStylesOverrides } from "./Alert";
 
@@ -32,4 +33,5 @@ export const componentOverrides: Components<Theme> = {
   MuiChip: ChipStylesOverrides,
   MuiTextField: TextFieldStylesOverrides,
   MuiAlert: AlertStylesOverrides,
+  MuiSelect: SelectStylesOverrides,
 };

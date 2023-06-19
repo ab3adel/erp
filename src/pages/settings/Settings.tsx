@@ -14,7 +14,7 @@ export const Settings = () => {
   }, [child, navigate]);
 
   return (
-    <Box position="relative">
+    <Box position="relative" height="100%" display="flex" flexDirection="column">
       <Typography
         fontSize={34}
         fontWeight={700}
@@ -22,7 +22,9 @@ export const Settings = () => {
       >
         Settings
       </Typography>
-      <Outlet />
+      <Box flexGrow={1}>
+        <Outlet />
+      </Box>
     </Box>
   );
 };

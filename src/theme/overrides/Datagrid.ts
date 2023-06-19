@@ -28,7 +28,8 @@ export const DataGridStylesOverrides: Components<Theme>["MuiDataGrid"] = {
       textTransform: "none",
       fontFamily: "Lato",
       fontStyle: "normal",
-      fontWeight: 700,
+      // FIXME: should this be always 700 ??
+      fontWeight: 500,
       fontSize: "14px",
     }),
     cellContent: ({ theme }) => ({
