@@ -104,14 +104,9 @@ type DataGridProps = {
   rows: readonly Record<string, unknown>[];
 };
 
-
 const DataGrid = ({ columns, rows }: DataGridProps) => (
   <DataGridPro
     sx={{
-      overflowX: "scroll",
-      //   maxWidth: 952,
-      //   width: "100%"
-
       // --> this styling will make the last row without border
       // "& .MuiDataGrid-row:last-child > *": {
       //   border: "none",

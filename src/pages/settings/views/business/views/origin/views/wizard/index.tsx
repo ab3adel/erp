@@ -56,6 +56,7 @@ const OriginWizard = () => {
               value={tab.key}
               sx={{
                 flexGrow: 1,
+                minWidth: 0,
                 paddingTop: 0,
                 marginTop: -1,
                 paddingLeft: 8,

@@ -14,12 +14,18 @@ const loader = () => {
 export const MainLayout = () => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
-      <Box display="flex" flexGrow={1}>
+      <Box display="flex">
         <AppBar />
         <Drawer />
         <Box
           component="main"
-          sx={{ flexGrow: 1, px: 3, display: "flex", flexDirection: "column" }}
+          sx={{
+            flexGrow: 1,
+            minWidth: 0,
+            px: 3,
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
           <Toolbar />
           <Box sx={{ zIndex: 1, position: "relative", flexGrow: 1 }}>
