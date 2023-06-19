@@ -43,7 +43,9 @@ export const Notificationts = () => {
           email address: {profileData?.me?.email}
         </Typography>
       </Box>
-      <Typography variant="body1">Email Notifications</Typography>
+      <Typography variant="body1" fontWeight={400} color="text.primary">
+        Email Notifications
+      </Typography>
       <Divider orientation="horizontal" sx={{ pt: 3 }} />
       <Box sx={{ my: 3 }}>
         <Box my={3}>

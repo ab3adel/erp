@@ -27,6 +27,6 @@ export const CustomizedSwitch = styled(Switch)(({ theme }) => ({
   },
   "& .Mui-checked + .MuiSwitch-track": {
     backgroundColor: theme.palette.primary.main, // Apply background color when switched on
-    opacity: 1,
+    opacity: "1 !important",
   },
 }));
