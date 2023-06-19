@@ -11,6 +11,8 @@ import {
   Button,
   Menu,
   MenuItem,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 import LocalOfferIcon from "@mui/icons-material/LocalOfferOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
@@ -51,9 +53,13 @@ export const UserProfileInfo: React.FC = () => {
     whatsapp: string | undefined;
   }>();
   const [updatedLocationDetails, setUpdatedLocationDetails] = useState<{
-    government_id: string;
+    government_id?: string;
+    district?: string;
+    region?: string;
+    address1?: string;
+    address2?: string;
   }>();
-  const [edit] = useGenericMutation<
+  const [edit, { loading }] = useGenericMutation<
     {
       updateOrInsertAccount: {
         id: number;
@@ -84,6 +90,10 @@ export const UserProfileInfo: React.FC = () => {
         });
         setUpdatedLocationDetails({
           government_id: data.account.government_id,
+          address1: data.account.address1,
+          address2: data.account.address2,
+          district: data.account.district,
+          region: data.account.region,
         });
       },
     }
@@ -137,7 +147,7 @@ export const UserProfileInfo: React.FC = () => {
   const handleSaveLocationDetails = () => {
     const updatedLocationInput: AccountInput = {
       id: Number(id),
-      government_id: updatedLocationDetails?.government_id,
+      ...updatedLocationDetails,
     };
 
     edit({
@@ -162,6 +172,14 @@ export const UserProfileInfo: React.FC = () => {
         overflow: "auto",
       }}
     >
+      {loading && (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={true}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      )}
       <Box textAlign="center" my={2}>
         <Badge
           overlap="circular"
@@ -313,8 +331,8 @@ export const UserProfileInfo: React.FC = () => {
                   <StayCurrentPortraitOutlinedIcon sx={{ color: "grey.700" }} />
                   <Typography
                     variant="body2"
-                    fontWeight={500}
-                    sx={{ color: "grey.700" }}
+                    fontWeight={600}
+                    sx={{ color: "text.primary" }}
                   >
                     {
                       data?.account.contacts?.find(
@@ -356,8 +374,8 @@ export const UserProfileInfo: React.FC = () => {
                   <WhatsAppIcon sx={{ color: "grey.700" }} />
                   <Typography
                     variant="body2"
-                    fontWeight={500}
-                    sx={{ color: "grey.700" }}
+                    fontWeight={600}
+                    sx={{ color: "text.primary" }}
                   >
                     {
                       data?.account.contacts?.find(
@@ -399,8 +417,8 @@ export const UserProfileInfo: React.FC = () => {
                   <MailOutlineOutlinedIcon sx={{ color: "grey.700" }} />
                   <Typography
                     variant="body2"
-                    fontWeight={500}
-                    sx={{ color: "grey.700" }}
+                    fontWeight={600}
+                    sx={{ color: "text.primary" }}
                   >
                     {
                       data?.account.contacts?.find(
@@ -442,8 +460,8 @@ export const UserProfileInfo: React.FC = () => {
                   <ContactMailOutlinedIcon sx={{ color: "grey.700" }} />
                   <Typography
                     variant="body2"
-                    fontWeight={500}
-                    sx={{ color: "grey.700" }}
+                    fontWeight={600}
+                    sx={{ color: "text.primary" }}
                   >
                     {data?.account.subscription_type}
                   </Typography>
@@ -481,8 +499,8 @@ export const UserProfileInfo: React.FC = () => {
                   <LanguageOutlinedIcon sx={{ color: "grey.700" }} />
                   <Typography
                     variant="body2"
-                    fontWeight={500}
-                    sx={{ color: "grey.700" }}
+                    fontWeight={600}
+                    sx={{ color: "text.primary" }}
                   >
                     {data?.account.language}
                   </Typography>
@@ -522,37 +540,165 @@ export const UserProfileInfo: React.FC = () => {
               <Divider />
               <Box display="flex" flexDirection="column" rowGap={1} mt={1}>
                 {locationDetailsEditMode ? (
-                  <TextField
-                    variant="filled"
-                    label="Government ID"
-                    fullWidth
-                    sx={{ mb: 1 }}
-                    value={updatedLocationDetails?.government_id}
-                    onChange={(e) =>
-                      setUpdatedLocationDetails({
-                        ...updatedLocationDetails,
-                        government_id: e.target.value,
-                      })
-                    }
-                  />
+                  <>
+                    <TextField
+                      variant="filled"
+                      label="Government ID"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      value={updatedLocationDetails?.government_id}
+                      onChange={(e) =>
+                        setUpdatedLocationDetails({
+                          ...updatedLocationDetails,
+                          government_id: e.target.value,
+                        })
+                      }
+                    />
+                    <TextField
+                      variant="filled"
+                      label="District"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      value={updatedLocationDetails?.district}
+                      onChange={(e) =>
+                        setUpdatedLocationDetails({
+                          ...updatedLocationDetails,
+                          district: e.target.value,
+                        })
+                      }
+                    />
+                    <TextField
+                      variant="filled"
+                      label="Zone"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      value={updatedLocationDetails?.region}
+                      onChange={(e) =>
+                        setUpdatedLocationDetails({
+                          ...updatedLocationDetails,
+                          region: e.target.value,
+                        })
+                      }
+                    />
+                    <TextField
+                      variant="filled"
+                      label="Address1"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      value={updatedLocationDetails?.address1}
+                      onChange={(e) =>
+                        setUpdatedLocationDetails({
+                          ...updatedLocationDetails,
+                          address1: e.target.value,
+                        })
+                      }
+                    />
+                    <TextField
+                      variant="filled"
+                      label="Address2"
+                      fullWidth
+                      sx={{ mb: 1 }}
+                      value={updatedLocationDetails?.address2}
+                      onChange={(e) =>
+                        setUpdatedLocationDetails({
+                          ...updatedLocationDetails,
+                          address2: e.target.value,
+                        })
+                      }
+                    />
+                  </>
                 ) : (
-                  <Box>
-                    <Typography
-                      variant="body2"
-                      fontWeight={400}
-                      fontSize={12}
-                      gutterBottom
-                      sx={{ color: "grey.700" }}
-                    >
-                      Government ID
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      fontWeight={500}
-                      sx={{ color: "grey.700" }}
-                    >
-                      {data?.account.government_id}
-                    </Typography>
+                  <Box display="flex" flexDirection="column" rowGap={3}>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        fontSize={12}
+                        gutterBottom
+                        sx={{ color: "grey.700" }}
+                      >
+                        Government ID
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {data?.account.government_id}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        fontSize={12}
+                        gutterBottom
+                        sx={{ color: "grey.700" }}
+                      >
+                        District
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {data?.account.district}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        fontSize={12}
+                        gutterBottom
+                        sx={{ color: "grey.700" }}
+                      >
+                        Zone
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {data?.account.region}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        fontSize={12}
+                        gutterBottom
+                        sx={{ color: "grey.700" }}
+                      >
+                        Address1
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {data?.account.address1}
+                      </Typography>
+                    </Box>
+                    <Box>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        fontSize={12}
+                        gutterBottom
+                        sx={{ color: "grey.700" }}
+                      >
+                        Address2
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        fontWeight={400}
+                        sx={{ color: "text.primary" }}
+                      >
+                        {data?.account.address2}
+                      </Typography>
+                    </Box>
                   </Box>
                 )}
               </Box>

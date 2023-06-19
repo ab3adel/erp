@@ -24,7 +24,7 @@ export const MainLayout = () => {
             px: 3,
             display: "flex",
             flexDirection: "column",
-            width: "20%",
+            minWidth: 0,
           }}
         >
           <Toolbar />
