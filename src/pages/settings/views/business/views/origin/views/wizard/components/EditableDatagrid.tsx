@@ -1,5 +1,13 @@
 import { CalendarToday, Cancel, DeleteOutline } from "@mui/icons-material";
-import { Box, Checkbox, Chip, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Chip,
+  IconButton,
+  MenuItem,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import {
   GridRenderCellParams,
   DataGridPro,
@@ -93,11 +101,24 @@ export const cellDeleteAction = (
   params: GridRowParams,
   onClick: (id: GridRowId) => void
 ) => [
-  <GridActionsCellItem
-    icon={<DeleteOutline sx={{ color: "#2428288F" }} />}
-    onClick={() => onClick(params.id)}
-    label="Delete"
-  />,
+  <Tooltip
+    title="Delete"
+    arrow
+    sx={{
+      "&:hover > *": {
+        color: "primary.main",
+      },
+    }}
+  >
+    <IconButton onClick={() => onClick(params.id)} disableRipple={false}>
+      <DeleteOutline
+        sx={{
+          color: "#2428288F",
+          fontSize: "1.5rem",
+        }}
+      />
+    </IconButton>
+  </Tooltip>,
 ];
 type DataGridProps = {
   columns: GridColDef[];
@@ -107,6 +128,9 @@ type DataGridProps = {
 const DataGrid = ({ columns, rows }: DataGridProps) => (
   <DataGridPro
     sx={{
+      "& .MuiDataGrid-row:hover": {
+        // backgroundColor: "none",
+      },
       // --> this styling will make the last row without border
       // "& .MuiDataGrid-row:last-child > *": {
       //   border: "none",

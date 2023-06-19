@@ -7,4 +7,11 @@ export const MuiIconButtonOverrides: Components<
     disableRipple: true,
     disableFocusRipple: true,
   },
+  styleOverrides: {
+    root: ({ theme }) => ({
+      "&:hover": {
+        backgroundColor: theme.palette.primary.light,
+      },
+    }),
+  },
 };
