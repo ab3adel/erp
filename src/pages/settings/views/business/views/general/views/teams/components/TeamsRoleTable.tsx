@@ -1,26 +1,38 @@
-import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  ButtonProps,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { DataGridPro, DataGridProProps } from "@mui/x-data-grid-pro";
 import { FunctionComponent } from "react";
-// import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import { IAssignedRoles } from "@/shared/models/models";
 import { generateAbbreviation } from "@/shared/utils/nameAbbreviationGenerator";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import PersonOffOutlinedIcon from "@mui/icons-material/PersonOffOutlined";
 import PersonRemoveOutlinedIcon from "@mui/icons-material/PersonRemoveOutlined";
 import { capitalizeEachWord } from "@/shared/utils/capitalizeEachWord";
-// import { generatePermissionText } from "@/shared/utils/PermissionTextGenerate";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 interface TeamsRoleTableProps {
-  // onAddNewTeamMemberClick?: () => void;
   data?: IAssignedRoles[];
+  onDeleteClick?: (id: number) => void;
+  onDeactivivateClick?: (id: number) => void;
+  onActivateClick?: (id: number) => void;
+  onEditClick?: (id: number) => void;
+  disableActivateButton: boolean;
 }
 
 const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
-  const { data } = props;
-
-  // console.log(data);
-
-  // const modulesOptions = [{}];
+  const {
+    data,
+    onDeleteClick,
+    onDeactivivateClick,
+    onEditClick,
+    onActivateClick,
+    disableActivateButton,
+  } = props;
 
   const columns: DataGridProProps<IAssignedRoles>["columns"] = [
     {
@@ -70,13 +82,24 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       renderCell: ({ row }) =>
         row.role !== "owner" && (
           <Box width="100%" display="flex" justifyContent="space-between">
-            <IconButton>
+            <IconButton onClick={() => onEditClick?.(row.id)}>
               <CreateOutlinedIcon />
             </IconButton>
-            <IconButton>
-              <PersonOffOutlinedIcon />
-            </IconButton>
-            <IconButton>
+
+            {row.entity.is_active ? (
+              <IconButton onClick={() => onDeactivivateClick?.(row.id)}>
+                <PersonOffOutlinedIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                disabled={disableActivateButton}
+                onClick={() => onActivateClick?.(row.id)}
+              >
+                <PersonOutlineOutlinedIcon />
+              </IconButton>
+            )}
+
+            <IconButton onClick={() => onDeleteClick?.(row.id)}>
               <PersonRemoveOutlinedIcon />
             </IconButton>
           </Box>

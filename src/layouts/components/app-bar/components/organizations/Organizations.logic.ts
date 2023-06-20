@@ -1,6 +1,5 @@
 import { useSelectedOrganiztion } from "@/global/states/selectedOrganizations";
 import { useUserOrganiaztions } from "@/shared/hooks/graphql/queries/useUserOrganizations/useUserOrganizations";
-import { set } from "lodash";
 import React, { useEffect } from "react";
 
 export const useLogic = () => {
@@ -17,7 +16,6 @@ export const useLogic = () => {
   const setSelectedOrg = useSelectedOrganiztion((state) => state.set);
 
   useEffect(() => {
-    console.log(organiztions);
     organiztions?.userOrganizations.data[0]?.id &&
       setSelectedOrg(organiztions?.userOrganizations?.data[0]?.id);
   }, [organiztions?.userOrganizations.data]);

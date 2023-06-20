@@ -7,14 +7,18 @@ import { FunctionComponent } from "react";
 
 interface RemoveMemberDialogProps
   extends Pick<GeneralDialogProps, "open">,
-    Pick<DialogActionsProps, "onCancelClick"> {
-  onConfirmClick: () => void;
+    Pick<DialogActionsProps, "onCancelClick" | "confirmButtonProps"> {
+  // onConfirmClick: () => void;
+  name: string;
+  organization: string;
+  email: string;
 }
 
 const RemoveMemberDialog: FunctionComponent<RemoveMemberDialogProps> = (
   props
 ) => {
-  const { open, onCancelClick, onConfirmClick } = props;
+  const { open, onCancelClick, confirmButtonProps, email, name, organization } =
+    props;
 
   return (
     <GeneralDialog
@@ -24,7 +28,7 @@ const RemoveMemberDialog: FunctionComponent<RemoveMemberDialogProps> = (
         confirmButtonProps: {
           children: "Remove",
           color: "error",
-          onClick: onConfirmClick,
+          ...confirmButtonProps,
         },
         onCancelClick,
       }}
@@ -33,16 +37,16 @@ const RemoveMemberDialog: FunctionComponent<RemoveMemberDialogProps> = (
         <Typography variant="body1" fontWeight={400} fontSize={16}>
           You are about to remove{" "}
           <Typography display="inline-block" fontWeight={700}>
-            Olivia Roe
+            {name}
           </Typography>{" "}
           from the "
           <Typography display="inline-block" fontWeight={700}>
-            Long Miles Burundi
+            {organization}
           </Typography>
           " organization. This action is irreversible.{" "}
           <Typography sx={{ mt: 3 }}>
             <Typography display="inline" fontWeight={700}>
-              olivia@longmiles.com
+              {email}
             </Typography>{" "}
             will no longer have access to this organization, and any content
             created by this user will be permanently deleted.

@@ -10,16 +10,71 @@ import RemoveMemberDialog from "./components/RemoveMemberDialog";
 import AddOwnerDialog from "./components/AddOwnerDialog";
 import DeactivateMemberDialog from "./components/DeactivateMemberDialog";
 import AddTeamMemberButtonContainer from "../../containers/AddTeamMemberButtonContainer";
-import { useTeams } from "./hooks/useTeams";
+import { useLogic } from "./Teams.logic";
 
 const Teams: FunctionComponent = () => {
-  const { data: data } = useTeams({ first: 1000, page: 1 });
+  const {
+    data,
+    memberIdToDelete,
+    handleSetMemberToDelete,
+    memberToDeleteInfo,
+    organization,
+    handleCancelDelete,
+    handleConfirmDeleteUser,
+    loadingDeleting,
+    showAddOwnerDialog,
+    handleShowAddOwner,
+    handleCancelAddOwner,
+    addOwnerEmail,
+    handleConfirmAddOwner,
+    handleEmailChange,
+    isOwnerEmailValid,
+    loadingAddOwner,
+    handleSetMemberToDeactivate,
+    memberIdToDeactivate,
+    handleCancelDeactivate,
+    memberToDeactivateInfo,
+    handleConfirmDeactivateUser,
+    loadingUpdateUser,
+    handleActivateMember,
+  } = useLogic();
 
   return (
     <PageSectionContainer>
-      <RemoveMemberDialog open={false} />
-      <AddOwnerDialog open={false} />
-      <DeactivateMemberDialog open={false} />
+      <RemoveMemberDialog
+        open={Boolean(memberIdToDelete)}
+        confirmButtonProps={{
+          onClick: handleConfirmDeleteUser,
+          disabled: loadingDeleting,
+        }}
+        onCancelClick={handleCancelDelete}
+        name={memberToDeleteInfo?.name ?? ""}
+        email={memberToDeleteInfo?.email ?? ""}
+        organization={organization?.organization.company_name ?? ""}
+      />
+      <AddOwnerDialog
+        open={showAddOwnerDialog}
+        confirmButtonProps={{
+          onClick: handleConfirmAddOwner,
+          disabled: !isOwnerEmailValid || loadingAddOwner,
+        }}
+        onCancelClick={handleCancelAddOwner}
+        emailFieldProps={{
+          value: addOwnerEmail,
+          onChange: (e) => handleEmailChange(e.currentTarget.value),
+        }}
+      />
+
+      <DeactivateMemberDialog
+        open={Boolean(memberIdToDeactivate)}
+        onCancelClick={handleCancelDeactivate}
+        confirmButtonProps={{
+          onClick: handleConfirmDeactivateUser,
+          disabled: loadingUpdateUser,
+        }}
+        name={memberToDeactivateInfo?.name ?? ""}
+        organization={organization?.organization.company_name ?? ""}
+      />
 
       <HeaderToolbar
         leftComponent={
@@ -33,7 +88,11 @@ const Teams: FunctionComponent = () => {
           </Typography>
         }
         rightComponent={
-          <Button startIcon={<StarOutline />} disableElevation={false}>
+          <Button
+            startIcon={<StarOutline />}
+            disableElevation={false}
+            onClick={handleShowAddOwner}
+          >
             Add Owner
           </Button>
         }
@@ -54,21 +113,20 @@ const Teams: FunctionComponent = () => {
         <Divider />
       </Box>
 
-      {/* [
-          {
-            id: 1,
-            entity: { email: "jane@longmilescoffee.com", name: "Jane Doe" },
-            modules: ["module_c"],
-            permissions: ["owner"],
-          },
-        ] */}
-      {}
       <TeamsRoleTable
+        disableActivateButton={loadingUpdateUser}
+        onActivateClick={handleActivateMember}
+        onDeleteClick={handleSetMemberToDelete}
+        onDeactivivateClick={handleSetMemberToDeactivate}
         data={data?.users.data.map((item) => ({
           id: item.id,
           permissions: item.abilities.map((ability) => ability.title),
           modules: ["unknown"],
-          entity: { email: item.email, name: item.name },
+          entity: {
+            email: item.email,
+            name: item.name,
+            is_active: item.is_active,
+          },
           role: item.role,
         }))}
       />

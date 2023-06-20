@@ -7,6 +7,7 @@ export const teamMembers = gql`
         id
         name
         email
+        is_active
         # modules
         role
         abilities {

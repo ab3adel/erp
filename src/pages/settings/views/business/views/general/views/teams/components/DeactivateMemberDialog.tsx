@@ -7,21 +7,22 @@ import { FunctionComponent } from "react";
 
 interface DeactivateMemberDialogProps
   extends Pick<GeneralDialogProps, "open">,
-    Pick<DialogActionsProps, "onCancelClick"> {
-  onConfirmClick: () => void;
+    Pick<DialogActionsProps, "onCancelClick" | "confirmButtonProps"> {
+  name: string;
+  organization: string;
 }
 
 const DeactivateMemberDialog: FunctionComponent<DeactivateMemberDialogProps> = (
   props
 ) => {
-  const { open, onCancelClick, onConfirmClick } = props;
+  const { open, onCancelClick, confirmButtonProps, name, organization } = props;
 
   return (
     <GeneralDialog
       open={open}
       headerProps={{ label: "Deactivate Member?" }}
       actionsProps={{
-        confirmButtonProps: { children: "deactivate", onClick: onConfirmClick },
+        confirmButtonProps: { children: "deactivate", ...confirmButtonProps },
         onCancelClick: onCancelClick,
       }}
     >
@@ -29,11 +30,11 @@ const DeactivateMemberDialog: FunctionComponent<DeactivateMemberDialogProps> = (
         <Typography variant="body1" fontWeight={400} fontSize={16}>
           You are about to deactivate{" "}
           <Typography display="inline-block" fontWeight={700}>
-            Olivia Roe
+            {name}
           </Typography>{" "}
           from the "{" "}
           <Typography display="inline-block" fontWeight={700}>
-            Long Miles Burundi
+            {organization}
           </Typography>
           " organization. You can reactivate this user in the future.
           <Typography sx={{ mt: 3 }}>

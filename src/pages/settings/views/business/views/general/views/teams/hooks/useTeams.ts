@@ -10,6 +10,7 @@ interface User {
   id: number;
   name: string;
   email: string;
+  is_active: boolean;
   role: string;
   abilities: Ability[];
 }
