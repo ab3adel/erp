@@ -11,12 +11,12 @@ import { capitalizeEachWord } from "@/shared/utils/capitalizeEachWord";
 // import { generatePermissionText } from "@/shared/utils/PermissionTextGenerate";
 
 interface TeamsRoleTableProps {
-  onAddNewTeamMemberClick?: () => void;
-  data: IAssignedRoles[];
+  // onAddNewTeamMemberClick?: () => void;
+  data?: IAssignedRoles[];
 }
 
 const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
-  const { data, onAddNewTeamMemberClick } = props;
+  const { data } = props;
 
   // console.log(data);
 
@@ -84,7 +84,7 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
     },
   ];
 
-  return (
+  return data ? (
     <DataGridPro
       hideFooter
       rowHeight={70}
@@ -95,6 +95,8 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       columns={columns}
       rows={data}
     />
+  ) : (
+    <></>
   );
 };
 

@@ -1,9 +1,17 @@
 import { FunctionComponent } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 
-interface EmailInsertionProps {}
+interface EmailInsertionProps {
+  name: string;
+  email: string;
+  onEmailChange?:
+    | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    | undefined;
+}
 
-const EmailInsertion: FunctionComponent<EmailInsertionProps> = () => {
+const EmailInsertion: FunctionComponent<EmailInsertionProps> = (props) => {
+  const { name, email, onEmailChange } = props;
+
   return (
     <Box
       display="flex"
@@ -16,7 +24,7 @@ const EmailInsertion: FunctionComponent<EmailInsertionProps> = () => {
           <Typography variant="h6" fontWeight={500} color="text.primary">
             Invite a new team member to your{" "}
             <Typography fontWeight="700" display="inline">
-              Long Miles Burundi
+              {name}
             </Typography>{" "}
             organization
           </Typography>
@@ -33,7 +41,13 @@ const EmailInsertion: FunctionComponent<EmailInsertionProps> = () => {
         </Box>
 
         <Box mt={4}>
-          <TextField label="Email Address" variant="filled" fullWidth />
+          <TextField
+            label="Email Address"
+            variant="filled"
+            fullWidth
+            value={email}
+            onChange={onEmailChange}
+          />
         </Box>
       </Box>
     </Box>

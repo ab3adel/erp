@@ -2,9 +2,14 @@ import { Box, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 import sendCheck from "@/assets/images/sent-check.svg";
 
-interface AcknowledgeProps {}
+interface AcknowledgeProps {
+  email: string;
+  organiztionName: string;
+}
 
-const Acknowledge: FunctionComponent<AcknowledgeProps> = () => {
+const Acknowledge: FunctionComponent<AcknowledgeProps> = (props) => {
+  const { email, organiztionName } = props;
+
   return (
     <Box
       minHeight={400}
@@ -18,10 +23,9 @@ const Acknowledge: FunctionComponent<AcknowledgeProps> = () => {
         </Box>
         <Box my={1}>
           <Typography variant="h6" fontWeight={500}>
-            Invite Sent!{" "}
-            <span style={{ fontWeight: 700 }}>bianca@longmiles.com</span> is now
+            Invite Sent! <span style={{ fontWeight: 700 }}>{email}</span> is now
             part of your{" "}
-            <span style={{ fontWeight: 700 }}>Long Miles Burundi</span>{" "}
+            <span style={{ fontWeight: 700 }}>{organiztionName}</span>{" "}
             organization
           </Typography>
         </Box>

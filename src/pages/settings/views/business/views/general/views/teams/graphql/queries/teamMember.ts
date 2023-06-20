@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const teamMembers = gql`
-  {
-    users {
+  query Users($first: Int, $page: Int) {
+    users(first: $first, page: $page) {
       data {
         id
         name
         email
-        # modules # comma seperated
+        # modules
         role
         abilities {
           id

@@ -1,31 +1,44 @@
-import { Permissions } from "@/shared/enums/Permissions";
 import { modulesImages } from "@/shared/enums/modules-images";
-import { Paper, Box, Switch, Typography, Radio } from "@mui/material";
+import { Paper, Box, Switch, Typography, SwitchProps } from "@mui/material";
 import { DataGridPro, DataGridProProps } from "@mui/x-data-grid-pro";
 import { FunctionComponent } from "react";
+import { Abilities } from "../hooks/useAbilities";
+import { capitalizeEachWord } from "@/shared/utils/capitalizeEachWord";
+import { groupBy } from "lodash";
+import PermissionRadioButton from "./PermissionRadioButton";
 
-interface PermissionControlFormProps {}
-
-interface IPermissionData {
-  section: string;
-  value: Permissions;
-  id: number;
+export interface OutputValue {
+  subcategory: string;
+  abilities: string[];
 }
 
-const PermissionControlForm: FunctionComponent<
-  PermissionControlFormProps
-> = () => {
-  const data = [
-    { section: "Management", value: Permissions.Hide, id: 1 },
-    { section: "Management Actions", value: Permissions.ReadWrite, id: 2 },
-  ];
+export interface PermissionControlFormProps {
+  abilities: Abilities[];
+  category: string;
+  onChange?: (value: OutputValue) => void;
+  value: string[];
+  showButtonProps?: SwitchProps;
+  showPanel?: boolean;
+}
 
-  const columns: DataGridProProps<IPermissionData>["columns"] = [
+const PermissionControlForm: FunctionComponent<PermissionControlFormProps> = (
+  props
+) => {
+  const { abilities, category, onChange, value, showButtonProps, showPanel } =
+    props;
+
+  const groupedAbilitesBySubcategory = groupBy(
+    abilities,
+    (item) => item.subcategory
+  );
+
+  const columns: DataGridProProps<[string, Abilities[]]>["columns"] = [
     {
       headerName: "Section",
-      field: "section",
+      field: "subcategory",
       flex: 1,
       sortable: false,
+      renderCell: (props) => capitalizeEachWord(props.row[0]),
     },
     {
       headerName: "Hide",
@@ -35,7 +48,12 @@ const PermissionControlForm: FunctionComponent<
       align: "center",
       headerAlign: "center",
       renderCell: (props) => (
-        <Radio checked={props.row.value === Permissions.Hide} />
+        <PermissionRadioButton
+          onChange={onChange}
+          value={value}
+          rowProps={props}
+          targetActions={[]}
+        />
       ),
     },
     {
@@ -46,7 +64,12 @@ const PermissionControlForm: FunctionComponent<
       align: "center",
       headerAlign: "center",
       renderCell: (props) => (
-        <Radio checked={props.row.value === Permissions.Read} />
+        <PermissionRadioButton
+          onChange={onChange}
+          value={value}
+          rowProps={props}
+          targetActions={["read"]}
+        />
       ),
     },
     {
@@ -57,7 +80,12 @@ const PermissionControlForm: FunctionComponent<
       align: "center",
       headerAlign: "center",
       renderCell: (props) => (
-        <Radio checked={props.row.value === Permissions.ReadWrite} />
+        <PermissionRadioButton
+          onChange={onChange}
+          value={value}
+          rowProps={props}
+          targetActions={["read", "write"]}
+        />
       ),
     },
     {
@@ -68,7 +96,12 @@ const PermissionControlForm: FunctionComponent<
       align: "center",
       headerAlign: "center",
       renderCell: (props) => (
-        <Radio checked={props.row.value === Permissions.ReadWriteDelete} />
+        <PermissionRadioButton
+          onChange={onChange}
+          value={value}
+          rowProps={props}
+          targetActions={["read", "write", "delete"]}
+        />
       ),
     },
   ];
@@ -77,35 +110,38 @@ const PermissionControlForm: FunctionComponent<
     <Box component={Paper} variant="outlined" p={2}>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center" gap={2}>
-          <img src={modulesImages.CoffeeManagment} />
+          <img src={modulesImages[category]} />
           <Typography variant="body1" color="text.primary">
-            Coffee Management
+            {capitalizeEachWord(category)}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <Switch />
+          <Switch {...showButtonProps} />
           <Typography variant="body1" color="text.secondary" fontWeight={400}>
             Show
           </Typography>
         </Box>
       </Box>
-      <Box mt={2}>
-        <DataGridPro
-          hideFooter
-          style={{ textAlign: "center" }}
-          disableColumnSelector
-          disableColumnMenu
-          disableColumnReorder
-          disableRowSelectionOnClick
-          columns={columns}
-          rows={data}
-          sx={{
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: "transparent !important",
-            },
-          }}
-        />
-      </Box>
+      {showPanel && (
+        <Box mt={2}>
+          <DataGridPro
+            hideFooter
+            style={{ textAlign: "center" }}
+            disableColumnSelector
+            disableColumnMenu
+            disableColumnReorder
+            disableRowSelectionOnClick
+            columns={columns}
+            getRowId={(item) => item[0]}
+            rows={Object.entries(groupedAbilitesBySubcategory)}
+            sx={{
+              "& .MuiDataGrid-row:hover": {
+                backgroundColor: "transparent !important",
+              },
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

@@ -3,11 +3,18 @@ import { FunctionComponent } from "react";
 import MailOutlineRoundedIcon from "@mui/icons-material/MailOutlineRounded";
 import PermissionOverview from "../../../../../components/PermissionOverview";
 import { modulesImages } from "@/shared/enums/modules-images";
-import { Actions } from "@/shared/enums/actions";
+// import { Actions } from "@/shared/enums/actions";
+import { Abilities } from "../../../../../hooks/useAbilities";
+import _ from "lodash";
 
-interface OverviewProps {}
+interface OverviewProps {
+  email: string;
+  organiztionName: string;
+  selectedAbilities: Abilities[];
+}
 
-const Overview: FunctionComponent<OverviewProps> = () => {
+const Overview: FunctionComponent<OverviewProps> = (props) => {
+  const { email, organiztionName, selectedAbilities } = props;
   return (
     <>
       <Box mt={8}>
@@ -17,9 +24,8 @@ const Overview: FunctionComponent<OverviewProps> = () => {
           </Box>
           <Box my={1}>
             <Typography variant="h6" fontWeight={500}>
-              Invite{" "}
-              <span style={{ fontWeight: 700 }}>bianca@longmiles.com</span> to{" "}
-              <span style={{ fontWeight: 700 }}>Long Miles Burundi</span>
+              Invite <span style={{ fontWeight: 700 }}>{email}</span> to{" "}
+              <span style={{ fontWeight: 700 }}>{organiztionName}</span>
             </Typography>
           </Box>
           <Box my={1}>
@@ -51,21 +57,23 @@ const Overview: FunctionComponent<OverviewProps> = () => {
         </Typography>
 
         <Box display="flex" justifyContent="center">
-          <Box mt={4} maxWidth={560} width="100%">
-            <PermissionOverview
-              icon={modulesImages.CoffeeManagment}
-              label="Coffee Management"
-              permissionList={[
-                {
-                  label: "Management",
-                  actions: [Actions.read, Actions.write, Actions.delete],
-                },
-                {
-                  label: "Management Actions",
-                  actions: [Actions.read, Actions.write, Actions.delete],
-                },
-              ]}
-            />
+          <Box display="inline-block" minWidth={560}>
+            {Object.entries(_.groupBy(selectedAbilities, "category")).map(
+              (GroupedCategories) => (
+                <Box mt={4} maxWidth={560} width="100%">
+                  <PermissionOverview
+                    icon={modulesImages.CoffeeManagment}
+                    label={GroupedCategories[0]}
+                    permissionList={Object.entries(
+                      _.groupBy(selectedAbilities, "subcategory")
+                    ).map((item) => ({
+                      label: item[0],
+                      actions: item[1].map((item) => item.title),
+                    }))}
+                  />
+                </Box>
+              )
+            )}
           </Box>
         </Box>
       </Box>

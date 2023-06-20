@@ -13,7 +13,7 @@ import AddTeamMemberButtonContainer from "../../containers/AddTeamMemberButtonCo
 import { useTeams } from "./hooks/useTeams";
 
 const Teams: FunctionComponent = () => {
-  const { data: data } = useTeams();
+  const { data: data } = useTeams({ first: 1000, page: 1 });
 
   return (
     <PageSectionContainer>
@@ -64,17 +64,13 @@ const Teams: FunctionComponent = () => {
         ] */}
       {}
       <TeamsRoleTable
-        data={
-          data?.users.data
-            ? data?.users.data.map((item) => ({
-                id: item.id,
-                permissions: item.abilities.map((ability) => ability.title),
-                modules: ["unknown"],
-                entity: { email: item.email, name: item.name },
-                role: item.role,
-              }))
-            : []
-        }
+        data={data?.users.data.map((item) => ({
+          id: item.id,
+          permissions: item.abilities.map((ability) => ability.title),
+          modules: ["unknown"],
+          entity: { email: item.email, name: item.name },
+          role: item.role,
+        }))}
       />
       <Box mt={2}>
         <AddTeamMemberButtonContainer />

@@ -10,6 +10,10 @@ interface ActionBarProps {
   confirmButtonLabel?: string;
   confirmButtonIconPlace?: "start" | "end";
   showBackButton?: boolean;
+  showCancelButton?: boolean;
+  confirmButtonProps?: ButtonProps;
+  cancelButtonProps?: ButtonProps;
+  backButtonProps?: ButtonProps;
 }
 
 const ActionBar: FunctionComponent<ActionBarProps> = (props) => {
@@ -18,6 +22,10 @@ const ActionBar: FunctionComponent<ActionBarProps> = (props) => {
     confirmButtonLabel,
     showBackButton,
     confirmButtonIconPlace,
+    backButtonProps,
+    cancelButtonProps,
+    confirmButtonProps,
+    showCancelButton,
   } = props;
 
   const confirmButtonIconElement =
@@ -40,11 +48,22 @@ const ActionBar: FunctionComponent<ActionBarProps> = (props) => {
       <Box bgcolor={grey["50"]} py={1}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box display="flex" gap={2}>
-            {showBackButton && <BackButton variant="outlined">Back</BackButton>}
-
-            <Button variant="text">Cancel</Button>
+            {showBackButton && (
+              <BackButton variant="outlined" {...backButtonProps}>
+                Back
+              </BackButton>
+            )}
+            {showCancelButton && (
+              <Button variant="text" {...cancelButtonProps}>
+                Cancel
+              </Button>
+            )}
           </Box>
-          <Button disableElevation={false} {...confirmButtonIconPlaceProps}>
+          <Button
+            disableElevation={false}
+            {...confirmButtonIconPlaceProps}
+            {...confirmButtonProps}
+          >
             {confirmButtonLabel}
           </Button>
         </Toolbar>
