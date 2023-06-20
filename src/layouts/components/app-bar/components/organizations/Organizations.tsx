@@ -61,7 +61,13 @@ const Organization: FunctionComponent = () => {
       </OrganizationButton>
       <Menu {...menuProps}>
         {organiztions?.userOrganizations.data.map((item) => (
-          <MenuItem key={item.id} onClick={() => setSelectedOrg(item.id)}>
+          <MenuItem
+            key={item.id}
+            onClick={() => {
+              setSelectedOrg(item.id);
+              handleCloseMenu();
+            }}
+          >
             <ListItemText primary={item.company_name} />
           </MenuItem>
         ))}
