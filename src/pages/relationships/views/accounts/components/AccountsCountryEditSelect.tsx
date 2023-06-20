@@ -18,7 +18,15 @@ export const AccountsCountryEditSelect = (
         field: props.field,
         value: newValue,
       });
-      apiRef.current.updateRows([{ id: props.id, country: newValue }]);
+      apiRef.current.updateRows([
+        {
+          id: props.id,
+          country: {
+            id: 1,
+            name: newValue,
+          },
+        },
+      ]);
     }
   };
 

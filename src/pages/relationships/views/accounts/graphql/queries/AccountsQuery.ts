@@ -18,14 +18,24 @@ export const accountsQuery = gql`
         address1
         address2
         city
-        country
+        country {
+          id
+          name
+        }
+        farmSizeUom {
+          name
+          id
+        }
+        farmSpacingUom {
+          id
+          name
+        }
         district
         government_id
-        language
         region
         zone
         state
-        unit_of_measurement
+        
         date_of_birth
         education_level
         first_name
@@ -38,7 +48,10 @@ export const accountsQuery = gql`
         total_children
         created_at
         updated_at
-        currency
+        currency {
+          id
+          name
+        }
         accountType {
           id
           name
