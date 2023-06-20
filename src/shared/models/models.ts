@@ -19,7 +19,7 @@ export interface Account {
   address1?: string;
   address2?: any;
   city?: string;
-  country?: string;
+  country?: Country;
   district?: string;
   government_id?: any;
   language?: string;
@@ -40,7 +40,18 @@ export interface Account {
   created_at?: string;
   updated_at?: string;
   accountType?: AccountType;
-  currency?: string;
+  currency?: {
+    id: number;
+    name: string;
+  };
+  farmSizeUom?: {
+    id: number;
+    name: string;
+  };
+  farmSpacingUom?: {
+    id: number;
+    name: string;
+  };
   farms?: Farm[];
   contacts?: Contact[];
   tags?: Tag[];
@@ -128,3 +139,8 @@ export interface Media {
   model_type: string;
   zone: string;
 }
+
+type Country = {
+  id: number;
+  name: string;
+};

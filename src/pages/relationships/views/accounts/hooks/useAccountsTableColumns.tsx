@@ -289,6 +289,7 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       group: "location details",
+      valueGetter: ({ row }) => row.farmSizeUom?.name,
       renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
@@ -421,12 +422,14 @@ export const useAccountsTableColumns = () => {
       editable: true,
       renderEditCell: (props) => <AccountsCountryEditSelect {...props} />,
       group: "location details",
+      valueGetter: ({ row }) => row.country?.name,
     },
     {
       field: "currency",
       headerName: "Currency",
       width: 200,
       editable: true,
+      valueGetter: ({ row }) => row.currency?.name,
     },
     {
       field: "gender",
