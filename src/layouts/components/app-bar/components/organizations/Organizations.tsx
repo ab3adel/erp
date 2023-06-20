@@ -27,6 +27,7 @@ const Organization: FunctionComponent = () => {
     organiztions,
     selectedOrganiztionId,
     setSelectedOrg,
+    setSelectedTenentId,
   } = useLogic();
 
   const menuProps: MenuProps = {
@@ -65,6 +66,7 @@ const Organization: FunctionComponent = () => {
             key={item.id}
             onClick={() => {
               setSelectedOrg(item.id);
+              setSelectedTenentId(item.tenant.id);
               handleCloseMenu();
             }}
           >

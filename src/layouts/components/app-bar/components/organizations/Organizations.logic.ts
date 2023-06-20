@@ -1,4 +1,7 @@
-import { useSelectedOrganiztion } from "@/global/states/selectedOrganizations";
+import {
+  useSelectedOrganiztion,
+  useSelectedTenentId,
+} from "@/global/states/selectedOrganizations";
 import { useUserOrganiaztions } from "@/shared/hooks/graphql/queries/useUserOrganizations/useUserOrganizations";
 import React, { useEffect } from "react";
 
@@ -14,10 +17,13 @@ export const useLogic = () => {
   const selectedOrganiztionId = useSelectedOrganiztion((state) => state.id);
 
   const setSelectedOrg = useSelectedOrganiztion((state) => state.set);
+  const setSelectedTenentId = useSelectedTenentId((state) => state.set);
 
   useEffect(() => {
-    organiztions?.userOrganizations.data[0]?.id &&
+    if (organiztions?.userOrganizations.data[0]?.id) {
       setSelectedOrg(organiztions?.userOrganizations?.data[0]?.id);
+      setSelectedTenentId(organiztions?.userOrganizations?.data[0]?.tenant.id);
+    }
   }, [organiztions?.userOrganizations.data]);
 
   const handleCloseMenu = () => setAnchorEl(null);
@@ -29,5 +35,6 @@ export const useLogic = () => {
     organiztions,
     selectedOrganiztionId,
     setSelectedOrg,
+    setSelectedTenentId,
   };
 };
