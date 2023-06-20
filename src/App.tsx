@@ -13,6 +13,7 @@ import { SnackbarProvider } from "notistack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { LicenseInfo } from "@mui/x-license-pro";
+import { useSelectedTenentId } from "./global/states/selectedOrganizations";
 
 LicenseInfo.setLicenseKey(import.meta.env.VITE_MUI_KEY);
 
@@ -22,10 +23,12 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
+  const id = useSelectedTenentId.getState().id;
   return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
+      ...(id && token && { "X-Tenant": "test" }),
     },
   };
 });

@@ -30,6 +30,9 @@ interface UserOrganization {
   color: string;
   created_at: string;
   updated_at: string;
+  tenant: {
+    id: string;
+  };
 }
 
 interface UserOrganizationsData {

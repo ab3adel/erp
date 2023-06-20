@@ -5,6 +5,9 @@ export const query = gql`
     userOrganizations {
       data {
         id
+        tenant {
+          id
+        }
         company_name
         country {
           id
