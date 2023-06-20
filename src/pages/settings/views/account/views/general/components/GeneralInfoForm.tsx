@@ -22,6 +22,7 @@ import AvatarHelperText from "./AvatarHelperText";
 import { convertFileToBase64 } from "@/shared/utils/fileToBase64Converter";
 import { generateAbbreviation } from "@/shared/utils/nameAbbreviationGenerator";
 import { useChangeProfileAvatar } from "../hooks/useChangeProfileAvatar";
+import { resourceUrlGenerater } from "@/shared/utils/resourceUrlGenerater";
 
 interface Form extends Pick<Params, "date_format" | "language" | "name"> {
   email: string;
@@ -106,7 +107,12 @@ export const GeneralInfoForm = () => {
       <Box>
         <Typography variant="body1">Avatar</Typography>
         <AvatarInput
-          src={form.values.avatar}
+          src={
+            form.values.avatar === data?.me?.profile.avatar[0].src &&
+            form.values.avatar
+              ? resourceUrlGenerater(form.values.avatar)
+              : form.values.avatar
+          }
           onChange={handleImageUpload}
           helperText={<AvatarHelperText />}
           abbreviation={
