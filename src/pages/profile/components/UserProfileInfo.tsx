@@ -444,7 +444,14 @@ export const UserProfileInfo: React.FC = () => {
                     subscription_type: e.target.value,
                   })
                 }
-              />
+                select
+              >
+                {["sms", "whatsapp", "none"].map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </TextField>
             ) : (
               <Box>
                 <Typography
@@ -483,7 +490,36 @@ export const UserProfileInfo: React.FC = () => {
                     language: e.target.value,
                   })
                 }
-              />
+                select
+              >
+                {[
+                  "Australia",
+                  "Brazil",
+                  "Canada",
+                  "China",
+                  "East Africa",
+                  "Finland",
+                  "France",
+                  "Germany",
+                  "Hong Kong",
+                  "India",
+                  "Ireland",
+                  "Italy",
+                  "Japan",
+                  "Mexico and Central America",
+                  "Netherlands",
+                  "New Zealand",
+                  "Sout America",
+                  "Spain",
+                  "Sweden",
+                  "United Kingdom",
+                  "United States",
+                ].map((value) => (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                ))}
+              </TextField>
             ) : (
               <Box>
                 <Typography

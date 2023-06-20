@@ -158,7 +158,7 @@ export const AccountsTable = ({
         <CreateViewForm onSubmit={handleCreateView} />
       </GenericDialog>
       <ManageColumnsPanel
-        columns={columnsState}
+        columns={columns}
         setColumns={setColumnsState}
         open={openColumnsDialog}
         onClose={() => setOpenColumnsDialog(false)}
