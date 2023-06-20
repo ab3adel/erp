@@ -29,7 +29,7 @@ import TextField from "@mui/material/TextField";
 import { useQuery } from "@apollo/client";
 import { accountProfile } from "../graphql/queries/accountProfile";
 import { Account } from "@/shared/models/models";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
 import { useGenericMutation } from "@/shared";
 import { AccountInput } from "@/pages/relationships/views/accounts/types";
@@ -44,6 +44,7 @@ export const UserProfileInfo: React.FC = () => {
     };
   }>(accountTypes);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const navigate = useNavigate();
   const openAccType = Boolean(anchorEl);
   const [updatedContactDetails, setUpdatedContactDetails] = useState<{
     email: string | undefined;
@@ -241,6 +242,11 @@ export const UserProfileInfo: React.FC = () => {
                         id: Number(id),
                         type_id: type?.id as number,
                       },
+                    },
+                    onCompleted: () => {
+                      navigate(
+                        `/${id}/${type?.category.toLowerCase()}-profile`
+                      );
                     },
                   });
                 }}
