@@ -17,6 +17,7 @@ import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
+import { isAccountCellEditable } from "../utils/isAccountCellEditable";
 
 export const AccountsTable = ({
   apiRef,
@@ -82,6 +83,12 @@ export const AccountsTable = ({
           rowCount={paginationInfo?.total || 0}
           columns={columnsState}
           apiRef={apiRef}
+          isCellEditable={({ field, row }) => {
+            return isAccountCellEditable(
+              row?.accountType?.category?.toLowerCase(),
+              field
+            );
+          }}
           columnVisibilityModel={model}
           onColumnVisibilityModelChange={(newModel) => {
             setModel(newModel);

@@ -2,6 +2,8 @@ import {
   GridColDef,
   GridEditInputCell,
   GridRenderEditCellParams,
+  GridCellProps,
+  GridRenderCellParams,
 } from "@mui/x-data-grid-pro";
 import LinearProgress, {
   LinearProgressProps,
@@ -14,6 +16,7 @@ import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
 import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSelect";
 import { Account } from "@/shared/models/models";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
+import { isAccountCellEditable } from "../utils/isAccountCellEditable";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -46,6 +49,23 @@ function LinearProgressWithLabel(
         )}%`}</Typography>
       </Box>
     </Box>
+  );
+}
+
+function DataGridAccountCell(props: GridRenderCellParams) {
+  const type = props.row.accountType?.category.toLowerCase() as string;
+  const isEditable = isAccountCellEditable(type, props.field);
+
+  return (
+    <Typography
+      variant="body2"
+      sx={{
+        fontWeight: 400,
+        color: isEditable ? "common.black" : "text.disabled",
+      }}
+    >
+      {props.value}
+    </Typography>
   );
 }
 
@@ -201,6 +221,7 @@ export const useAccountsTableColumns = () => {
           hasError: hasError ? "Government Id is already exists" : "",
         };
       },
+      renderCell: (props) => <DataGridAccountCell {...props} />,
       renderEditCell: ({ hasError, ...props }: GridRenderEditCellParams) => (
         <Tooltip
           open={!!hasError}
@@ -268,6 +289,7 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       group: "location details",
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "education_level",
@@ -285,6 +307,7 @@ export const useAccountsTableColumns = () => {
         "training",
         "none",
       ],
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "marital_status",
@@ -294,12 +317,13 @@ export const useAccountsTableColumns = () => {
       group: "personal details",
       type: "singleSelect",
       valueOptions: ["single", "married", "widow", "unknown"],
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "members_in_household",
       headerName: "Members In Household",
       group: "personal details",
-
+      renderCell: (props) => <DataGridAccountCell {...props} />,
       width: 150,
       editable: true,
       type: "number",
@@ -308,7 +332,7 @@ export const useAccountsTableColumns = () => {
       field: "total_children",
       headerName: "Total Children",
       group: "personal details",
-
+      renderCell: (props) => <DataGridAccountCell {...props} />,
       width: 150,
       editable: true,
       type: "number",
@@ -318,7 +342,7 @@ export const useAccountsTableColumns = () => {
       headerName: "Read Literate",
       width: 150,
       group: "personal details",
-
+      renderCell: (props) => <DataGridAccountCell {...props} />,
       editable: true,
       type: "singleSelect",
       valueOptions: ["yes", "some", "no"],
@@ -328,8 +352,8 @@ export const useAccountsTableColumns = () => {
       field: "write_literate",
       headerName: "Write Literate",
       width: 150,
+      renderCell: (props) => <DataGridAccountCell {...props} />,
       group: "personal details",
-
       editable: true,
       type: "singleSelect",
       valueOptions: ["yes", "some", "no"],
@@ -342,6 +366,7 @@ export const useAccountsTableColumns = () => {
       group: "contact details",
       type: "singleSelect",
       valueOptions: ["sms", "whatsapp", "none"],
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
 
     {
@@ -411,6 +436,7 @@ export const useAccountsTableColumns = () => {
       group: "personal details",
       valueOptions: ["female", "male", "other", "unknown"],
       editable: true,
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "status",
