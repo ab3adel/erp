@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -20,7 +20,7 @@ import { saveFarm } from "./graphql/mutations/SaveFarm";
 import { FarmInput } from "./types";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@apollo/client";
-import { Account } from "@/shared/models/models";
+import { Account, Media } from "@/shared/models/models";
 import { accountProfile } from "../../graphql/queries/accountProfile";
 import { deleteFarm } from "./graphql/mutations/deleteFarm";
 
@@ -32,10 +32,13 @@ type Farm = {
   verticals: "";
   spacing: number;
   averageTreeAge: number;
+  files?: Media[];
 };
 
 export const AccountFarms = () => {
   const [farms, setFarms] = useState<Farm[]>([]);
+  const ref = useRef<HTMLInputElement | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   const [newFarm, setNewFarm] = useState<Farm>({
     id: "",
@@ -45,6 +48,7 @@ export const AccountFarms = () => {
     verticals: "",
     spacing: 0,
     averageTreeAge: 0,
+    files: [],
   });
   const { id } = useParams();
   useQuery<{ account: Account }, { id: number }>(accountProfile, {
@@ -61,6 +65,7 @@ export const AccountFarms = () => {
           spacing: farm.spacing,
           totalSize: farm.size,
           verticals: farm.varietals,
+          files: farm.files,
         })) || []) as Farm[]
       );
     },
@@ -140,6 +145,14 @@ export const AccountFarms = () => {
       ...prevFarm,
       [name]: value,
     }));
+  };
+
+  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList) {
+      const newFiles = Array.from(fileList);
+      setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    }
   };
 
   return (
@@ -338,16 +351,47 @@ export const AccountFarms = () => {
             </Grid>
           )}
           <Divider sx={{ mt: 3 }} />
-          <Box display="flex" mt={1} justifyContent="space-between">
+          <input
+            id="file-upload"
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={handleFileUpload}
+            ref={ref}
+            style={{
+              display: "none",
+            }}
+          />
+          <Box display="flex" mt={1} mb={2} justifyContent="space-between">
             <Typography variant="body1" sx={{ color: "grey.600" }}>
               Documents
             </Typography>
             <Tooltip title="Upload">
-              <IconButton>
+              <IconButton
+                onClick={() => {
+                  ref.current?.click();
+                }}
+              >
                 <FileUploadIcon sx={{ color: "grey.600" }} />
               </IconButton>
             </Tooltip>
           </Box>
+          {farm.files?.map((file) => (
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              p={2}
+              sx={{ bgcolor: "#FAFAFA" }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ color: "grey.600" }}
+                fontWeight={600}
+              >
+                {file.file_type}
+              </Typography>
+            </Box>
+          ))}
         </Box>
       ))}
     </Box>

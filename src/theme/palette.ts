@@ -16,6 +16,11 @@ export const palette: PaletteOptions = {
     white: "#ffffff",
     black: "#242828DE",
   },
+  info: {
+    main: "#121212",
+    dark:"#121212",
+    light: "#ffffff",
+  },
   warning: {
     main: "#F57C00",
     dark: "#E65100",

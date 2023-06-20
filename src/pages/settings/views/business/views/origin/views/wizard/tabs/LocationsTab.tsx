@@ -5,6 +5,7 @@ import DataGrid, {
   cellCheckBox,
   cellDeleteAction,
   cellSelect,
+  cellAutocomplete,
 } from "../components/EditableDatagrid";
 import { GridColDef, GridRowId } from "@mui/x-data-grid-pro";
 
@@ -32,24 +33,26 @@ const useLocationColumns = (onDelete: (id: GridRowId) => void) =>
       {
         headerName: "Location",
         field: "l",
-        width: 147,
+        minWidth: 147,
         sortable: false,
       },
       {
         headerName: "Sub-Locations",
         field: "sl",
         flex: 1,
+        minWidth: 252,
         sortable: false,
         renderCell: (params) =>
-          cellSelect(params, "Select Sub-Locations", {
-            options: ["Rugali", "Cyesha"],
-            multiple: true,
-          }),
+          cellAutocomplete(params, "Select Sub-Locations", [
+            "Rugali",
+            "Cyesha",
+          ]),
       },
       {
         headerName: "Account Type",
         field: "at",
         flex: 1,
+        minWidth: 252,
         sortable: false,
         renderCell: (params) =>
           cellSelect(params, "Select Option", {
@@ -66,17 +69,16 @@ const useLocationColumns = (onDelete: (id: GridRowId) => void) =>
         headerName: "Processing Method",
         field: "pm",
         flex: 1,
+        minWidth: 252,
         sortable: false,
         renderCell: (params) =>
-          cellSelect(params, "Enter Your Words", {
-            options: ["Natural", "Honey"],
-            multiple: true,
-          }),
+          cellAutocomplete(params, "Enter Your Words", ["Natural", "Honey"]),
       },
       {
         headerName: "Release Inventory",
         field: "ri",
         flex: 1,
+        minWidth: 147,
         sortable: false,
         type: "boolean",
         renderCell: cellCheckBox,

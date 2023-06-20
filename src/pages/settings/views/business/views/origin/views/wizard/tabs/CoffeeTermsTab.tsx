@@ -3,8 +3,8 @@ import { Add } from "@mui/icons-material";
 import { GridColDef, GridRowId } from "@mui/x-data-grid-pro";
 import Section from "../../../components/Section";
 import DataGrid, {
+  cellAutocomplete,
   cellDeleteAction,
-  cellSelect,
   cellTextField,
 } from "../components/EditableDatagrid";
 import { useCallback, useMemo, useState } from "react";
@@ -40,6 +40,7 @@ const useCoffeeTermsColumns = (onDelete: (id: GridRowId) => void) =>
         headerName: "Our Words",
         field: "ours",
         flex: 1,
+        minWidth: 195,
         sortable: false,
         renderCell: (params) =>
           params.row.ours || cellTextField(params, "State of Coffee"),
@@ -48,6 +49,7 @@ const useCoffeeTermsColumns = (onDelete: (id: GridRowId) => void) =>
         headerName: "Your Words",
         field: "yours",
         flex: 1,
+        minWidth: 195,
         sortable: false,
         editable: true,
         renderCell: cellTextField,
@@ -56,15 +58,23 @@ const useCoffeeTermsColumns = (onDelete: (id: GridRowId) => void) =>
         headerName: "Sub-Types/Grades",
         field: "grades",
         flex: 1,
+        minWidth: 256,
         sortable: false,
-        renderCell: cellSelect,
+        renderCell: (params) =>
+          cellAutocomplete(params, undefined, ["A1", "A2", "A3"]),
       },
       {
         headerName: "Location(s)",
         field: "location",
         flex: 1,
+        minWidth: 256,
         sortable: false,
-        renderCell: cellSelect,
+        renderCell: (params) =>
+          cellAutocomplete(params, undefined, [
+            "Reception Point",
+            "Location 2",
+            "Location 3",
+          ]),
       },
       {
         field: "actions",

@@ -5,7 +5,7 @@ import { Box, Paper } from "@mui/material";
 
 const Bussiness: FunctionComponent = () => {
   return (
-    <Box>
+    <Box height="100%" display="flex" flexDirection="column">
       <CurvedTabs
         localStorageKey="generalTab"
         canDelete={false}
@@ -29,7 +29,10 @@ const Bussiness: FunctionComponent = () => {
           },
         ]}
       />
-      <Paper elevation={0} sx={{ borderRadius: "0px 0px 12px 12px" }}>
+      <Paper
+        elevation={0}
+        sx={{ borderRadius: "0px 0px 12px 12px", flexGrow: 1 }}
+      >
         <Outlet />
       </Paper>
     </Box>

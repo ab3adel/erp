@@ -1,15 +1,136 @@
 import { CalendarToday, Cancel, DeleteOutline } from "@mui/icons-material";
-import { Box, Checkbox, Chip, MenuItem, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  Chip,
+  IconButton,
+  ListItem,
+  MenuItem,
+  TextField,
+  Tooltip,
+  createFilterOptions,
+} from "@mui/material";
 import {
   GridRenderCellParams,
   DataGridPro,
-  GridActionsCellItem,
   GridRowParams,
   GridRowId,
   GridColDef,
   // GridRowModes,
 } from "@mui/x-data-grid-pro";
 import { DatePicker } from "@mui/x-date-pickers";
+import { useState } from "react";
+
+type Option = { label: string; value: string };
+const filter = createFilterOptions<Option>();
+
+type CreatableAutoCompleteProps = {
+  options: Option[];
+  defalutValue: string[];
+  label: string;
+};
+
+const CreatableAutoComplete = ({
+  options,
+  defalutValue,
+  label,
+}: CreatableAutoCompleteProps) => {
+  const [value, setValue] = useState<Option[]>(
+    defalutValue?.map((val) => ({ label: val, value: val }))
+  );
+
+  return (
+    <Autocomplete
+      multiple
+      fullWidth
+      freeSolo
+      selectOnFocus
+      clearOnBlur
+      limitTags={2}
+      ChipProps={{
+        variant: "outlined",
+        sx: {
+          minWidth: 50,
+          "& .MuiChip-label": {
+            paddingInline: 0.5,
+          },
+          "& .MuiChip-deleteIcon": {
+            margin: 0,
+            fontSize: 15,
+          },
+        },
+      }}
+      options={[{ label: "Select or create an option", value: "" }, ...options]}
+      getOptionDisabled={(option) => !option.value}
+      renderOption={(props, option) => (
+        <ListItem
+          {...props}
+          sx={{
+            fontSize: !option.value ? 12 : 16,
+          }}
+        >
+          {option.label}
+        </ListItem>
+      )}
+      value={value}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="filled"
+          label={label}
+          // placeholder="Favorites"
+
+          // TODO: allow spaces
+          // TODO: enter to confirm
+          // onKeyDown={(e) => {
+          //   if (e.key === "Enter" && e.target.value) {
+          //     const text = e.target.value;
+          //     if (text.includes(" ")) {
+          //       const vinnos = text.split(" ");
+          //       setAutoCompleteValue(autoCompleteValue.concat(vinnos));
+          //     } else {
+          //       setAutoCompleteValue(autoCompleteValue.concat(e.target.value));
+          //     }
+          //   }
+          // }}
+        />
+      )}
+      onChange={(_, newValue) => {
+        // if (typeof newValue === "string") return;
+        const newValues = newValue
+          .filter((val) => (val as Option).value)
+          .map((val) => ({
+            ...(val as Option),
+            label: (val as Option).value,
+          }));
+        setValue(newValues);
+      }}
+      filterOptions={(options, params) => {
+        const filtered = filter(options, params);
+
+        const { inputValue } = params;
+
+        const isExisting = options.some((option) =>
+          option.label.includes(inputValue)
+        );
+
+        if (inputValue !== "" && !isExisting) {
+          filtered.push({
+            value: inputValue,
+            label: `Create ${inputValue}`,
+          });
+        }
+
+        return filtered;
+      }}
+      getOptionLabel={(option) => {
+        if (typeof option === "string") return option;
+        return option.label;
+      }}
+    />
+  );
+};
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const cellTextField = (
@@ -67,6 +188,19 @@ export const cellSelect = (
 );
 
 // eslint-disable-next-line react-refresh/only-export-components
+export const cellAutocomplete = (
+  params: GridRenderCellParams,
+  label = "Select Options",
+  options: string[]
+) => (
+  <CreatableAutoComplete
+    options={options.map((opt) => ({ label: opt, value: opt }))}
+    defalutValue={params.value}
+    label={label}
+  />
+);
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const cellCheckBox = (params: GridRenderCellParams) => (
   <Checkbox checked={params.value} />
 );
@@ -93,25 +227,36 @@ export const cellDeleteAction = (
   params: GridRowParams,
   onClick: (id: GridRowId) => void
 ) => [
-  <GridActionsCellItem
-    icon={<DeleteOutline sx={{ color: "#2428288F" }} />}
-    onClick={() => onClick(params.id)}
-    label="Delete"
-  />,
+  <Tooltip
+    title="Delete"
+    arrow
+    sx={{
+      "&:hover > *": {
+        color: "primary.main",
+      },
+    }}
+  >
+    <IconButton onClick={() => onClick(params.id)} disableRipple={false}>
+      <DeleteOutline
+        sx={{
+          color: "#2428288F",
+          fontSize: "1.5rem",
+        }}
+      />
+    </IconButton>
+  </Tooltip>,
 ];
 type DataGridProps = {
   columns: GridColDef[];
   rows: readonly Record<string, unknown>[];
 };
 
-
 const DataGrid = ({ columns, rows }: DataGridProps) => (
   <DataGridPro
     sx={{
-      overflowX: "scroll",
-      //   maxWidth: 952,
-      //   width: "100%"
-
+      "& .MuiDataGrid-row:hover": {
+        // backgroundColor: "none",
+      },
       // --> this styling will make the last row without border
       // "& .MuiDataGrid-row:last-child > *": {
       //   border: "none",
