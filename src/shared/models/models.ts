@@ -62,6 +62,7 @@ export interface Farm {
   size: number;
   spacing: number;
   varietals: string;
+  files: Media[];
 }
 
 export interface Tag {
@@ -118,4 +119,12 @@ export interface IAssignedRoles {
   modules: string[];
   permissions: string[];
   role: string;
+}
+
+export interface Media {
+  id: number;
+  src: string;
+  file_type: string;
+  model_type: string;
+  zone: string;
 }
