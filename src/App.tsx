@@ -18,7 +18,7 @@ import { useSelectedTenentId } from "./global/states/selectedOrganizations";
 LicenseInfo.setLicenseKey(import.meta.env.VITE_MUI_KEY);
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_BACKEND_URL,
+  uri: import.meta.env.VITE_BACKEND_URL + "graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -28,7 +28,7 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
-      ...(id && token && { "X-Tenant": "test" }),
+      ...(id && token && { "X-Tenant": id }),
     },
   };
 });
@@ -47,7 +47,7 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CssBaseline />
           <SnackbarProvider autoHideDuration={2000}>
-            <RouterProvider router={router} />
+            <RouterProvider router={router(client)} />
           </SnackbarProvider>
         </LocalizationProvider>
       </ThemeProvider>

@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid-pro";
 import Section from "../../../components/Section";
 import DataGrid, { cellCheckBox } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const columns: GridColDef[] = [
   {
@@ -34,7 +35,11 @@ const rows = [
   { id: "6", cert: "Bird Friendly", code: "B" },
 ];
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   return (
     <Box>
       <Typography variant="h6" mb={3}>

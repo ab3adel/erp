@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid-pro";
 import Section from "../../../components/Section";
-import DataGrid, { cellTextField } from "../components/EditableDatagrid";
+import DataGrid, { CellTextField } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const columns: GridColDef[] = [
   {
@@ -25,7 +26,9 @@ const columns: GridColDef[] = [
     field: "yours",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Enter Your Term"),
+    renderCell: (params) => (
+      <CellTextField params={params} label="Enter Your Term" />
+    ),
   },
 ];
 
@@ -120,7 +123,11 @@ const rows = [
   },
 ];
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   return (
     <Box>
       <Typography variant="h6" mb={3}>

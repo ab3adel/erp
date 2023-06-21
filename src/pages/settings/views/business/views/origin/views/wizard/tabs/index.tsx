@@ -7,6 +7,7 @@ import HarvestSeasons from "./HarvestSeasonsTab";
 import Certifications from "./CertificationsTab";
 import KeywordConfiguration from "./KeywordConfigurationTab";
 import React from "react";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const tabs = {
   "coffee-terms": CoffeeTerms,
@@ -21,9 +22,15 @@ const tabs = {
 
 type TabKey = keyof typeof tabsNames;
 
-const WizardTab = ({ tabKey }: { tabKey: TabKey }) => {
+const WizardTab = ({
+  tabKey,
+  datagridRef,
+}: {
+  tabKey: TabKey;
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   const Tab = React.memo(tabs[tabKey]);
-  return <Tab key={tabKey} />;
+  return <Tab key={tabKey} datagridRef={datagridRef} />;
 };
 
 const tabsNames = {

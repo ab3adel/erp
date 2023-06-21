@@ -1,15 +1,9 @@
-import { useGenericMutation } from "@/shared";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { loginUser } from "../graphql/mutations/loginUser";
-import { useNavigate } from "react-router-dom";
+import { useLogin } from "@/shared/hooks/useLogin";
 
 export const useLoginForm = () => {
-  const [login] = useGenericMutation<
-    { login: { token: string } },
-    { email: string; password: string }
-  >(loginUser);
-  const navigate = useNavigate();
+  const login = useLogin();
 
   const formik = useFormik<{
     username: string;
@@ -23,14 +17,8 @@ export const useLoginForm = () => {
     },
     onSubmit: (result: { username: string; password: string }) => {
       login({
-        variables: {
-          email: result.username,
-          password: result.password,
-        },
-        onCompleted: (data) => {
-          localStorage.setItem("token", data.login.token);
-          navigate("/");
-        },
+        email: result.username,
+        password: result.password,
       });
     },
     validationSchema: Yup.object().shape({

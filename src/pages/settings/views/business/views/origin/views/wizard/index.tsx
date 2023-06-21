@@ -4,11 +4,14 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { KeyboardArrowRight } from "@mui/icons-material";
 import { WizardTab, tabNames, firstTabName, getNextTab } from "./tabs";
 import { GenericDialog, useDialog } from "@/shared";
+import { useGridApiRef } from "@mui/x-data-grid-pro";
 
 const OriginWizard = () => {
   const { openDialog, closeDialog, isDialogOpen } =
     useDialog<"discard-wizard-changes">();
   const [value, setValue] = useState(firstTabName);
+  const ref = useGridApiRef();
+
   return (
     <Box display="flex" flexDirection="column">
       <Box flexGrow={1} p={1} pt={7} display="flex">
@@ -64,7 +67,7 @@ const OriginWizard = () => {
                 paddingLeft: 8,
               }}
             >
-              <WizardTab tabKey={tab.key} />
+              <WizardTab tabKey={tab.key} datagridRef={ref} />
             </TabPanel>
           ))}
         </TabContext>
@@ -88,7 +91,9 @@ const OriginWizard = () => {
         <Button
           disableElevation={false}
           endIcon={<KeyboardArrowRight />}
-          onClick={() => setValue(getNextTab)}
+          onClick={() => {
+            console.log(ref.current.getRowModels());
+          }}
         >
           Next
         </Button>
@@ -107,8 +112,8 @@ const OriginWizard = () => {
           },
           closeButton: {
             label: "Cancel",
-            color: "info"
-          }
+            color: "info",
+          },
         }}
         // onSubmit={}
       >

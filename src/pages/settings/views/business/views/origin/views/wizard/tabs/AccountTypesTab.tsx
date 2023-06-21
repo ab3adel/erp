@@ -6,8 +6,9 @@ import Section from "../../../components/Section";
 import DataGrid, {
   cellDeleteAction,
   cellSelect,
-  cellTextField,
+  CellTextField,
 } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const rows = [
   { id: "1", ours: "Farmer" },
@@ -44,7 +45,9 @@ const useAccountTypesColumns = (onDelete: (id: GridRowId) => void) =>
         field: "yours",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Enter Your Words"),
+        renderCell: (params) => (
+          <CellTextField params={params} label="Enter Your Words" />
+        ),
       },
       {
         field: "actions",
@@ -58,7 +61,11 @@ const useAccountTypesColumns = (onDelete: (id: GridRowId) => void) =>
     [onDelete]
   );
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   const [currentRows, setCurrentRows] = useState(rows);
   const deleteRow = useCallback(
     (id: GridRowId) =>
