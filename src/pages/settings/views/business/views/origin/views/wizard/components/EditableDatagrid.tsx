@@ -17,8 +17,11 @@ import {
   GridRowParams,
   GridRowId,
   GridColDef,
+  useGridApiContext,
+  GridRowModes,
   // GridRowModes,
 } from "@mui/x-data-grid-pro";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useState } from "react";
 
@@ -133,19 +136,44 @@ const CreatableAutoComplete = ({
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const cellTextField = (
-  params: GridRenderCellParams,
+export const CellTextField = ({
+  params,
   label = params.colDef.headerName,
-  placeholder = ""
-) => (
-  <TextField
-    variant="filled"
-    defaultValue={params.value}
-    fullWidth
-    label={label}
-    placeholder={placeholder}
-  />
-);
+  placeholder = "",
+}: {
+  params: GridRenderCellParams;
+  label?: string;
+  placeholder?: string;
+}) => {
+  const apiRef = useGridApiContext();
+  const { id, value, field } = params;
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    apiRef.current.setEditCellValue({ id, field, value: e.target.value });
+    apiRef.current.updateRows([{ id, [field]: e.target.value }]);
+  };
+
+  const handleRef = (element: HTMLInputElement) => {
+    if (element) {
+      const input = element.querySelector<HTMLInputElement>(
+        `input[value="${value}"]`
+      );
+      input?.focus();
+    }
+  };
+
+  return (
+    <TextField
+      variant="filled"
+      ref={handleRef}
+      defaultValue={params.value}
+      fullWidth
+      label={label}
+      onChange={onChange}
+      placeholder={placeholder}
+    />
+  );
+};
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const cellSelect = (
@@ -249,9 +277,10 @@ export const cellDeleteAction = (
 type DataGridProps = {
   columns: GridColDef[];
   rows: readonly Record<string, unknown>[];
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
 };
 
-const DataGrid = ({ columns, rows }: DataGridProps) => (
+const DataGrid = ({ columns, rows, datagridRef }: DataGridProps) => (
   <DataGridPro
     sx={{
       "& .MuiDataGrid-row:hover": {
@@ -262,18 +291,17 @@ const DataGrid = ({ columns, rows }: DataGridProps) => (
       //   border: "none",
       // },
     }}
-    // editMode="row"
-    // --> in case we wanna use the edit mode
-    // --> this will turn edit mode for all rows
-    // rowModesModel={rows.reduce(
-    //   (acc, row) => ({
-    //     ...acc,
-    //     [row.id]: { mode: GridRowModes.Edit },
-    //   }),
-    //   {}
-    // )}
+    editMode="row"
+    rowModesModel={rows.reduce(
+      (acc, row) => ({
+        ...acc,
+        [row.id]: { mode: GridRowModes.Edit },
+      }),
+      {}
+    )}
     rowHeight={80}
     columns={columns}
+    apiRef={datagridRef}
     disableRowSelectionOnClick
     hideFooter
     rows={rows}

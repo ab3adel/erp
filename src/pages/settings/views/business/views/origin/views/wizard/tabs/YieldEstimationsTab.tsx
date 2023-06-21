@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid-pro";
 import Section from "../../../components/Section";
-import DataGrid, { cellTextField } from "../components/EditableDatagrid";
+import DataGrid, { CellTextField } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const columns: GridColDef[] = [
   {
@@ -15,21 +16,21 @@ const columns: GridColDef[] = [
     field: "ctw",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Enter %"),
+    renderCell: (params) => <CellTextField params={params} label={"Enter %"} />,
   },
   {
     headerName: "Wet to Dry %",
     field: "wtd",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Enter %"),
+    renderCell: (params) => <CellTextField params={params} label={"Enter %"} />,
   },
   {
     headerName: "Dry to Green %",
     field: "dtg",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Enter %"),
+    renderCell: (params) => <CellTextField params={params} label={"Enter %"} />,
   },
   {
     headerName: "Total %",
@@ -48,7 +49,11 @@ const rows = [
   { id: "5", pm: "Processing Method 5", total: 0 },
 ];
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   return (
     <Box>
       <Typography variant="h6" mb={3}>

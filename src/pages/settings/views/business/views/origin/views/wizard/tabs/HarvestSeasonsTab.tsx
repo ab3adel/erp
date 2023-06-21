@@ -7,8 +7,9 @@ import Section from "../../../components/Section";
 import DataGrid, {
   cellCheckBox,
   cellDatePicker,
-  cellTextField,
+  CellTextField,
 } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const columns: GridColDef[] = [
   {
@@ -16,7 +17,13 @@ const columns: GridColDef[] = [
     field: "name",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Name", "Enter Harvest Name"),
+    renderCell: (params) => (
+      <CellTextField
+        params={params}
+        label="Name"
+        placeholder="Enter Harvest Name"
+      />
+    ),
   },
   {
     headerName: "Start",
@@ -59,7 +66,11 @@ const rows = [
   { id: "3", name: " " },
 ];
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   const [currentRows, setCurrentRows] = useState(rows);
   return (
     <Box>

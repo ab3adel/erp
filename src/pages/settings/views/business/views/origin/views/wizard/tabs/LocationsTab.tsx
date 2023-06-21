@@ -8,6 +8,7 @@ import DataGrid, {
   cellAutocomplete,
 } from "../components/EditableDatagrid";
 import { GridColDef, GridRowId } from "@mui/x-data-grid-pro";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 const rows = [
   {
@@ -95,7 +96,11 @@ const useLocationColumns = (onDelete: (id: GridRowId) => void) =>
     [onDelete]
   );
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   const [currentRows, setCurrentRows] = useState(rows);
   const deleteRow = useCallback(
     (id: GridRowId) =>

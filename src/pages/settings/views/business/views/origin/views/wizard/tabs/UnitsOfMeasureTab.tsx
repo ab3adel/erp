@@ -5,8 +5,9 @@ import { Add } from "@mui/icons-material";
 import Section from "../../../components/Section";
 import DataGrid, {
   cellDeleteAction,
-  cellTextField,
+  CellTextField,
 } from "../components/EditableDatagrid";
+import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
 // TODO: Split sections into three separate components
 
@@ -32,14 +33,18 @@ const useWeightColumns = (onDelete: (id: GridRowId) => void) =>
         field: "uom",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Unit of Measure"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Unit of Measure"} />
+        ),
       },
       {
         headerName: "Equivalent in Kilograms (Kg)",
         field: "eq",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Value in Kg"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Value in Kg"} />
+        ),
       },
       {
         field: "actions",
@@ -67,14 +72,18 @@ const useVolumeColumns = (onDelete: (id: GridRowId) => void) =>
         field: "uom",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Unit of Measure"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Unit of Measure"} />
+        ),
       },
       {
         headerName: "Equivalent in Litres (L)",
         field: "eq",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Value in L"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Value in L"} />
+        ),
       },
       {
         field: "actions",
@@ -102,14 +111,18 @@ const useAreaColumns = (onDelete: (id: GridRowId) => void) =>
         field: "uom",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Unit of Measure"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Unit of Measure"} />
+        ),
       },
       {
         headerName: "Equivalent in Hectare (Ha)",
         field: "eq",
         flex: 1,
         sortable: false,
-        renderCell: (params) => cellTextField(params, "Value in Ha"),
+        renderCell: (params) => (
+          <CellTextField params={params} label={"Value in Ha"} />
+        ),
       },
       {
         field: "actions",
@@ -135,7 +148,9 @@ const volToWeColumns: DataGridProProps["columns"] = [
     field: "uom",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Unit of Measure"),
+    renderCell: (params) => (
+      <CellTextField params={params} label={"Unit of Measure"} />
+    ),
   },
   {
     headerName: "State of Coffee",
@@ -148,14 +163,18 @@ const volToWeColumns: DataGridProProps["columns"] = [
     field: "eqL",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Value in Litres"),
+    renderCell: (params) => (
+      <CellTextField params={params} label={"Value in Litres"} />
+    ),
   },
   {
     headerName: "Equivalent in (Kg)",
     field: "eqKg",
     flex: 1,
     sortable: false,
-    renderCell: (params) => cellTextField(params, "Value in Kilograms"),
+    renderCell: (params) => (
+      <CellTextField params={params} label={"Value in Kilograms"} />
+    ),
   },
 ];
 
@@ -185,7 +204,11 @@ const volRows = [
   },
 ];
 
-const Tab = () => {
+const Tab = ({
+  datagridRef,
+}: {
+  datagridRef?: React.MutableRefObject<GridApiPro> | undefined;
+}) => {
   // Weight Data Grid Stuff
   const [weightRows, setWeightRows] = useState(rows);
   const deleteWeightRow = useCallback(
