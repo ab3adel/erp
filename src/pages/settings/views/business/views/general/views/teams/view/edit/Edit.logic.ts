@@ -1,23 +1,42 @@
-import { useSelectedOrganiztion } from "@/global/states/selectedOrganizations";
-import { useUserOrganiaztions } from "@/shared/hooks/graphql/queries/useUserOrganizations/useUserOrganizations";
-import React, { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
+import { useUser } from "../../hooks/useUser";
 import { useAbilities } from "../../hooks/useAbilities";
 import _ from "lodash";
-import { useNavigate } from "react-router-dom";
-import { useAddTeamMemberMutation } from "../../hooks/useAddTeamMemberMutation";
+import { useUpdateMemberutation } from "../../hooks/useUpdateMember";
+import { useUpdateUserAbilities } from "../../hooks/useUpdateUserAbilitiesMutation";
 
 export const useLogic = () => {
-  const navigrate = useNavigate();
+  const { id } = useParams();
 
-  const [mutateAddMember, { loading: loadingAddMember }] =
-    useAddTeamMemberMutation();
+  const navigate = useNavigate();
 
-  const [currentStep, setStep] = React.useState(0);
+  const handleNavigateToTeams = () => {
+    navigate("/settings/business/general/teams");
+  };
 
-  const { id: selectedOrgId } = useSelectedOrganiztion();
+  const [email, setEmail] = useState("");
 
-  const { data: UserOrganiaztionsData } = useUserOrganiaztions();
+  const { data: userToEdit } = useUser({ id: parseInt(id ?? "") });
+
+  const [mutateUpdateUser, { loading: loadingUpdateMember }] =
+    useUpdateMemberutation();
+
+  const [mutateUpdateUserAbilites, { loading: loadingUpdateAbilites }] =
+    useUpdateUserAbilities();
+
+  const loading = loadingUpdateAbilites || loadingUpdateMember;
+
+  useEffect(() => {
+    if (userToEdit) {
+      setEmail(userToEdit?.user.email);
+      setAbilitiesValue(userToEdit.user.abilities.map((item) => item.id));
+    }
+  }, [userToEdit]);
+
+  //   const [mutateAddMember, { loading: loadingAddMember }] =
+  //     useAddTeamMemberMutation();
 
   const { data: AvailableAbilites } = useAbilities({ first: 1000, page: 1 });
 
@@ -35,40 +54,21 @@ export const useLogic = () => {
     (item) => item.category
   );
 
-  const [email, setEmail] = useState("");
-
-  const handleCancel = () => {
-    handleGoBack();
-  };
-
-  const handleBack = () => currentStep > 0 && setStep((step) => step - 1);
-
   const handleConfirm = () => {
-    if (currentStep < 2) setStep((step) => step + 1);
-
-    if (currentStep == 2) {
-      mutateAddMember({
+    if (email && id) {
+      if (email !== userToEdit?.user.email) {
+        mutateUpdateUser({ variables: { email, id: parseInt(id) } });
+      }
+      mutateUpdateUserAbilites({
         variables: {
-          email,
-          abilities: abilitiesValue.map((item) => parseInt(item)),
+          memberId: parseInt(id),
+          abilityIds: abilitiesValue.map((item) => parseInt(item)),
         },
-      }).then(() => setStep((step) => step + 1));
+      });
     }
-
-    if (currentStep === 3) handleGoBack();
   };
 
   const isValidEmail = yup.string().email().required().isValidSync(email);
-
-  const handleGoBack = () => navigrate(-1);
-
-  const organiztionName = useMemo(
-    () =>
-      UserOrganiaztionsData?.userOrganizations.data.find(
-        (item) => item.id === selectedOrgId
-      )?.company_name,
-    [UserOrganiaztionsData, selectedOrgId]
-  );
 
   const handleShowPanelChange = (cateogry: string, status: boolean) =>
     setShownPanels((panels) =>
@@ -140,18 +140,27 @@ export const useLogic = () => {
     if (value === 4) setAbilitiesValue([]);
   };
 
+  const isChangedForm =
+    email !== userToEdit?.user.email ||
+    userToEdit?.user.abilities.some(
+      (item) => !abilitiesValue.includes(item.id)
+    ) ||
+    abilitiesValue.some(
+      (item) =>
+        !userToEdit?.user.abilities.map((item) => item.id).includes(item)
+    );
+
+  // ----------------------------------------------------------------------------
+
   return {
-    organiztionName,
     email,
+    handleNavigateToTeams,
+    shownPanels,
     setEmail,
-    currentStep,
     handleConfirm,
-    handleBack,
-    handleCancel,
     isValidEmail,
     groupedAbilites,
     abilitiesValue,
-    shownPanels,
     handleShowPanelChange,
     handleAbilitesChange,
     showCustomizationPanels,
@@ -159,6 +168,7 @@ export const useLogic = () => {
     selectedAbilites,
     handlePermissionInputChange,
     permissionValue,
-    loadingAddMember,
+    loading,
+    isChangedForm,
   };
 };

@@ -38,6 +38,7 @@ const Teams: FunctionComponent = () => {
     handleConfirmDeactivateUser,
     loadingUpdateUser,
     handleActivateMember,
+    handleNavigateToEdit,
   } = useLogic();
 
   return (
@@ -51,7 +52,7 @@ const Teams: FunctionComponent = () => {
         onCancelClick={handleCancelDelete}
         name={memberToDeleteInfo?.name ?? ""}
         email={memberToDeleteInfo?.email ?? ""}
-        organization={organization?.organization.company_name ?? ""}
+        organization={organization?.organization?.company_name ?? ""}
       />
       <AddOwnerDialog
         open={showAddOwnerDialog}
@@ -74,7 +75,7 @@ const Teams: FunctionComponent = () => {
           disabled: loadingUpdateUser,
         }}
         name={memberToDeactivateInfo?.name ?? ""}
-        organization={organization?.organization.company_name ?? ""}
+        organization={organization?.organization?.company_name ?? ""}
       />
 
       <HeaderToolbar
@@ -115,6 +116,7 @@ const Teams: FunctionComponent = () => {
       </Box>
 
       <TeamsRoleTable
+        onEditClick={handleNavigateToEdit}
         disableActivateButton={loadingUpdateUser}
         onActivateClick={handleActivateMember}
         onDeleteClick={handleSetMemberToDelete}

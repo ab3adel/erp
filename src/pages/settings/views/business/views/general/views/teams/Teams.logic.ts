@@ -6,6 +6,7 @@ import { useDeleteUserMutation } from "./hooks/useDeleteUserMutation";
 import * as yup from "yup";
 import { useAddOwnerMutation } from "./hooks/useAddOwnerMutation";
 import { useUpdateMemberutation } from "./hooks/useUpdateMember";
+import { useNavigate } from "react-router-dom";
 
 export const useLogic = () => {
   const { data: data } = useTeams({ first: 1000, page: 1 });
@@ -14,6 +15,8 @@ export const useLogic = () => {
 
   const [mutateUpdateUser, { loading: loadingUpdateUser }] =
     useUpdateMemberutation();
+
+  const navigate = useNavigate();
 
   const [memberIdToDelete, setMemberIdToDelete] = useState<
     undefined | number
@@ -91,6 +94,9 @@ export const useLogic = () => {
 
   const handleEmailChange = (value: string) => setAddOwnerEmail(value);
 
+  const handleNavigateToEdit = (id: number) =>
+    navigate("/settings/business/general/teams/edit/" + id);
+
   const isOwnerEmailValid = yup
     .string()
     .email("Invalid email")
@@ -121,5 +127,6 @@ export const useLogic = () => {
     handleConfirmDeactivateUser,
     loadingUpdateUser,
     handleActivateMember,
+    handleNavigateToEdit,
   };
 };

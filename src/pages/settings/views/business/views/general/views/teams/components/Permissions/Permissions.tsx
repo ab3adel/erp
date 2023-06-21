@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { BoxProps, Button, TextFieldProps } from "@mui/material";
 import {
   Typography,
   Box,
@@ -14,8 +14,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PermissionControlForm, {
   PermissionControlFormProps,
-} from "../../../../../components/PermissionControlForm";
-import { Abilities } from "../../../../../hooks/useAbilities";
+} from "../PermissionControlForm";
+import { Abilities } from "../../hooks/useAbilities";
 
 interface GroupedAbilites {
   [key: string]: Abilities[];
@@ -23,8 +23,8 @@ interface GroupedAbilites {
 
 interface PermissionsProps {
   groupedAbilites?: GroupedAbilites;
-  organizationName: string;
-  email: string;
+  organizationName?: string;
+  email?: string;
   value: PermissionControlFormProps["value"];
   onAbilitesChange?: PermissionControlFormProps["onChange"];
   shownPanels: string[];
@@ -33,6 +33,9 @@ interface PermissionsProps {
   showCustomizationPanels?: boolean;
   onPermissionInputChange: (value: number) => void;
   permissionValue: number;
+  mode?: "add" | "edit";
+  containerProps?: BoxProps;
+  emailFieldProps?: TextFieldProps;
 }
 
 const Permissions: FunctionComponent<PermissionsProps> = (props) => {
@@ -48,6 +51,9 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
     showCustomizationPanels,
     onPermissionInputChange,
     permissionValue,
+    mode,
+    containerProps,
+    emailFieldProps,
   } = props;
 
   const accessLevelOptions = [
@@ -73,36 +79,93 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
       secondary: "Has no permission for any section ",
       value: 4,
     },
+    {
+      primary: "Customized",
+      secondary: "Has customized permission",
+      value: 5,
+    },
   ];
 
   return (
-    <Box my={8}>
-      <Typography
-        fontWeight={500}
-        sx={{ mb: 1 }}
-        color="text.primary"
-        variant="h6"
-      >
-        Manage Team Permissions
-      </Typography>
-      <Typography color="text.secondary" variant="body1">
-        Define roles and access levels for this new team member
-      </Typography>
-      <Divider sx={{ my: 3 }} />
-
-      <Typography variant="body1">Giving access to:</Typography>
-
-      <Box display="flex" alignItems="center" gap={2} mt={4} mx={2}>
-        <Avatar></Avatar>
-        <Box>
-          <Typography variant="body1" color="text.primary">
-            {email}
+    <Box my={8} {...containerProps}>
+      {mode === "add" && (
+        <>
+          <Typography
+            fontWeight={500}
+            sx={{ mb: 1 }}
+            color="text.primary"
+            variant="h6"
+          >
+            Manage Team Permissions
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {organizationName}
+          <Typography color="text.secondary" variant="body1">
+            Define roles and access levels for this new team member
           </Typography>
-        </Box>
-      </Box>
+          <Divider sx={{ my: 3 }} />
+
+          <Typography variant="body1">Giving access to:</Typography>
+
+          <Box display="flex" alignItems="center" gap={2} mt={4} mx={2}>
+            <Avatar></Avatar>
+            <Box>
+              <Typography variant="body1" color="text.primary">
+                {email}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {organizationName}
+              </Typography>
+            </Box>
+          </Box>
+        </>
+      )}
+
+      {mode === "edit" && (
+        <>
+          <Typography variant="h6" color="text.primary" fontWeight={500} mb={3}>
+            Edit Email & Permissions
+          </Typography>
+          <Typography variant="body1" color="text.primary" fontWeight={400}>
+            User Email
+          </Typography>
+          <Divider sx={{ my: 3 }} />
+          <Typography
+            variant="body1"
+            color="text.primary"
+            fontWeight={400}
+            mb={1}
+          >
+            Edit User Email
+          </Typography>
+          <Typography variant="body1" color="text.secondary" mb={3}>
+            The user must confirm the change from the new email address in order
+            to activate it
+          </Typography>
+          <Box maxWidth={400} mb={3}>
+            <TextField
+              variant="filled"
+              label="Email"
+              fullWidth
+              {...emailFieldProps}
+            />
+          </Box>
+
+          <Typography
+            variant="body1"
+            color="text.primary"
+            fontWeight="400"
+            mb={3}
+          >
+            Permissions and Access
+          </Typography>
+          <Divider sx={{ mb: 3 }} />
+          <Typography variant="body1" color="text.primary" mb={1}>
+            Edit User Permissions
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Edit permissions and access privileges for this team member
+          </Typography>
+        </>
+      )}
 
       <Box maxWidth={400} mt={3}>
         <Autocomplete
@@ -190,3 +253,7 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
 };
 
 export default Permissions;
+
+Permissions.defaultProps = {
+  mode: "add",
+};

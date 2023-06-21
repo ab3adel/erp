@@ -4,7 +4,7 @@ import Stepper from "./components/Stepper";
 import EmailInsertion from "./components/main/EmailInsertion";
 import ActionBar from "./components/ActionBar";
 import { Box } from "@mui/material";
-import Permissions from "./components/main/Permissions/Permissions";
+import Permissions from "../../components/Permissions/Permissions";
 import Overview from "./components/main/overview/Overview";
 import Acknowledge from "./components/main/Acknowledge";
 import { useLogic } from "./Create.logic";

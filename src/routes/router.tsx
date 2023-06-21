@@ -36,6 +36,7 @@ import SavedSettings from "@/pages/settings/views/business/views/origin/views/sa
 import OriginWizard from "@/pages/settings/views/business/views/origin/views/wizard";
 import Branding from "@/pages/settings/views/business/views/general/views/branding/views";
 import DownloadData from "@/pages/settings/views/business/views/general/views/download-data";
+import EditMember from "@/pages/settings/views/business/views/general/views/teams/view/edit/Edit";
 
 const ProfileChildrenRoutes = [
   {
@@ -146,16 +147,17 @@ export const router = createBrowserRouter([
                     children: [
                       { element: <Teams />, index: true },
                       { element: <Create />, path: "add" },
+                      { element: <EditMember />, path: "edit/:id" },
                     ],
                   },
                   {
                     path: "branding",
-                    element: <Branding />
+                    element: <Branding />,
                   },
                   {
                     path: "download-data",
-                    element: <DownloadData />
-                  }
+                    element: <DownloadData />,
+                  },
                 ],
               },
               {
@@ -196,12 +198,12 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "branding",
-                    element: <Branding />
+                    element: <Branding />,
                   },
                   {
                     path: "download-data",
-                    element: <DownloadData />
-                  }
+                    element: <DownloadData />,
+                  },
                 ],
               },
             ],
