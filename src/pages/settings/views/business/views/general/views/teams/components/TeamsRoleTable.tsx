@@ -3,6 +3,7 @@ import {
   Box,
   ButtonProps,
   IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
 import { DataGridPro, DataGridProProps } from "@mui/x-data-grid-pro";
@@ -63,7 +64,22 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       flex: 1,
       field: "modules",
       sortable: false,
-      renderCell: ({ row }) => row.modules,
+      renderCell: ({ row }) => (
+        <Stack direction="row" spacing={2} alignItems="center">
+          {row.modules.map((item) => (
+            <Avatar
+              sx={{
+                width: 32,
+                height: 32,
+                color: "#008E8F",
+                bgcolor: "rgba(0, 142, 143, 0.08)",
+              }}
+            >
+              <img src={item} alt={item} width={17} />
+            </Avatar>
+          ))}
+        </Stack>
+      ),
     },
     {
       headerName: "Permissions",

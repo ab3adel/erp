@@ -1,7 +1,7 @@
 import PageSectionContainer from "@/pages/settings/components/SectionContainer";
 import Header from "./components/Header";
 import { Box } from "@mui/material";
-import EditForm from "./components/EditForm";
+import EditForm from "./containers/editForm/EditForm";
 import NavigationContainer from "./containers/NavigationContainer";
 
 const Edit = () => {

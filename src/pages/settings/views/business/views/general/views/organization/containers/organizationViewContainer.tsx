@@ -4,6 +4,8 @@ import { IOrganization } from "@/shared/models/models";
 import { useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import AddTeamMemberButtonContainer from "../../../containers/AddTeamMemberButtonContainer";
+import { useOrganiaztion } from "@/shared/hooks/graphql/queries/useOrganization/useOrganization";
+import { useSelectedOrganiztion } from "@/global/states/selectedOrganizations";
 
 const OrganizationViewContainer: FunctionComponent = () => {
   const data: IOrganization[] = [
@@ -17,6 +19,12 @@ const OrganizationViewContainer: FunctionComponent = () => {
     },
   ];
 
+  const selectedOrganizationId = useSelectedOrganiztion((root) => root.id);
+
+  const { data: organizationData } = useOrganiaztion({
+    id: selectedOrganizationId,
+  });
+
   const navigate = useNavigate();
 
   const handleNavigateEdit = () =>
@@ -24,16 +32,27 @@ const OrganizationViewContainer: FunctionComponent = () => {
 
   return (
     <>
-      <OrganizationCard
-        data={data}
-        name="Long Miles Burundi"
-        onEditClick={handleNavigateEdit}
-        footer={
-          <Box mt={2}>
-            <AddTeamMemberButtonContainer />
-          </Box>
-        }
-      />
+      {organizationData && (
+        <OrganizationCard
+          data={[
+            {
+              city: organizationData?.organization.city.name,
+              currency: organizationData?.organization.currency.name,
+              id: organizationData?.organization.id,
+              language: organizationData?.organization.language.name,
+              plan: organizationData?.organization.plan.name,
+              team_members: organizationData?.organization.team_members,
+            },
+          ]}
+          name={organizationData.organization.company_name}
+          onEditClick={handleNavigateEdit}
+          footer={
+            <Box mt={2}>
+              <AddTeamMemberButtonContainer />
+            </Box>
+          }
+        />
+      )}
     </>
   );
 };

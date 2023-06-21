@@ -11,6 +11,7 @@ import AddOwnerDialog from "./components/AddOwnerDialog";
 import DeactivateMemberDialog from "./components/DeactivateMemberDialog";
 import AddTeamMemberButtonContainer from "../../containers/AddTeamMemberButtonContainer";
 import { useLogic } from "./Teams.logic";
+import { modulesImages } from "@/shared/enums/modules-images";
 
 const Teams: FunctionComponent = () => {
   const {
@@ -121,7 +122,7 @@ const Teams: FunctionComponent = () => {
         data={data?.users.data.map((item) => ({
           id: item.id,
           permissions: item.abilities.map((ability) => ability.title),
-          modules: ["unknown"],
+          modules: item.modules.map((item) => modulesImages[item]),
           entity: {
             email: item.email,
             name: item.name,
