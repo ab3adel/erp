@@ -12,15 +12,20 @@ export const accountProfile = gql`
       address1
       address2
       city
-      country
-      currency
+      country {
+        id
+        name
+      }
+      currency {
+        id
+        name
+      }
       district
       government_id
-      language
       region
       zone
       state
-      unit_of_measurement
+
       date_of_birth
       education_level
       first_name
@@ -38,7 +43,10 @@ export const accountProfile = gql`
         farm_name
         size
         spacing
-        varietals
+        varietal {
+          id
+          name
+        }
       }
 
       tags {
