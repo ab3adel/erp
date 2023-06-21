@@ -11,6 +11,7 @@ interface User {
   name: string;
   email: string;
   is_active: boolean;
+  modules: string[];
   role: string;
   abilities: Ability[];
 }
