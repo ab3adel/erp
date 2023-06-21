@@ -20,7 +20,7 @@ interface Me {
   id: string;
   name: string;
   email: string;
-  profile: Profile;
+  profile?: Profile;
 }
 
 export interface Data {

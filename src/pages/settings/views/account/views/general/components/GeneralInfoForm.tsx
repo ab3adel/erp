@@ -82,9 +82,9 @@ export const GeneralInfoForm = () => {
       form.setValues({
         name: data.me.name,
         email: data.me.email,
-        language: data.me.profile.language,
-        date_format: data.me.profile.date_format,
-        avatar: data.me.profile.avatar[0]?.src,
+        language: data.me.profile?.language,
+        date_format: data.me.profile?.date_format,
+        avatar: data.me.profile?.avatar[0]?.src,
       });
   }, [data]);
 
@@ -108,7 +108,7 @@ export const GeneralInfoForm = () => {
         <Typography variant="body1">Avatar</Typography>
         <AvatarInput
           src={
-            form.values.avatar === data?.me?.profile.avatar[0].src &&
+            form.values.avatar === data?.me?.profile?.avatar[0]?.src &&
             form.values.avatar
               ? resourceUrlGenerater(form.values.avatar)
               : form.values.avatar
@@ -212,9 +212,9 @@ export const GeneralInfoForm = () => {
                 loadingProfileData ||
                 !hasChanges(form.values, {
                   name: data?.me?.name,
-                  date_format: data?.me?.profile.date_format,
-                  language: data?.me?.profile.language,
-                  avatar: data?.me?.profile.avatar[0]?.src,
+                  date_format: data?.me?.profile?.date_format,
+                  language: data?.me?.profile?.language,
+                  avatar: data?.me?.profile?.avatar[0]?.src,
                 })
               }
               variant="contained"
