@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { query } from "./query";
 
 interface Organization {
-  organization: {
+  organization?: {
     id: number;
     company_name: string;
     country: {
