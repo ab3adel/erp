@@ -5,7 +5,9 @@ import MultiOrganizationManagmentDialog from "../../components/multi-organizatio
 import { useLogic } from "./OrganizationCreateContainer.logic";
 
 const OrganizationCreateContainer: FunctionComponent = () => {
-  const { showDialog, handleShowDialog, handleClose } = useLogic();
+  const { showDialog, handleShowDialog, handleClose, handleContactUsClicked } =
+    useLogic();
+
   return (
     <>
       <Button
@@ -16,6 +18,7 @@ const OrganizationCreateContainer: FunctionComponent = () => {
         new organization
       </Button>
       <MultiOrganizationManagmentDialog
+        contactButtonProps={{ onClick: handleContactUsClicked }}
         open={showDialog}
         closeButtonProps={{ onClick: handleClose }}
       />
