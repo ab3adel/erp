@@ -2,10 +2,20 @@ import { Box, Divider, Link, Toolbar, Typography } from "@mui/material";
 import { AppBar } from "./components/app-bar/AppBar";
 import { Outlet, redirect } from "react-router-dom";
 import { Drawer } from "./components/Drawer";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import { UserProfileQuery } from "./graphql/queries/userProfileQuery";
 
-const loader = () => {
+const loader = (client: ApolloClient<NormalizedCacheObject>) => async () => {
   const token = localStorage.getItem("token");
   if (!token) {
+    return redirect("/login");
+  }
+  const data = await client.query<{ me: unknown }>({
+    query: UserProfileQuery,
+    fetchPolicy: "network-only",
+  });
+  if (!data.data.me) {
+    localStorage.removeItem("token");
     return redirect("/login");
   }
   return null;

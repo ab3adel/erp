@@ -36,6 +36,7 @@ import SavedSettings from "@/pages/settings/views/business/views/origin/views/sa
 import OriginWizard from "@/pages/settings/views/business/views/origin/views/wizard";
 import Branding from "@/pages/settings/views/business/views/general/views/branding/views";
 import DownloadData from "@/pages/settings/views/business/views/general/views/download-data";
+import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 
 const ProfileChildrenRoutes = [
   {
@@ -56,193 +57,194 @@ const ProfileChildrenRoutes = [
   },
 ];
 
-export const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <Login />,
-    loader: Login.loader,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-    loader: Signup.loader,
-  },
+export const router = (client: ApolloClient<NormalizedCacheObject>) =>
+  createBrowserRouter([
+    {
+      path: "/login",
+      element: <Login />,
+      loader: Login.loader,
+    },
+    {
+      path: "/signup",
+      element: <Signup />,
+      loader: Signup.loader,
+    },
 
-  {
-    path: "/",
-    element: <MainLayout />,
-    loader: MainLayout.loader,
-    children: [
-      {
-        path: "management",
-        element: <Managment />,
-        children: [
-          {
-            index: true,
-            element: <Receiptions />,
-          },
-          {
-            path: "approved-inventory",
-            element: <AcceptedInventory />,
-          },
-        ],
-      },
-      {
-        path: "/relationships",
-        element: <RelationShips />,
-        children: [
-          {
-            path: "accounts",
-            element: <Accounts />,
-          },
-          {
-            path: "customview",
-            element: <AccountsCustomView />,
-          },
-        ],
-      },
-      {
-        path: "/settings",
-        element: <Settings />,
-        handle: {
-          navs: <SettingsNavs />,
+    {
+      path: "/",
+      element: <MainLayout />,
+      loader: MainLayout.loader(client),
+      children: [
+        {
+          path: "management",
+          element: <Managment />,
+          children: [
+            {
+              index: true,
+              element: <Receiptions />,
+            },
+            {
+              path: "approved-inventory",
+              element: <AcceptedInventory />,
+            },
+          ],
         },
-        children: [
-          {
-            path: "account",
-            element: <Account />,
-            children: [
-              {
-                index: true,
-                element: <General />,
-              },
-              {
-                path: "notifications",
-                element: <Notificationts />,
-              },
-              {
-                path: "security",
-                element: <Security />,
-              },
-            ],
+        {
+          path: "/relationships",
+          element: <RelationShips />,
+          children: [
+            {
+              path: "accounts",
+              element: <Accounts />,
+            },
+            {
+              path: "customview",
+              element: <AccountsCustomView />,
+            },
+          ],
+        },
+        {
+          path: "/settings",
+          element: <Settings />,
+          handle: {
+            navs: <SettingsNavs />,
           },
-          {
-            path: "business",
-            children: [
-              {
-                path: "general",
-                element: <BusinessGeneral />,
-                children: [
-                  {
-                    path: "organization",
-                    children: [
-                      { element: <Organization />, index: true },
-                      { element: <Edit />, path: "edit" },
-                    ],
-                  },
-                  {
-                    path: "teams",
+          children: [
+            {
+              path: "account",
+              element: <Account />,
+              children: [
+                {
+                  index: true,
+                  element: <General />,
+                },
+                {
+                  path: "notifications",
+                  element: <Notificationts />,
+                },
+                {
+                  path: "security",
+                  element: <Security />,
+                },
+              ],
+            },
+            {
+              path: "business",
+              children: [
+                {
+                  path: "general",
+                  element: <BusinessGeneral />,
+                  children: [
+                    {
+                      path: "organization",
+                      children: [
+                        { element: <Organization />, index: true },
+                        { element: <Edit />, path: "edit" },
+                      ],
+                    },
+                    {
+                      path: "teams",
 
-                    children: [
-                      { element: <Teams />, index: true },
-                      { element: <Create />, path: "add" },
-                    ],
-                  },
-                  {
-                    path: "branding",
-                    element: <Branding />
-                  },
-                  {
-                    path: "download-data",
-                    element: <DownloadData />
-                  }
-                ],
-              },
-              {
-                path: "origin-customization",
-                element: <Origin />,
-                children: [
-                  {
-                    // path: "empty",
-                    index: true,
-                    element: <Empty />,
-                  },
-                  {
-                    path: "wizard",
-                    element: <OriginWizard />,
-                  },
-                  {
-                    path: "saved-settings",
-                    element: <SavedSettings />,
-                  },
-                ],
-              },
-              {
-                path: "origin-customization",
-                element: <Origin />,
-                children: [
-                  {
-                    // path: "empty",
-                    index: true,
-                    element: <Empty />,
-                  },
-                  {
-                    path: "wizard",
-                    element: <OriginWizard />,
-                  },
-                  {
-                    path: "saved-settings",
-                    element: <SavedSettings />,
-                  },
-                  {
-                    path: "branding",
-                    element: <Branding />
-                  },
-                  {
-                    path: "download-data",
-                    element: <DownloadData />
-                  }
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        path: ":id/agent-profile",
-        element: <AgentProfile />,
-        children: ProfileChildrenRoutes,
-      },
-      {
-        path: ":id/buyer-profile",
-        element: <BuyerProfile />,
-        children: [
-          {
-            index: true,
-            element: <AccountTransactions />,
-          },
-          {
-            path: "notes",
-            element: <AccountNotes />,
-          },
-        ],
-      },
-      {
-        path: ":id/farmer-profile",
-        element: <FarmerProfile />,
-        children: ProfileChildrenRoutes,
-      },
-      {
-        path: ":id/plot-profile",
-        element: <PlotProfile />,
-        children: [
-          ...ProfileChildrenRoutes,
-          {
-            path: "history",
-            element: <AccountHistory />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+                      children: [
+                        { element: <Teams />, index: true },
+                        { element: <Create />, path: "add" },
+                      ],
+                    },
+                    {
+                      path: "branding",
+                      element: <Branding />,
+                    },
+                    {
+                      path: "download-data",
+                      element: <DownloadData />,
+                    },
+                  ],
+                },
+                {
+                  path: "origin-customization",
+                  element: <Origin />,
+                  children: [
+                    {
+                      // path: "empty",
+                      index: true,
+                      element: <Empty />,
+                    },
+                    {
+                      path: "wizard",
+                      element: <OriginWizard />,
+                    },
+                    {
+                      path: "saved-settings",
+                      element: <SavedSettings />,
+                    },
+                  ],
+                },
+                {
+                  path: "origin-customization",
+                  element: <Origin />,
+                  children: [
+                    {
+                      // path: "empty",
+                      index: true,
+                      element: <Empty />,
+                    },
+                    {
+                      path: "wizard",
+                      element: <OriginWizard />,
+                    },
+                    {
+                      path: "saved-settings",
+                      element: <SavedSettings />,
+                    },
+                    {
+                      path: "branding",
+                      element: <Branding />,
+                    },
+                    {
+                      path: "download-data",
+                      element: <DownloadData />,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          path: ":id/agent-profile",
+          element: <AgentProfile />,
+          children: ProfileChildrenRoutes,
+        },
+        {
+          path: ":id/buyer-profile",
+          element: <BuyerProfile />,
+          children: [
+            {
+              index: true,
+              element: <AccountTransactions />,
+            },
+            {
+              path: "notes",
+              element: <AccountNotes />,
+            },
+          ],
+        },
+        {
+          path: ":id/farmer-profile",
+          element: <FarmerProfile />,
+          children: ProfileChildrenRoutes,
+        },
+        {
+          path: ":id/plot-profile",
+          element: <PlotProfile />,
+          children: [
+            ...ProfileChildrenRoutes,
+            {
+              path: "history",
+              element: <AccountHistory />,
+            },
+          ],
+        },
+      ],
+    },
+  ]);

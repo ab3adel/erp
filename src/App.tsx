@@ -47,7 +47,7 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CssBaseline />
           <SnackbarProvider autoHideDuration={2000}>
-            <RouterProvider router={router} />
+            <RouterProvider router={router(client)} />
           </SnackbarProvider>
         </LocalizationProvider>
       </ThemeProvider>
