@@ -442,6 +442,19 @@ export const useAccountsTableColumns = () => {
       renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
+      field: "tags",
+      headerName: "Tags",
+      width: 300,
+      renderCell: ({ row }) =>
+        row.tags?.map((tag) => (
+          <Chip
+            label={tag.name}
+            key={tag.id}
+            sx={{ bgcolor: tag.color, color: "common.white" }}
+          />
+        )),
+    },
+    {
       field: "status",
       headerName: "Status",
       type: "singleSelect",

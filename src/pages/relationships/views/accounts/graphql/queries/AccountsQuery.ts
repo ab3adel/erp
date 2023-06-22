@@ -10,9 +10,9 @@ export const accountsQuery = gql`
         completeness
         status
         tags {
+          id
           name
           color
-          id
         }
         subscription_type
         address1
