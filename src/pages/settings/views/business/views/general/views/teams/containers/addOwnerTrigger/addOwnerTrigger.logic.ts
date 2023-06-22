@@ -1,4 +1,4 @@
-import { useAddOwnerStore } from "./containers/addOwner/addOwner.store";
+import { useAddOwnerStore } from "../addOwner/addOwner.store";
 
 export const useLogic = () => {
   const openAddOwner = useAddOwnerStore((state) => state.Open);
