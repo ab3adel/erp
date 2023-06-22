@@ -1,6 +1,6 @@
 import { useSelectedOrganiztion } from "@/global/states/selectedOrganizations";
 import { useUserOrganiaztions } from "@/shared/hooks/graphql/queries/useUserOrganizations/useUserOrganizations";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import * as yup from "yup";
 import { useAbilities } from "../../hooks/useAbilities";
 import _ from "lodash";
@@ -61,6 +61,16 @@ export const useLogic = () => {
   const isValidEmail = yup.string().email().required().isValidSync(email);
 
   const handleGoBack = () => navigrate(-1);
+
+  // default select read options
+  useEffect(() => {
+    if (AvailableAbilites?.abilities.data)
+      setAbilitiesValue(
+        AvailableAbilites?.abilities.data
+          .filter((item) => item.title === "read")
+          .map((item) => item.id)
+      );
+  }, [AvailableAbilites]);
 
   const organiztionName = useMemo(
     () =>
