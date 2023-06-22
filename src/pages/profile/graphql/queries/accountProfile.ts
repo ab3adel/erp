@@ -64,6 +64,7 @@ export const accountProfile = gql`
         id
         note_title
         note_body
+        created_at
       }
     }
   }

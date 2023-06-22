@@ -77,7 +77,7 @@ export interface Farm {
 }
 
 export interface Tag {
-  id: string;
+  id: number;
   name: string;
   color: string;
 }
