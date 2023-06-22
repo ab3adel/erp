@@ -9,7 +9,12 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
-import { FunctionComponent } from "react";
+import React, {
+  FunctionComponent,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PermissionControlForm, {
@@ -56,35 +61,44 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
     emailFieldProps,
   } = props;
 
-  const accessLevelOptions = [
-    {
-      primary: "Admin",
-      secondary:
-        "Has full read, write and delete access. Can edit organization details.",
-      value: 1,
-    },
-    {
-      primary: "Read & Write",
-      secondary:
-        "Has full view and edit access but can’t delete. Can’t edit organization details.",
-      value: 2,
-    },
-    {
-      primary: "Read",
-      secondary: "Has no edit or delete access to any section ",
-      value: 3,
-    },
-    {
-      primary: "Hide",
-      secondary: "Has no permission for any section ",
-      value: 4,
-    },
-    {
-      primary: "Customized",
-      secondary: "Has customized permission",
-      value: 5,
-    },
-  ];
+  const [openPermissionMenu, setOpenPermissionMenu] = useState(false);
+
+  const handleClose = useCallback(() => setOpenPermissionMenu(false), []);
+
+  const handleOpen = useCallback(() => setOpenPermissionMenu(true), []);
+
+  const accessLevelOptions = useMemo(
+    () => [
+      {
+        primary: "Admin",
+        secondary:
+          "Has full read, write and delete access. Can edit organization details.",
+        value: 1,
+      },
+      {
+        primary: "Read & Write",
+        secondary:
+          "Has full view and edit access but can’t delete. Can’t edit organization details.",
+        value: 2,
+      },
+      {
+        primary: "Read",
+        secondary: "Has no edit or delete access to any section ",
+        value: 3,
+      },
+      {
+        primary: "Hide",
+        secondary: "Has no permission for any section ",
+        value: 4,
+      },
+      {
+        primary: "Customized",
+        secondary: "Has customized permission",
+        value: 5,
+      },
+    ],
+    []
+  );
 
   return (
     <Box my={8} {...containerProps}>
@@ -169,6 +183,8 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
 
       <Box maxWidth={400} mt={3}>
         <Autocomplete
+          onClose={handleClose}
+          open={openPermissionMenu}
           value={accessLevelOptions.find(
             (item) => item.value === permissionValue
           )}
@@ -178,7 +194,11 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
           renderOption={(_, option, index) => (
             <>
               <ListItemButton
-                onClick={() => onPermissionInputChange?.(option.value)}
+                disabled={option.value === 5}
+                onClick={() => {
+                  handleClose();
+                  onPermissionInputChange?.(option.value);
+                }}
                 {...option}
               >
                 <ListItemText
@@ -190,7 +210,12 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
             </>
           )}
           renderInput={(props) => (
-            <TextField variant="filled" label="Permissions" {...props} />
+            <TextField
+              onClick={handleOpen}
+              variant="filled"
+              label="Permissions"
+              {...props}
+            />
           )}
         />
       </Box>
