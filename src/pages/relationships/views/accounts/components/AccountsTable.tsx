@@ -18,6 +18,7 @@ import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
+import { Contact } from "@/shared/models/models";
 
 export const AccountsTable = ({
   apiRef,
@@ -117,8 +118,38 @@ export const AccountsTable = ({
               return Promise.resolve(newRow);
             }
             for (const key in newRow) {
-              if (newRow[key] !== oldRow[key] && key !== "type") {
+              if (
+                newRow[key] !== oldRow[key] &&
+                key !== "type" &&
+                key !== "mobileNumber"
+              ) {
                 updatedValues[key] = newRow[key];
+              }
+            }
+            if (newRow.mobileNumber !== oldRow.mobileNumber) {
+              const mobileNumberContact = newRow?.contacts?.find(
+                (contact: Contact) => contact.type === "phone"
+              );
+              if (mobileNumberContact) {
+                const contacts = newRow?.contacts?.filter(
+                  (contact: Contact) => contact.id !== mobileNumberContact?.id
+                );
+                updatedValues.contacts = [
+                  ...contacts,
+                  {
+                    ...mobileNumberContact,
+                    contact_info: newRow.mobileNumber,
+                  },
+                ];
+              } else {
+                updatedValues.contacts = [
+                  {
+                    type: "phone",
+                    contact_info: newRow.mobileNumber,
+                    id: null,
+                    is_primary: true,
+                  },
+                ];
               }
             }
 
