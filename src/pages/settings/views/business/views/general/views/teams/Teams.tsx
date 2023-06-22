@@ -39,6 +39,7 @@ const Teams: FunctionComponent = () => {
     loadingUpdateUser,
     handleActivateMember,
     handleNavigateToEdit,
+    handleNavigateToEditPermission,
   } = useLogic();
 
   return (
@@ -116,6 +117,7 @@ const Teams: FunctionComponent = () => {
       </Box>
 
       <TeamsRoleTable
+        onModuleClick={handleNavigateToEditPermission}
         onEditClick={handleNavigateToEdit}
         disableActivateButton={loadingUpdateUser}
         onActivateClick={handleActivateMember}
@@ -124,7 +126,10 @@ const Teams: FunctionComponent = () => {
         data={data?.users.data.map((item) => ({
           id: item.id,
           permissions: item.abilities.map((ability) => ability.title),
-          modules: item.modules.map((item) => modulesImages[item]),
+          modules: item.modules.map((item) => ({
+            src: modulesImages[item],
+            name: item,
+          })),
           entity: {
             email: item.email,
             name: item.name,

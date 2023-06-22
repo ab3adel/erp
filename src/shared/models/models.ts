@@ -127,7 +127,7 @@ export interface IOrganization {
 export interface IAssignedRoles {
   id: number;
   entity: { name: string; email: string; is_active: boolean };
-  modules: string[];
+  modules: { src: string; name: string }[];
   permissions: string[];
   role: string;
 }

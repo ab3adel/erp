@@ -1,7 +1,7 @@
 import {
   Avatar,
   Box,
-  ButtonProps,
+  ButtonBase,
   IconButton,
   Stack,
   Typography,
@@ -23,6 +23,7 @@ interface TeamsRoleTableProps {
   onActivateClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   disableActivateButton: boolean;
+  onModuleClick?: (module: string, id: number) => void;
 }
 
 const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
@@ -33,6 +34,7 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
     onEditClick,
     onActivateClick,
     disableActivateButton,
+    onModuleClick,
   } = props;
 
   const columns: DataGridProProps<IAssignedRoles>["columns"] = [
@@ -67,16 +69,18 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       renderCell: ({ row }) => (
         <Stack direction="row" spacing={2} alignItems="center">
           {row.modules.map((item) => (
-            <Avatar
-              sx={{
-                width: 32,
-                height: 32,
-                color: "#008E8F",
-                bgcolor: "rgba(0, 142, 143, 0.08)",
-              }}
-            >
-              <img src={item} alt={item} width={17} />
-            </Avatar>
+            <ButtonBase onClick={() => onModuleClick?.(item.name, row.id)}>
+              <Avatar
+                sx={{
+                  width: 32,
+                  height: 32,
+                  color: "#008E8F",
+                  bgcolor: "rgba(0, 142, 143, 0.08)",
+                }}
+              >
+                <img src={item.src} alt={item.name} width={17} />
+              </Avatar>
+            </ButtonBase>
           ))}
         </Stack>
       ),

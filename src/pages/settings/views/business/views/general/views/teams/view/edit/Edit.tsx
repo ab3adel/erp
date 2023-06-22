@@ -38,7 +38,7 @@ const Edit: FunctionComponent = () => {
       <Permissions
         groupedAbilites={groupedAbilites}
         value={abilitiesValue}
-        shownPanels={shownPanels}
+        shownPanels={shownPanels?.split(",") ?? []}
         onShowPanelChange={handleShowPanelChange}
         onAbilitesChange={(value) =>
           handleAbilitesChange(value.subcategory, value.abilities)

@@ -97,6 +97,11 @@ export const useLogic = () => {
   const handleNavigateToEdit = (id: number) =>
     navigate("/settings/business/general/teams/edit/" + id);
 
+  const handleNavigateToEditPermission = (module: string, id: number) =>
+    navigate(
+      `/settings/business/general/teams/edit/${id}?showCustomizationPanels=true&shownPanels=${module}`
+    );
+
   const isOwnerEmailValid = yup
     .string()
     .email("Invalid email")
@@ -128,5 +133,6 @@ export const useLogic = () => {
     loadingUpdateUser,
     handleActivateMember,
     handleNavigateToEdit,
+    handleNavigateToEditPermission,
   };
 };

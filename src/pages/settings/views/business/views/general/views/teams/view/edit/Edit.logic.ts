@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  searc,
+  createSearchParams,
+} from "react-router-dom";
 import * as yup from "yup";
 import { useUser } from "../../hooks/useUser";
 import { useAbilities } from "../../hooks/useAbilities";
@@ -17,6 +23,14 @@ export const useLogic = () => {
   };
 
   const [email, setEmail] = useState("");
+
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const shownPanels = queryParams.get("shownPanels");
+
+  // console.log(shownPan, "shown");
 
   const { data: userToEdit } = useUser({ id: parseInt(id ?? "") });
 
@@ -42,12 +56,23 @@ export const useLogic = () => {
 
   const [abilitiesValue, setAbilitiesValue] = useState<string[]>([]);
 
-  const [shownPanels, setShownPanels] = useState<string[]>([]);
+  // const [shownPanels, setShownPanels] = useState<string[]>([]);
 
-  const [showCustomizationPanels, setShowCustomizationPanels] = useState(false);
+  const showCustomizationPanelsQuery = queryParams.get(
+    "showCustomizationPanels"
+  );
 
-  const handleShowCustomizationPanelsChange = () =>
-    setShowCustomizationPanels((status) => !status);
+  const showCustomizationPanels = showCustomizationPanelsQuery === "true";
+
+  // const [showCustomizationPanels, setShowCustomizationPanels] = useState(false);
+
+  const handleShowCustomizationPanelsChange = () => {
+    // setShowCustomizationPanels((status) => !status);
+    PushQueries(
+      "showCustomizationPanels",
+      showCustomizationPanels ? "false" : "true"
+    );
+  };
 
   const groupedAbilites = _.groupBy(
     AvailableAbilites?.abilities.data,
@@ -70,12 +95,49 @@ export const useLogic = () => {
 
   const isValidEmail = yup.string().email().required().isValidSync(email);
 
-  const handleShowPanelChange = (cateogry: string, status: boolean) =>
-    setShownPanels((panels) =>
+  // const PushQueries = (key: string, value: string[] | string) => {
+  //   const modulesSequence = Array.isArray(value) ? value.join(",") : value;
+
+  //   const queryParams = new URLSearchParams();
+
+  //   queryParams.append(key, modulesSequence);
+
+  //   navigate({
+  //     search: `?${createSearchParams({ key: "test", key_2: "test 1" })}`,
+  //   });
+  // };
+
+  const PushQueries = (key: string, value: string[] | string) => {
+    const searchParams = new URLSearchParams(location.search);
+
+    const keyValuePairs = {
+      [key]: Array.isArray(value) ? value.join(",") : value,
+    };
+
+    // Update the search parameters with the new key-value pairs
+    Object.entries(keyValuePairs).forEach(([key, value]) => {
+      searchParams.set(key, value);
+    });
+
+    // Construct the new search string
+    const newSearch = searchParams.toString();
+
+    // Replace the current URL without reloading the page
+    navigate({
+      search: newSearch,
+    });
+  };
+
+  const handleShowPanelChange = (cateogry: string, status: boolean) => {
+    const shownPanelsList = shownPanels?.split(",") ?? [];
+
+    PushQueries(
+      "shownPanels",
       status
-        ? [...panels, cateogry]
-        : panels.filter((item) => item !== cateogry)
+        ? [...shownPanelsList, cateogry]
+        : shownPanelsList.filter((item) => item !== cateogry)
     );
+  };
 
   const handleAbilitesChange = (subcategory: string, newValues: string[]) => {
     const currentSubCategoryAbilitiesIds = AvailableAbilites?.abilities.data
