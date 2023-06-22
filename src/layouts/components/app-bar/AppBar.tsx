@@ -19,9 +19,8 @@ export const AppBar = () => {
   const signout = useSignout();
   return (
     <MuiAppBar
-      color="transparent"
       position="fixed"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: "#F5F5F5" }}
       elevation={0}
     >
       <Toolbar>
