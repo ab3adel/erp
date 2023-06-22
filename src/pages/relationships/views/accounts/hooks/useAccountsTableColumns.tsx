@@ -369,12 +369,12 @@ export const useAccountsTableColumns = () => {
       valueOptions: ["sms", "whatsapp", "none"],
       renderCell: (props) => <DataGridAccountCell {...props} />,
     },
-
     {
       field: "mobileNumber",
       headerName: "Mobile Number",
       width: 150,
       group: "contact details",
+      editable: true,
       valueGetter: ({ row }) =>
         row.contacts?.find((contact) => contact.type === "phone")?.contact_info,
     },

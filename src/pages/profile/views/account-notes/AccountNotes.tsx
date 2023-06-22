@@ -95,7 +95,7 @@ export const AccountNotes: React.FC = () => {
     const newNoteData = {
       note_title: `Note title`,
       note_body: `Note content`,
-      created_at: new Date(),
+      created_at: "",
       id: _.uniqueId("newNote") as any,
     } as Note;
     setNotes([...notes, newNoteData]);
@@ -232,9 +232,7 @@ export const AccountNotes: React.FC = () => {
                     borderBottom: "1px solid #0000001f",
                   }}
                 >
-                  <ListItemText
-                    secondary={note.created_at?.toISOString()?.split("T")?.[0]}
-                  >
+                  <ListItemText secondary={String(note.created_at)}>
                     <Typography
                       variant="h6"
                       sx={{
@@ -271,7 +269,7 @@ export const AccountNotes: React.FC = () => {
                       <TextField
                         variant="standard"
                         sx={{ mb: 8 }}
-                        value={selectedNote.note_title}
+                        placeholder={selectedNote.note_title}
                         onChange={handleNoteTitleChange}
                         fullWidth
                       />
@@ -287,7 +285,7 @@ export const AccountNotes: React.FC = () => {
                     {isEditModeActive ? (
                       <TextField
                         variant="standard"
-                        value={selectedNote.note_body}
+                        placeholder={selectedNote.note_body}
                         onChange={handleNoteContentChange}
                         fullWidth
                         multiline

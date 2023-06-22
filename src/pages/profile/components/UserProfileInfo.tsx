@@ -28,12 +28,14 @@ import SaveIcon from "@mui/icons-material/Save";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@apollo/client";
 import { accountProfile } from "../graphql/queries/accountProfile";
-import { Account } from "@/shared/models/models";
+import { Account, Tag } from "@/shared/models/models";
 import { useNavigate, useParams } from "react-router-dom";
 import { saveAccount } from "@/pages/relationships/views/accounts/graphql/mutations/saveAccount";
 import { useGenericMutation } from "@/shared";
 import { AccountInput } from "@/pages/relationships/views/accounts/types";
 import { accountTypes } from "@/pages/relationships/views/accounts/graphql/queries/AccountTypesQuery";
+import { TagsSelect } from "@/shared/components/tags/TagsSelect";
+import { remvoeTagRelation } from "@/pages/relationships/views/accounts/graphql/mutations/removeTagRelation";
 
 export const UserProfileInfo: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
@@ -53,6 +55,9 @@ export const UserProfileInfo: React.FC = () => {
     subscription_type: string | undefined;
     whatsapp: string | undefined;
   }>();
+  const [tagAnchorEl, setTagAnchorEl] = useState<null | HTMLElement>(null);
+  const isTagMenuOpen = Boolean(tagAnchorEl);
+
   const [updatedLocationDetails, setUpdatedLocationDetails] = useState<{
     government_id?: string;
     district?: string;
@@ -100,6 +105,38 @@ export const UserProfileInfo: React.FC = () => {
     }
   );
   const [locationDetailsEditMode, setLocationDetailsEditMode] = useState(false);
+
+  const [removeTag] = useGenericMutation(remvoeTagRelation, {
+    refetchQueries: ["AccountsQuery", "accountProfile"],
+  });
+
+  const handleDeleteTag = (tag: Tag) => {
+    removeTag({
+      variables: {
+        ids: [Number(tag.id)],
+        accountId: Number(id),
+      },
+    });
+  };
+
+  const handleAddTag = (tag: Tag) => {
+    const tags = data?.account.tags || [];
+
+    edit({
+      variables: {
+        input: {
+          id: Number(id),
+          tags: [
+            ...tags.map((tag: Tag) => ({
+              ...tag,
+              id: Number(tag.id),
+            })),
+            { ...tag, id: Number(tag.id) },
+          ],
+        },
+      },
+    });
+  };
 
   const getAccountContact = (type: string) => {
     return data?.account.contacts?.find((contact) => contact.type === type);
@@ -174,10 +211,7 @@ export const UserProfileInfo: React.FC = () => {
       }}
     >
       {loading && (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={true}
-        >
+        <Backdrop sx={{ color: "#fff", zIndex: 999999 }} open={true}>
           <CircularProgress color="inherit" />
         </Backdrop>
       )}
@@ -264,6 +298,9 @@ export const UserProfileInfo: React.FC = () => {
             </Tooltip>
             <Tooltip title="Tags">
               <IconButton
+                onClick={(e) => {
+                  setTagAnchorEl(tagAnchorEl ? null : e.currentTarget);
+                }}
                 sx={{
                   border: (theme) => `1px solid ${theme.palette.primary.main}`,
                 }}
@@ -271,6 +308,13 @@ export const UserProfileInfo: React.FC = () => {
                 <LocalOfferIcon sx={{ color: "primary.main" }} />
               </IconButton>
             </Tooltip>
+            <TagsSelect
+              anchorEl={tagAnchorEl}
+              open={isTagMenuOpen}
+              selectedTags={data?.account.tags}
+              onRemoveTag={handleDeleteTag}
+              onSelectTag={handleAddTag}
+            />
             <Tooltip title="message">
               <IconButton
                 sx={{
