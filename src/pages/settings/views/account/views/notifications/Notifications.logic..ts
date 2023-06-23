@@ -39,11 +39,11 @@ export const useLogic = () => {
   useEffect(() => {
     if (profileData && profileData.me)
       form.setValues({
-        communications: profileData.me?.profile.communications,
-        email_notifications: profileData?.me?.profile.email_notifications,
-        password_updates: profileData.me?.profile.password_updates,
-        Mcultivo_App_updates: profileData.me?.profile.Mcultivo_App_updates,
-        security_updates: profileData.me?.profile.security_updates,
+        communications: profileData.me?.profile?.communications,
+        email_notifications: profileData?.me?.profile?.email_notifications,
+        password_updates: profileData.me?.profile?.password_updates,
+        Mcultivo_App_updates: profileData.me?.profile?.Mcultivo_App_updates,
+        security_updates: profileData.me?.profile?.security_updates,
       });
   }, [profileData]);
 
@@ -51,7 +51,7 @@ export const useLogic = () => {
     form.isSubmitting ||
     !profileData?.me ||
     LodaingProfileData ||
-    !hasChanges(profileData?.me?.profile, form.values);
+    !hasChanges(profileData?.me?.profile ?? {}, form.values);
 
   return { form, isSubmittingDisabled, profileData };
 };
