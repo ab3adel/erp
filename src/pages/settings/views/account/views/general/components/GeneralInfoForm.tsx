@@ -1,10 +1,10 @@
 import {
   Stack,
   TextField,
-  MenuItem,
   Box,
   Button,
   Typography,
+  Autocomplete,
 } from "@mui/material";
 import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import { useMeQuery } from "../../../hooks/useMeQuery";
@@ -98,7 +98,7 @@ export const GeneralInfoForm = () => {
 
     //reset the avatar field to inital if no file passed to input
     if (event.target.files?.length === 0) {
-      form.setFieldValue("avatar", data?.me?.profile.avatar[0]?.src);
+      form.setFieldValue("avatar", data?.me?.profile?.avatar[0]?.src);
     }
   };
 
@@ -169,7 +169,29 @@ export const GeneralInfoForm = () => {
             <MenuItem value="3">Sales</MenuItem>
             <MenuItem value="4">Washing Station Staff</MenuItem> */}
           </TextField>
-          <TextField
+          <Autocomplete
+            disablePortal
+            onChange={(_, value) =>
+              form.setFieldValue("language", value?.value)
+            }
+            value={
+              languages.find(
+                (item) => item.value === form.values["language"]
+              ) ?? null
+            }
+            options={languages}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="filled"
+                label="Language"
+                sx={{ maxWidth: "440px" }}
+                error={!!form.errors.language}
+                helperText={form.errors.language}
+              />
+            )}
+          />
+          {/* <TextField
             variant="filled"
             label="Language"
             sx={{ maxWidth: "440px" }}
@@ -185,11 +207,10 @@ export const GeneralInfoForm = () => {
                 {item.label}
               </MenuItem>
             ))}
-          </TextField>
-
+          </TextField> */}
+          {/* 
           <TextField
             variant="filled"
-            label="Date, time and number format"
             sx={{ maxWidth: "440px" }}
             select
             // value={data?.me?.profile.date_format}
@@ -204,7 +225,31 @@ export const GeneralInfoForm = () => {
                 {item.country}
               </MenuItem>
             ))}
-          </TextField>
+          </TextField> */}
+
+          <Autocomplete
+            disablePortal
+            onChange={(_, value) =>
+              form.setFieldValue("date_format", value?.format)
+            }
+            getOptionLabel={(item) => item.country}
+            value={
+              formats.find(
+                (item) => item.format === form.values["date_format"]
+              ) ?? null
+            }
+            options={formats}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="filled"
+                label="Date, time and number format"
+                sx={{ maxWidth: "440px" }}
+                error={!!form.errors.date_format}
+                helperText={form.errors.date_format}
+              />
+            )}
+          />
 
           <Box mt={1}>
             <Button

@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { Grid, TextField, Button, MenuItem } from "@mui/material";
+import { Grid, TextField, Button, MenuItem, Autocomplete } from "@mui/material";
 import { useLogic } from "./EditForm.logic";
 
 const EditForm: FunctionComponent = () => {
@@ -21,7 +21,7 @@ const EditForm: FunctionComponent = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
+        {/* <TextField
           label="Country"
           select
           value={form.values.country}
@@ -42,11 +42,65 @@ const EditForm: FunctionComponent = () => {
               {item.name}
             </MenuItem>
           ))}
-        </TextField>
+        </TextField> */}
+
+        <Autocomplete
+          disablePortal
+          onChange={(_, value) => {
+            form.setFieldValue("country", value?.id);
+            form.setFieldValue("city", undefined);
+            form.setFieldValue("currency", undefined);
+            form.setFieldValue("language", undefined);
+          }}
+          getOptionLabel={(item) => item.name}
+          value={
+            countires?.countries.data.find(
+              (item) => item.id === form.values["country"]
+            ) ?? null
+          }
+          options={countires?.countries.data ?? []}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Country"
+              sx={{ maxWidth: "440px" }}
+              error={!!form.errors.country}
+              helperText={form.errors.country}
+            />
+          )}
+        />
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
+        <Autocomplete
+          disablePortal
+          onChange={(_, value) => form.setFieldValue("city", value?.id)}
+          value={
+            countires?.countries.data
+              .map((item) => item.cities)
+              .flat()
+              .find((item) => item.id === form.values["city"]) ?? null
+          }
+          options={
+            countires?.countries.data.find(
+              (item) => item.id === form.values.country
+            )?.cities ?? []
+          }
+          getOptionLabel={(item) => item.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="City"
+              sx={{ maxWidth: "440px" }}
+              error={!!form.errors.city}
+              helperText={form.errors.city}
+            />
+          )}
+        />
+
+        {/* <TextField
           label="City"
           select
           value={form.values.city}
@@ -64,7 +118,7 @@ const EditForm: FunctionComponent = () => {
                 {item.name}
               </MenuItem>
             ))}
-        </TextField>
+        </TextField> */}
       </Grid>
 
       <Grid item xs={12}>
@@ -94,7 +148,7 @@ const EditForm: FunctionComponent = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
+        {/* <TextField
           label="Language"
           select
           value={form.values.language}
@@ -115,11 +169,38 @@ const EditForm: FunctionComponent = () => {
                 {item.name}
               </MenuItem>
             ))}
-        </TextField>
+        </TextField> */}
+
+        <Autocomplete
+          disablePortal
+          onChange={(_, value) => form.setFieldValue("language", value?.id)}
+          value={
+            countires?.countries.data
+              .map((item) => item.languages)
+              .flat()
+              .find((item) => item.id === form.values["language"]) ?? null
+          }
+          options={
+            countires?.countries.data.find(
+              (item) => item.id === form.values.country
+            )?.languages ?? []
+          }
+          getOptionLabel={(item) => item.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Language"
+              sx={{ maxWidth: "440px" }}
+              error={!!form.errors.language}
+              helperText={form.errors.language}
+            />
+          )}
+        />
       </Grid>
 
       <Grid item xs={12}>
-        <TextField
+        {/* <TextField
           select
           label="Currency"
           value={form.values.currency}
@@ -140,7 +221,34 @@ const EditForm: FunctionComponent = () => {
                 {item.name}
               </MenuItem>
             ))}
-        </TextField>
+        </TextField> */}
+
+        <Autocomplete
+          disablePortal
+          onChange={(_, value) => form.setFieldValue("currency", value?.id)}
+          value={
+            countires?.countries.data
+              .map((item) => item.currencies)
+              .flat()
+              .find((item) => item.id === form.values["currency"]) ?? null
+          }
+          options={
+            countires?.countries.data.find(
+              (item) => item.id === form.values.country
+            )?.currencies ?? []
+          }
+          getOptionLabel={(item) => item.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Currency"
+              sx={{ maxWidth: "440px" }}
+              error={!!form.errors.currency}
+              helperText={form.errors.currency}
+            />
+          )}
+        />
       </Grid>
 
       <Grid item xs={12} mt={1}>
