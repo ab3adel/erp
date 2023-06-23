@@ -141,9 +141,10 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
 
   return data ? (
     <DataGridPro
-      hideFooter
       rowHeight={70}
       disableColumnSelector
+      pagination
+      pageSizeOptions={[10, 50]}
       disableColumnMenu
       disableColumnReorder
       disableRowSelectionOnClick
