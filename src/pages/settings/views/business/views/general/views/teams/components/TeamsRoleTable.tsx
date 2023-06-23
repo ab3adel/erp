@@ -144,7 +144,8 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
       rowHeight={70}
       disableColumnSelector
       pagination
-      pageSizeOptions={[10, 50]}
+      initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+      pageSizeOptions={[10]}
       disableColumnMenu
       disableColumnReorder
       disableRowSelectionOnClick
