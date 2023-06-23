@@ -1,7 +1,11 @@
 import { useSelectedTenentId } from "@/global/states/selectedOrganizations";
 import { useNavigate } from "react-router-dom";
 
-export const useLogin = () => {
+export interface Params {
+  onError?: (status: number) => void;
+}
+
+export const useLogin = (params?: Params) => {
   const navigate = useNavigate();
   const setSelectedTenant = useSelectedTenentId((state) => state.set);
   return (data: { email: string; password: string }) => {
@@ -13,7 +17,12 @@ export const useLogin = () => {
       body: JSON.stringify(data),
       method: "POST",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error(res.status.toString());
+        }
+        return res.json();
+      })
       .then(
         (res: {
           data: {
@@ -26,6 +35,7 @@ export const useLogin = () => {
           navigate("/");
           setSelectedTenant(res.data.tenant);
         }
-      );
+      )
+      .catch((error) => params?.onError?.(parseInt(error.message)));
   };
 };
