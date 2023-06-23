@@ -1,7 +1,9 @@
+import { useMutation } from "@apollo/client";
 import { passwordMutation } from "../graphql/mutation/password";
 import { Data, Params } from "../types/password.types";
-import { useGenericMutation } from "@/shared";
 
 export const usePasswordChangeMutation = () => {
-  return useGenericMutation<Data, Params>(passwordMutation);
+  return useMutation<Data, Params>(passwordMutation, {
+    errorPolicy: "all",
+  });
 };

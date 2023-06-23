@@ -54,31 +54,33 @@ export const Security = () => {
             value={form.values.password}
             onChange={form.handleChange}
             helperText={
-              <HelperChecksGenerater
-                ChecksList={[
-                  {
-                    label: "8 characters min.",
-                    checked: yup
-                      .string()
-                      .min(8)
-                      .isValidSync(form.values.password),
-                  },
-                  {
-                    label: "1 uppercase",
-                    checked: yup
-                      .string()
-                      .matches(/[A-Z]/)
-                      .isValidSync(form.values.password),
-                  },
-                  {
-                    label: "1 lowercase",
-                    checked: yup
-                      .string()
-                      .matches(/[a-z]/)
-                      .isValidSync(form.values.password),
-                  },
-                ]}
-              />
+              form.errors.password ?? (
+                <HelperChecksGenerater
+                  ChecksList={[
+                    {
+                      label: "8 characters min.",
+                      checked: yup
+                        .string()
+                        .min(8)
+                        .isValidSync(form.values.password),
+                    },
+                    {
+                      label: "1 uppercase",
+                      checked: yup
+                        .string()
+                        .matches(/[A-Z]/)
+                        .isValidSync(form.values.password),
+                    },
+                    {
+                      label: "1 lowercase",
+                      checked: yup
+                        .string()
+                        .matches(/[a-z]/)
+                        .isValidSync(form.values.password),
+                    },
+                  ]}
+                />
+              )
             }
           />
         </FormControl>

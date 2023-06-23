@@ -39,13 +39,31 @@ export const useLogic = () => {
       password_confirmation: "",
     },
     onSubmit: (values, actions) => {
-      changePassword({ variables: values }).then(() => {
-        actions.resetForm();
-        actions.setSubmitting(false);
+      changePassword({ variables: values })
+        .then((resp) => {
+          if (resp.errors) {
+            resp.errors?.forEach((error: any) => {
+              Object.keys(error?.extensions?.validation).forEach(
+                (validationKey) => {
+                  const fieldKeyFromValidation = validationKey.split(".")[1];
 
-        //logout  after changing the password so we can use the account with the new one
-        signout();
-      });
+                  actions.setFieldError(
+                    fieldKeyFromValidation,
+                    error?.extensions?.validation[
+                      `input.${fieldKeyFromValidation}`
+                    ]
+                  );
+                }
+              );
+            });
+          } else {
+            actions.resetForm();
+
+            //logout  after changing the password so we can use the account with the new one
+            signout();
+          }
+        })
+        .finally(() => actions.setSubmitting(false));
     },
   });
 
