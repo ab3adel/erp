@@ -15,6 +15,7 @@ interface OverviewProps {
 
 const Overview: FunctionComponent<OverviewProps> = (props) => {
   const { email, organiztionName, selectedAbilities } = props;
+
   return (
     <>
       <Box mt={8}>
@@ -62,10 +63,10 @@ const Overview: FunctionComponent<OverviewProps> = (props) => {
               (GroupedCategories) => (
                 <Box mt={4} maxWidth={560} width="100%">
                   <PermissionOverview
-                    icon={modulesImages.CoffeeManagment}
+                    icon={modulesImages[GroupedCategories[0]]}
                     label={GroupedCategories[0]}
                     permissionList={Object.entries(
-                      _.groupBy(selectedAbilities, "subcategory")
+                      _.groupBy(GroupedCategories[1], "subcategory")
                     ).map((item) => ({
                       label: item[0],
                       actions: item[1].map((item) => item.title),
