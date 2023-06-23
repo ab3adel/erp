@@ -158,15 +158,16 @@ export const GeneralInfoForm = () => {
             variant="filled"
             label="Your Role"
             sx={{ maxWidth: "440px" }}
-            select
+            // select
+            value={data?.me?.role ?? ""}
             disabled
             // error={!!form.errors.role}
             // helperText={form.errors.role}
           >
-            <MenuItem value="1">Administrator</MenuItem>
+            {/* <MenuItem value="1">Administrator</MenuItem>
             <MenuItem value="2">Bookkeeper</MenuItem>
             <MenuItem value="3">Sales</MenuItem>
-            <MenuItem value="4">Washing Station Staff</MenuItem>
+            <MenuItem value="4">Washing Station Staff</MenuItem> */}
           </TextField>
           <TextField
             variant="filled"

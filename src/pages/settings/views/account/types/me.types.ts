@@ -21,6 +21,7 @@ interface Me {
   name: string;
   email: string;
   profile?: Profile;
+  role: string;
 }
 
 export interface Data {
