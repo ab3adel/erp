@@ -1,15 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  searc,
-  createSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import { useUser } from "../../hooks/useUser";
 import { useAbilities } from "../../hooks/useAbilities";
-import _ from "lodash";
+import _, { uniq } from "lodash";
 import { useUpdateMemberutation } from "../../hooks/useUpdateMember";
 import { useUpdateUserAbilities } from "../../hooks/useUpdateUserAbilitiesMutation";
 
@@ -22,13 +16,26 @@ export const useLogic = () => {
     navigate("/settings/business/general/teams");
   };
 
+  const { data: AvailableAbilites } = useAbilities({ first: 1000, page: 1 });
+
+  const [abilitiesValue, setAbilitiesValue] = useState<string[]>([]);
+
+  const [shownPanels, setShownPanels] = useState<string[]>([]);
+
   const [email, setEmail] = useState("");
 
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
 
-  const shownPanels = queryParams.get("shownPanels");
+  const shownPanelsQuery = queryParams.get("shownPanels");
+
+  useEffect(() => {
+    if (shownPanelsQuery)
+      setShownPanels((panelsState) =>
+        uniq([...panelsState, ...(shownPanelsQuery?.split(",") ?? [])])
+      );
+  }, [shownPanelsQuery]);
 
   // console.log(shownPan, "shown");
 
@@ -52,26 +59,23 @@ export const useLogic = () => {
   //   const [mutateAddMember, { loading: loadingAddMember }] =
   //     useAddTeamMemberMutation();
 
-  const { data: AvailableAbilites } = useAbilities({ first: 1000, page: 1 });
-
-  const [abilitiesValue, setAbilitiesValue] = useState<string[]>([]);
-
-  // const [shownPanels, setShownPanels] = useState<string[]>([]);
-
   const showCustomizationPanelsQuery = queryParams.get(
     "showCustomizationPanels"
   );
 
-  const showCustomizationPanels = showCustomizationPanelsQuery === "true";
+  useEffect(() => {
+    if (showCustomizationPanelsQuery === "true")
+      setShowCustomizationPanels(true);
+  }, [showCustomizationPanelsQuery]);
 
-  // const [showCustomizationPanels, setShowCustomizationPanels] = useState(false);
+  const [showCustomizationPanels, setShowCustomizationPanels] = useState(false);
 
   const handleShowCustomizationPanelsChange = () => {
-    // setShowCustomizationPanels((status) => !status);
-    PushQueries(
-      "showCustomizationPanels",
-      showCustomizationPanels ? "false" : "true"
-    );
+    setShowCustomizationPanels((status) => !status);
+    // PushQueries(
+    //   "showCustomizationPanels",
+    //   showCustomizationPanels ? "false" : "true"
+    // );
   };
 
   const groupedAbilites = _.groupBy(
@@ -129,14 +133,13 @@ export const useLogic = () => {
   };
 
   const handleShowPanelChange = (cateogry: string, status: boolean) => {
-    const shownPanelsList = shownPanels?.split(",") ?? [];
+    setShownPanels((panels) => {
+      const newState = status
+        ? [...panels, cateogry]
+        : panels.filter((item) => item !== cateogry);
 
-    PushQueries(
-      "shownPanels",
-      status
-        ? [...shownPanelsList, cateogry]
-        : shownPanelsList.filter((item) => item !== cateogry)
-    );
+      return newState;
+    });
   };
 
   const handleAbilitesChange = (subcategory: string, newValues: string[]) => {
