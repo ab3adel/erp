@@ -6,14 +6,26 @@ import {
   TextField,
   FormControl,
   FormLabel,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import * as yup from "yup";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 import HelperChecksGenerater from "./components/HelperChecksGenrater";
 import { useLogic } from "./Security.logic";
 
 export const Security = () => {
-  const { form } = useLogic();
+  const {
+    form,
+    setShowConfirmPassowrd,
+    setShowCurrentPassword,
+    setShowNewPassword,
+    showConfirmPassowrd,
+    showCurrentPassowrd,
+    showNewPassowrd,
+  } = useLogic();
 
   return (
     <Box mx="24px" py={4}>
@@ -32,13 +44,30 @@ export const Security = () => {
           <TextField
             variant="filled"
             label="Please enter your current password"
-            type="password"
+            type={showCurrentPassowrd ? "text" : "password"}
             sx={{ width: "440px" }}
             name="current_password"
             value={form.values.current_password}
             onChange={form.handleChange}
             helperText={form.errors.current_password}
             error={!!form.errors.current_password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    size="small"
+                    onClick={() => setShowCurrentPassword((state) => !state)}
+                  >
+                    {showCurrentPassowrd ? (
+                      <VisibilityOffOutlinedIcon />
+                    ) : (
+                      <RemoveRedEyeOutlinedIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </FormControl>
         <FormControl>
@@ -48,7 +77,7 @@ export const Security = () => {
           <TextField
             variant="filled"
             label="Please enter your new password"
-            type="password"
+            type={showNewPassowrd ? "text" : "password"}
             sx={{ width: "440px" }}
             name="password"
             value={form.values.password}
@@ -82,6 +111,23 @@ export const Security = () => {
                 />
               )
             }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    size="small"
+                    onClick={() => setShowNewPassword((state) => !state)}
+                  >
+                    {showNewPassowrd ? (
+                      <VisibilityOffOutlinedIcon />
+                    ) : (
+                      <RemoveRedEyeOutlinedIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </FormControl>
         <FormControl>
@@ -91,13 +137,30 @@ export const Security = () => {
           <TextField
             variant="filled"
             label="Please re-enter your new password"
-            type="password"
+            type={showConfirmPassowrd ? "text" : "password"}
             sx={{ width: "440px" }}
             name="password_confirmation"
             value={form.values.password_confirmation}
             onChange={form.handleChange}
             helperText={form.errors.password_confirmation}
             error={!!form.errors.password_confirmation}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    size="small"
+                    onClick={() => setShowConfirmPassowrd((state) => !state)}
+                  >
+                    {showConfirmPassowrd ? (
+                      <VisibilityOffOutlinedIcon />
+                    ) : (
+                      <RemoveRedEyeOutlinedIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
         </FormControl>
       </Stack>

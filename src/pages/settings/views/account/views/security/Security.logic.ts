@@ -3,6 +3,7 @@ import { usePasswordChangeMutation } from "./hooks/usePasswordChangeMutation";
 import { Params } from "./types/password.types";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useState } from "react";
 
 interface PasswordForm
   extends Pick<
@@ -26,6 +27,12 @@ const passwordChangeSchema = yup.object().shape({
 
 export const useLogic = () => {
   const [changePassword] = usePasswordChangeMutation();
+
+  const [showCurrentPassowrd, setShowCurrentPassword] = useState(false);
+
+  const [showNewPassowrd, setShowNewPassword] = useState(false);
+
+  const [showConfirmPassowrd, setShowConfirmPassowrd] = useState(false);
 
   const signout = useSignout();
 
@@ -67,5 +74,13 @@ export const useLogic = () => {
     },
   });
 
-  return { form };
+  return {
+    form,
+    showCurrentPassowrd,
+    showNewPassowrd,
+    showConfirmPassowrd,
+    setShowCurrentPassword,
+    setShowNewPassword,
+    setShowConfirmPassowrd,
+  };
 };
