@@ -8,6 +8,6 @@ export interface AddMemberInput {
 
 export const useAddTeamMemberMutation = () => {
   return useGenericMutation<unknown, AddMemberInput>(mutation, {
-    refetchQueries: ["users"],
+    refetchQueries: ["Users"],
   });
 };

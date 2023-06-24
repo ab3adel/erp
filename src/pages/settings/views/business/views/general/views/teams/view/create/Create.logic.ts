@@ -41,6 +41,9 @@ export const useLogic = () => {
     handleGoBack();
   };
 
+  const handleRedirectToTeamsTable = () =>
+    navigrate("/settings/business/general/teams");
+
   const handleBack = () => currentStep > 0 && setStep((step) => step - 1);
 
   const handleConfirm = () => {
@@ -55,7 +58,7 @@ export const useLogic = () => {
       }).then(() => setStep((step) => step + 1));
     }
 
-    if (currentStep === 3) handleGoBack();
+    if (currentStep === 3) handleRedirectToTeamsTable();
   };
 
   const isValidEmail = yup.string().email().required().isValidSync(email);
