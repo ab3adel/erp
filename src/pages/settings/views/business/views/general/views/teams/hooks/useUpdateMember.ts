@@ -14,7 +14,7 @@ export const useUpdateMemberutation = (generalOptions?: GeneralOptions) => {
   return useGenericMutation<unknown, UpdateMemberInput>(
     mutation,
     {
-      refetchQueries: ["Users"],
+      refetchQueries: ["Users", "GetUser"],
     },
     generalOptions
   );
