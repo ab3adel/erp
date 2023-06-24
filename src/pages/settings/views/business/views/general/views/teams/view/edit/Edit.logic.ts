@@ -42,7 +42,7 @@ export const useLogic = () => {
   const { data: userToEdit } = useUser({ id: parseInt(id ?? "") });
 
   const [mutateUpdateUser, { loading: loadingUpdateMember }] =
-    useUpdateMemberutation();
+    useUpdateMemberutation({ disableSnackbar: true });
 
   const [mutateUpdateUserAbilites, { loading: loadingUpdateAbilites }] =
     useUpdateUserAbilities();
@@ -78,6 +78,9 @@ export const useLogic = () => {
     // );
   };
 
+  const handleRedirectToTeamsTable = () =>
+    navigate("/settings/business/general/teams");
+
   const groupedAbilites = _.groupBy(
     AvailableAbilites?.abilities.data,
     (item) => item.category
@@ -93,7 +96,7 @@ export const useLogic = () => {
           memberId: parseInt(id),
           abilityIds: abilitiesValue.map((item) => parseInt(item)),
         },
-      });
+      }).then(() => handleRedirectToTeamsTable());
     }
   };
 
