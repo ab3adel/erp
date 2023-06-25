@@ -30,10 +30,26 @@ export const useLogic = () => {
   const handleShowCustomizationPanelsChange = () =>
     setShowCustomizationPanels((status) => !status);
 
-  const groupedAbilites = _.groupBy(
-    AvailableAbilites?.abilities.data,
-    (item) => item.category
+  const proccessedSelectedAbilities = useMemo(
+    () =>
+      AvailableAbilites?.abilities.data
+        .filter(
+          (item) =>
+            abilitiesValue.includes(item.id) &&
+            shownPanels.includes(item.category)
+        )
+        .map((item) => item.id) ?? [],
+    [AvailableAbilites, abilitiesValue, shownPanels]
   );
+
+  // const abilitiesIdListToExclude = AvailableAbilites?.abilities.data
+  //   .filter((item) => item.category !== "Offer List")
+  //   .map((item) => item.id);
+
+  // const groupedAbilites = _.groupBy(
+  //   AvailableAbilites?.abilities.data,
+  //   (item) => item.category
+  // );
 
   const [email, setEmail] = useState("");
 
@@ -53,7 +69,7 @@ export const useLogic = () => {
       mutateAddMember({
         variables: {
           email,
-          abilities: abilitiesValue.map((item) => parseInt(item)),
+          abilities: proccessedSelectedAbilities.map((item) => parseInt(item)),
         },
       }).then(() => setStep((step) => step + 1));
     }
@@ -106,17 +122,17 @@ export const useLogic = () => {
   const selectedAbilites = useMemo(
     () =>
       AvailableAbilites?.abilities.data.filter((item) =>
-        abilitiesValue.includes(item.id)
+        proccessedSelectedAbilities.includes(item.id)
       ),
-    [abilitiesValue, AvailableAbilites]
+    [proccessedSelectedAbilities, AvailableAbilites]
   );
 
   const permissionValue =
-    abilitiesValue?.length ==
+    proccessedSelectedAbilities?.length ==
       AvailableAbilites?.abilities.data.filter((item) => item.title === "read")
         .length && selectedAbilites?.every((item) => item.title === "read")
       ? 3
-      : abilitiesValue?.length ==
+      : proccessedSelectedAbilities?.length ==
           AvailableAbilites?.abilities.data.filter(
             (item) => item.title === "read" || item.title === "write"
           ).length &&
@@ -124,13 +140,17 @@ export const useLogic = () => {
           (item) => item.title === "read" || item.title === "write"
         )
       ? 2
-      : abilitiesValue?.length == AvailableAbilites?.abilities.data.length
+      : proccessedSelectedAbilities?.length ===
+        AvailableAbilites?.abilities.data.length
       ? 1
-      : abilitiesValue?.length === 0
+      : proccessedSelectedAbilities?.length === 0
       ? 4
       : 5;
 
   const handlePermissionInputChange = (value: number) => {
+    setShownPanels(
+      AvailableAbilites?.abilities.data.map((item) => item.category) ?? []
+    );
     if (value === 1)
       setAbilitiesValue(
         AvailableAbilites?.abilities.data.map((item) => item.id) ?? []
@@ -163,7 +183,8 @@ export const useLogic = () => {
     handleCancel,
     isValidEmail,
     groupedAbilites,
-    abilitiesValue,
+    // abilitiesValue,
+    abilitiesValue: proccessedSelectedAbilities,
     shownPanels,
     handleShowPanelChange,
     handleAbilitesChange,
