@@ -11,9 +11,7 @@ export const useLogic = () => {
   const { data: data } = useTeams({ first: 1000, page: 1 });
 
   const handleNavigateToEditPermission = (module: string, id: number) =>
-    navigate(
-      `/settings/business/general/teams/edit/${id}?showCustomizationPanels=true&shownPanels=${module}`
-    );
+    navigate(`/settings/business/general/teams/edit/${id}#${module}`);
 
   const handleNavigateToEdit = (id: number) =>
     navigate("/settings/business/general/teams/edit/" + id);

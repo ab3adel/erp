@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import { useUser } from "../../hooks/useUser";
 import { useAbilities } from "../../hooks/useAbilities";
-import _, { uniq } from "lodash";
+import _ from "lodash";
 import { useUpdateMemberutation } from "../../hooks/useUpdateMember";
 import { useUpdateUserAbilities } from "../../hooks/useUpdateUserAbilitiesMutation";
 
@@ -24,21 +24,6 @@ export const useLogic = () => {
 
   const [email, setEmail] = useState("");
 
-  const location = useLocation();
-
-  const queryParams = new URLSearchParams(location.search);
-
-  const shownPanelsQuery = queryParams.get("shownPanels");
-
-  useEffect(() => {
-    if (shownPanelsQuery)
-      setShownPanels((panelsState) =>
-        uniq([...panelsState, ...(shownPanelsQuery?.split(",") ?? [])])
-      );
-  }, [shownPanelsQuery]);
-
-  // console.log(shownPan, "shown");
-
   const { data: userToEdit } = useUser({ id: parseInt(id ?? "") });
 
   const [mutateUpdateUser, { loading: loadingUpdateMember }] =
@@ -56,19 +41,19 @@ export const useLogic = () => {
     }
   }, [userToEdit]);
 
+  useEffect(() => {
+    if (AvailableAbilites?.abilities.data)
+      setShownPanels(
+        AvailableAbilites?.abilities.data
+          .filter((item) => abilitiesValue.includes(item.id))
+          .map((item) => item.category)
+      );
+  }, [AvailableAbilites?.abilities.data, abilitiesValue]);
+
   //   const [mutateAddMember, { loading: loadingAddMember }] =
   //     useAddTeamMemberMutation();
 
-  const showCustomizationPanelsQuery = queryParams.get(
-    "showCustomizationPanels"
-  );
-
-  useEffect(() => {
-    if (showCustomizationPanelsQuery === "true")
-      setShowCustomizationPanels(true);
-  }, [showCustomizationPanelsQuery]);
-
-  const [showCustomizationPanels, setShowCustomizationPanels] = useState(false);
+  const [showCustomizationPanels, setShowCustomizationPanels] = useState(true);
 
   const handleShowCustomizationPanelsChange = () => {
     setShowCustomizationPanels((status) => !status);
@@ -94,7 +79,7 @@ export const useLogic = () => {
       mutateUpdateUserAbilites({
         variables: {
           memberId: parseInt(id),
-          abilityIds: abilitiesValue.map((item) => parseInt(item)),
+          abilityIds: proccessedSelectedAbilities.map((item) => parseInt(item)),
         },
       }).then(() => handleRedirectToTeamsTable());
     }
@@ -114,27 +99,6 @@ export const useLogic = () => {
   //   });
   // };
 
-  const PushQueries = (key: string, value: string[] | string) => {
-    const searchParams = new URLSearchParams(location.search);
-
-    const keyValuePairs = {
-      [key]: Array.isArray(value) ? value.join(",") : value,
-    };
-
-    // Update the search parameters with the new key-value pairs
-    Object.entries(keyValuePairs).forEach(([key, value]) => {
-      searchParams.set(key, value);
-    });
-
-    // Construct the new search string
-    const newSearch = searchParams.toString();
-
-    // Replace the current URL without reloading the page
-    navigate({
-      search: newSearch,
-    });
-  };
-
   const handleShowPanelChange = (cateogry: string, status: boolean) => {
     setShownPanels((panels) => {
       const newState = status
@@ -144,6 +108,18 @@ export const useLogic = () => {
       return newState;
     });
   };
+
+  const proccessedSelectedAbilities = useMemo(
+    () =>
+      AvailableAbilites?.abilities.data
+        .filter(
+          (item) =>
+            abilitiesValue.includes(item.id) &&
+            shownPanels.includes(item.category)
+        )
+        .map((item) => item.id) ?? [],
+    [AvailableAbilites, abilitiesValue, shownPanels]
+  );
 
   const handleAbilitesChange = (subcategory: string, newValues: string[]) => {
     const currentSubCategoryAbilitiesIds = AvailableAbilites?.abilities.data
@@ -161,17 +137,17 @@ export const useLogic = () => {
   const selectedAbilites = useMemo(
     () =>
       AvailableAbilites?.abilities.data.filter((item) =>
-        abilitiesValue.includes(item.id)
+        proccessedSelectedAbilities.includes(item.id)
       ),
-    [abilitiesValue, AvailableAbilites]
+    [proccessedSelectedAbilities, AvailableAbilites]
   );
 
   const permissionValue =
-    abilitiesValue?.length ==
+    proccessedSelectedAbilities?.length ==
       AvailableAbilites?.abilities.data.filter((item) => item.title === "read")
         .length && selectedAbilites?.every((item) => item.title === "read")
       ? 3
-      : abilitiesValue?.length ==
+      : proccessedSelectedAbilities?.length ==
           AvailableAbilites?.abilities.data.filter(
             (item) => item.title === "read" || item.title === "write"
           ).length &&
@@ -179,13 +155,17 @@ export const useLogic = () => {
           (item) => item.title === "read" || item.title === "write"
         )
       ? 2
-      : abilitiesValue?.length == AvailableAbilites?.abilities.data.length
+      : proccessedSelectedAbilities?.length ==
+        AvailableAbilites?.abilities.data.length
       ? 1
-      : abilitiesValue?.length === 0
+      : proccessedSelectedAbilities?.length === 0
       ? 4
       : 5;
 
   const handlePermissionInputChange = (value: number) => {
+    setShownPanels(
+      AvailableAbilites?.abilities.data.map((item) => item.category) ?? []
+    );
     if (value === 1)
       setAbilitiesValue(
         AvailableAbilites?.abilities.data.map((item) => item.id) ?? []
@@ -211,9 +191,9 @@ export const useLogic = () => {
   const isChangedForm =
     email !== userToEdit?.user.email ||
     userToEdit?.user.abilities.some(
-      (item) => !abilitiesValue.includes(item.id)
+      (item) => !proccessedSelectedAbilities.includes(item.id)
     ) ||
-    abilitiesValue.some(
+    proccessedSelectedAbilities.some(
       (item) =>
         !userToEdit?.user.abilities.map((item) => item.id).includes(item)
     );
@@ -228,7 +208,7 @@ export const useLogic = () => {
     handleConfirm,
     isValidEmail,
     groupedAbilites,
-    abilitiesValue,
+    abilitiesValue: proccessedSelectedAbilities,
     handleShowPanelChange,
     handleAbilitesChange,
     showCustomizationPanels,

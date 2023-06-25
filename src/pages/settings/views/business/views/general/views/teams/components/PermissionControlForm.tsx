@@ -107,7 +107,7 @@ const PermissionControlForm: FunctionComponent<PermissionControlFormProps> = (
   ];
 
   return (
-    <Box component={Paper} variant="outlined" p={2}>
+    <Box component={Paper} variant="outlined" p={2} id={category}>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center" gap={2}>
           <img src={modulesImages[category]} />

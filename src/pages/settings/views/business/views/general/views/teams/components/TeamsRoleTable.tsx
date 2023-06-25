@@ -70,7 +70,10 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={2} alignItems="center">
             {row.modules.map((item) => (
-              <ButtonBase onClick={() => onModuleClick?.(item.name, row.id)}>
+              <ButtonBase
+                disabled={row.role === "owner"}
+                onClick={() => onModuleClick?.(item.name, row.id)}
+              >
                 <Avatar
                   sx={{
                     width: 32,
