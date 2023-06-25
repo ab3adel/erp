@@ -46,10 +46,10 @@ export const useLogic = () => {
   //   .filter((item) => item.category !== "Offer List")
   //   .map((item) => item.id);
 
-  // const groupedAbilites = _.groupBy(
-  //   AvailableAbilites?.abilities.data,
-  //   (item) => item.category
-  // );
+  const groupedAbilites = _.groupBy(
+    AvailableAbilites?.abilities.data,
+    (item) => item.category
+  );
 
   const [email, setEmail] = useState("");
 
