@@ -7,6 +7,6 @@ export interface UpdateMemberAbilitiesVariables {
 }
 export const useUpdateUserAbilities = () => {
   return useGenericMutation<unknown, UpdateMemberAbilitiesVariables>(mutation, {
-    refetchQueries: ["Users", "User"],
+    refetchQueries: ["Users", "User", "GetUser"],
   });
 };

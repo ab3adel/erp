@@ -34,6 +34,10 @@ export const useLogic = () => {
 
   const loading = loadingUpdateAbilites || loadingUpdateMember;
 
+  const abilitiesIdListToExclude = AvailableAbilites?.abilities.data
+    .filter((item) => item.category === "offer list")
+    .map((item) => item.id);
+
   useEffect(() => {
     if (userToEdit) {
       setEmail(userToEdit?.user.email);
@@ -143,20 +147,31 @@ export const useLogic = () => {
   );
 
   const permissionValue =
-    proccessedSelectedAbilities?.length ==
-      AvailableAbilites?.abilities.data.filter((item) => item.title === "read")
+    proccessedSelectedAbilities?.filter(
+      (item) => !abilitiesIdListToExclude?.includes(item)
+    ).length ==
+      AvailableAbilites?.abilities.data
+        .filter((item) => item.title === "read")
+        .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
         .length && selectedAbilites?.every((item) => item.title === "read")
       ? 3
-      : proccessedSelectedAbilities?.length ==
-          AvailableAbilites?.abilities.data.filter(
-            (item) => item.title === "read" || item.title === "write"
-          ).length &&
+      : proccessedSelectedAbilities?.filter(
+          (item) => !abilitiesIdListToExclude?.includes(item)
+        ).length ==
+          AvailableAbilites?.abilities.data
+            .filter((item) => item.title === "read" || item.title === "write")
+            .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
+            .length &&
         selectedAbilites?.every(
           (item) => item.title === "read" || item.title === "write"
         )
       ? 2
-      : proccessedSelectedAbilities?.length ==
-        AvailableAbilites?.abilities.data.length
+      : proccessedSelectedAbilities?.filter(
+          (item) => !abilitiesIdListToExclude?.includes(item)
+        ).length ==
+        AvailableAbilites?.abilities.data.filter(
+          (item) => !abilitiesIdListToExclude?.includes(item.id)
+        ).length
       ? 1
       : proccessedSelectedAbilities?.length === 0
       ? 4
@@ -164,17 +179,22 @@ export const useLogic = () => {
 
   const handlePermissionInputChange = (value: number) => {
     setShownPanels(
-      AvailableAbilites?.abilities.data.map((item) => item.category) ?? []
+      AvailableAbilites?.abilities.data
+        .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
+        .map((item) => item.category) ?? []
     );
     if (value === 1)
       setAbilitiesValue(
-        AvailableAbilites?.abilities.data.map((item) => item.id) ?? []
+        AvailableAbilites?.abilities.data
+          .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
+          .map((item) => item.id) ?? []
       );
 
     if (value == 2)
       setAbilitiesValue(
         AvailableAbilites?.abilities.data
           .filter((item) => item.title === "read" || item.title === "write")
+          .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
           .map((item) => item.id) ?? []
       );
 
@@ -182,6 +202,7 @@ export const useLogic = () => {
       setAbilitiesValue(
         AvailableAbilites?.abilities.data
           .filter((item) => item.title === "read")
+          .filter((item) => !abilitiesIdListToExclude?.includes(item.id))
           .map((item) => item.id) ?? []
       );
 
