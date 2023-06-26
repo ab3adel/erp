@@ -48,15 +48,30 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
         renderCell: ({ row }) => (
           <Box display="flex" gap={1} alignItems="center">
             <Box>
-              <Avatar style={{ width: 32, height: 32 }}>
+              <Avatar
+                sx={(theme) => ({
+                  bgcolor: row.entity.is_active
+                    ? undefined
+                    : theme.palette.action.disabled,
+                })}
+                style={{ width: 32, height: 32 }}
+              >
                 {generateAbbreviation(row.entity.name)}
               </Avatar>
             </Box>
             <Box>
-              <Typography color="text.primary" variant="body1">
+              <Typography
+                color={row.entity.is_active ? "text.primary" : "text.disabled"}
+                variant="body1"
+              >
                 {row.entity.name}
               </Typography>
-              <Typography color="text.secondary" variant="caption">
+              <Typography
+                color={
+                  row.entity.is_active ? "text.secondary" : "text.disabled"
+                }
+                variant="caption"
+              >
                 {row.entity.email}
               </Typography>
             </Box>
@@ -72,16 +87,17 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
           <Stack direction="row" spacing={2} alignItems="center">
             {row.modules.map((item) => (
               <ButtonBase
-                disabled={row.role === "owner"}
+                disabled={row.role === "owner" || !row.entity.is_active}
                 onClick={() => onModuleClick?.(item.name, row.id)}
               >
                 <Avatar
-                  sx={{
+                  sx={(theme) => ({
                     width: 32,
                     height: 32,
-                    color: "#008E8F",
-                    bgcolor: "rgba(0, 142, 143, 0.08)",
-                  }}
+                    bgcolor: row.entity.is_active
+                      ? theme.palette.action.selected
+                      : theme.palette.action.disabledBackground,
+                  })}
                 >
                   <img src={item.src} alt={item.name} width={17} />
                 </Avatar>
@@ -95,7 +111,14 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
         field: "permissions",
         flex: 1,
         sortable: false,
-        renderCell: ({ row }) => capitalizeEachWord(row.role),
+
+        renderCell: ({ row }) => (
+          <Typography
+            color={row.entity.is_active ? "text.primary" : "text.disabled"}
+          >
+            {capitalizeEachWord(row.role)}
+          </Typography>
+        ),
       },
       {
         headerName: "Actions",
@@ -108,7 +131,10 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
           row.role !== "owner" && (
             <Box width="100%" display="flex" justifyContent="space-between">
               <Tooltip title="Edit Member">
-                <IconButton onClick={() => onEditClick?.(row.id)}>
+                <IconButton
+                  onClick={() => onEditClick?.(row.id)}
+                  disabled={!row.entity.is_active}
+                >
                   <CreateOutlinedIcon />
                 </IconButton>
               </Tooltip>
@@ -131,7 +157,10 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
               )}
 
               <Tooltip title="Delete Member">
-                <IconButton onClick={() => onDeleteClick?.(row.id)}>
+                <IconButton
+                  disabled={!row.entity.is_active}
+                  onClick={() => onDeleteClick?.(row.id)}
+                >
                   <PersonRemoveOutlinedIcon />
                 </IconButton>
               </Tooltip>
