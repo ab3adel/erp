@@ -357,6 +357,25 @@ export const useAccountsTableColumns = () => {
         row.contacts?.find((contact) => contact.type === "phone")?.contact_info,
     },
     {
+      field: "whatsapp",
+      headerName: "Whatsapp",
+      width: 150,
+      group: "contact details",
+      editable: false,
+      valueGetter: ({ row }) =>
+        row.contacts?.find((contact) => contact.type === "whatsapp")
+          ?.contact_info,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 150,
+      group: "contact details",
+      editable: false,
+      valueGetter: ({ row }) =>
+        row.contacts?.find((contact) => contact.type === "email")?.contact_info,
+    },
+    {
       field: "district",
       headerName: "District",
       width: 150,
