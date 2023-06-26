@@ -4,6 +4,7 @@ import {
   ButtonBase,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { DataGridPro, DataGridProProps } from "@mui/x-data-grid-pro";
@@ -106,26 +107,34 @@ const TeamsRoleTable: FunctionComponent<TeamsRoleTableProps> = (props) => {
         renderCell: ({ row }) =>
           row.role !== "owner" && (
             <Box width="100%" display="flex" justifyContent="space-between">
-              <IconButton onClick={() => onEditClick?.(row.id)}>
-                <CreateOutlinedIcon />
-              </IconButton>
+              <Tooltip title="Edit Member">
+                <IconButton onClick={() => onEditClick?.(row.id)}>
+                  <CreateOutlinedIcon />
+                </IconButton>
+              </Tooltip>
 
               {row.entity.is_active ? (
-                <IconButton onClick={() => onDeactivivateClick?.(row.id)}>
-                  <PersonOffOutlinedIcon />
-                </IconButton>
+                <Tooltip title="Deactivate Member">
+                  <IconButton onClick={() => onDeactivivateClick?.(row.id)}>
+                    <PersonOffOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
               ) : (
-                <IconButton
-                  disabled={disableActivateButton}
-                  onClick={() => onActivateClick?.(row.id)}
-                >
-                  <PersonOutlineOutlinedIcon />
-                </IconButton>
+                <Tooltip title="Activate Member">
+                  <IconButton
+                    disabled={disableActivateButton}
+                    onClick={() => onActivateClick?.(row.id)}
+                  >
+                    <PersonOutlineOutlinedIcon />
+                  </IconButton>
+                </Tooltip>
               )}
 
-              <IconButton onClick={() => onDeleteClick?.(row.id)}>
-                <PersonRemoveOutlinedIcon />
-              </IconButton>
+              <Tooltip title="Delete Member">
+                <IconButton onClick={() => onDeleteClick?.(row.id)}>
+                  <PersonRemoveOutlinedIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           ),
       },
