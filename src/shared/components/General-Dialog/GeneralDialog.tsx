@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@mui/material";
+import { Dialog, DialogContent, DialogContentProps } from "@mui/material";
 import { FunctionComponent, ReactNode } from "react";
 import Header, { DialogHeaderProps } from "./DialogHeader";
 import DialogActions, { DialogActionsProps } from "./DialogActions";
@@ -8,10 +8,17 @@ export interface GeneralDialogProps {
   actionsProps?: DialogActionsProps;
   children?: ReactNode;
   open: boolean;
+  dialogContentContainerProps: DialogContentProps;
 }
 
 const GeneralDialog: FunctionComponent<GeneralDialogProps> = (props) => {
-  const { actionsProps, headerProps, children, open } = props;
+  const {
+    actionsProps,
+    headerProps,
+    children,
+    open,
+    dialogContentContainerProps,
+  } = props;
 
   return (
     <Dialog
@@ -28,7 +35,11 @@ const GeneralDialog: FunctionComponent<GeneralDialogProps> = (props) => {
     >
       {headerProps && <Header {...headerProps} />}
 
-      <DialogContent dividers style={{ marginTop: 0, minWidth: "none" }}>
+      <DialogContent
+        dividers
+        style={{ marginTop: 0, minWidth: "none" }}
+        {...dialogContentContainerProps}
+      >
         {children}
       </DialogContent>
 
