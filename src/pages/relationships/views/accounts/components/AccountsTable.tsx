@@ -118,11 +118,7 @@ export const AccountsTable = ({
               return Promise.resolve(newRow);
             }
             for (const key in newRow) {
-              if (
-                newRow[key] !== oldRow[key] &&
-                key !== "type" &&
-                key !== "mobileNumber"
-              ) {
+              if (newRow[key] !== oldRow[key] && key !== "mobileNumber") {
                 updatedValues[key] = newRow[key];
               }
             }
@@ -158,8 +154,8 @@ export const AccountsTable = ({
                 input: {
                   ...updatedValues,
                   id: newRow.id,
-                  ...(newRow.type && {
-                    type_id: newRow.type.value,
+                  ...(newRow.accountType && {
+                    type_id: newRow.accountType.id,
                   }),
                 },
               },

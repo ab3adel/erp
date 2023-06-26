@@ -17,6 +17,7 @@ import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSele
 import { Account } from "@/shared/models/models";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
+import { CurrencyEditCell } from "../components/CurrencyEditCell";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -174,9 +175,17 @@ export const useAccountsTableColumns = () => {
       editable: true,
       type: "singleSelect",
       renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
-      valueGetter: (params) => {
-        return params.row.accountType?.name;
-      },
+      renderCell: ({ row }) => (
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 400,
+            color: "common.black",
+          }}
+        >
+          {row.accountType?.name}
+        </Typography>
+      ),
       valueOptions: data?.accountTypes.data.map(
         (data) => data?.name as string
       ) || ["buyer", "farmer", "plot", "agent"],
@@ -237,37 +246,6 @@ export const useAccountsTableColumns = () => {
           <GridEditInputCell {...props} />
         </Tooltip>
       ),
-    },
-    {
-      field: "language",
-      headerName: "Language",
-      width: 150,
-      editable: true,
-      type: "singleSelect",
-      group: "location details",
-      valueOptions: [
-        "Australia",
-        "Brazil",
-        "Canada",
-        "China",
-        "East Africa",
-        "Finland",
-        "France",
-        "Germany",
-        "Hong Kong",
-        "India",
-        "Ireland",
-        "Italy",
-        "Japan",
-        "Mexico and Central America",
-        "Netherlands",
-        "New Zealand",
-        "Sout America",
-        "Spain",
-        "Sweden",
-        "United Kingdom",
-        "United States",
-      ],
     },
     {
       field: "region",
@@ -430,6 +408,7 @@ export const useAccountsTableColumns = () => {
       width: 200,
       editable: true,
       valueGetter: ({ row }) => row.currency?.name,
+      renderEditCell: (params) => <CurrencyEditCell {...params} />,
     },
     {
       field: "gender",

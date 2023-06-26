@@ -57,6 +57,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const [isDeleteCancelled, setIsDeleteCancelled] = useState(false);
   const newRow = apiRef.current.getRowModels().get("new") as Account;
   const isDisabled = !isAccountRowValid(newRow);
+
   const [removeTag] = useGenericMutation(remvoeTagRelation, {
     refetchQueries: ["AccountsQuery"],
   });
@@ -204,30 +205,42 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Tooltip
-              title="Please fill Account Name , Account type , Address1 , Country , Subscription Type , Currency  fields"
-              slotProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "error.main",
-                    color: "common.white",
+            {isDisabled ? (
+              <Tooltip
+                title="Please fill Account Name , Account type , Address1 , Country , Subscription Type , Currency  fields"
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "error.main",
+                      color: "common.white",
+                    },
                   },
-                },
-              }}
-            >
-              <span>
-                <Button
-                  variant="text"
-                  startIcon={<SaveIcon />}
-                  onClick={() => {
-                    dispatch({ type: "SAVE_ACCOUNT" });
-                  }}
-                  disabled={isDisabled}
-                >
-                  Save row
-                </Button>
-              </span>
-            </Tooltip>
+                }}
+              >
+                <span>
+                  <Button
+                    variant="text"
+                    startIcon={<SaveIcon />}
+                    onClick={() => {
+                      dispatch({ type: "SAVE_ACCOUNT" });
+                    }}
+                    disabled={isDisabled}
+                  >
+                    Save row
+                  </Button>
+                </span>
+              </Tooltip>
+            ) : (
+              <Button
+                variant="text"
+                startIcon={<SaveIcon />}
+                onClick={() => {
+                  dispatch({ type: "SAVE_ACCOUNT" });
+                }}
+              >
+                Save row
+              </Button>
+            )}
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
