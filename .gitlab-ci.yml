@@ -67,7 +67,7 @@ test:
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git test
     - echo "pull changes successfully"
     - docker-compose up -d
-    - docker exec mc-erp20-frontend-test_app_1 npm install --legacy-peer-deps
+#    - docker exec mc-erp20-frontend-test_app_1 npm install --legacy-peer-deps
 #    - echo "Application successfully deployed."
 #    - npm install --force
 #    - echo "The libraries have been updated successfully."
@@ -90,7 +90,7 @@ staging:
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git staging
     - echo "pull changes successfully"
     - docker-compose up -d
-    - docker exec mc-erp20-frontend-staging_app_1 npm install --legacy-peer-deps
+#    - docker exec mc-erp20-frontend-staging_app_1 npm install --legacy-peer-deps
 #    - echo "Application successfully deployed."
 #    - npm install --force
 #    - echo "The libraries have been updated successfully."
