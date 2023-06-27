@@ -8,7 +8,7 @@ export interface GeneralDialogProps {
   actionsProps?: DialogActionsProps;
   children?: ReactNode;
   open: boolean;
-  dialogContentContainerProps: DialogContentProps;
+  dialogContentContainerProps?: DialogContentProps;
 }
 
 const GeneralDialog: FunctionComponent<GeneralDialogProps> = (props) => {
