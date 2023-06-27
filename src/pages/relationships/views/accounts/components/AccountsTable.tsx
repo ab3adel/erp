@@ -142,7 +142,6 @@ export const AccountsTable = ({
                 updatedValues[key] = newRow[key as keyof Account];
               }
             }
-
             return edit({
               variables: {
                 input: {
@@ -152,6 +151,7 @@ export const AccountsTable = ({
                     type_id: newRow.accountType.id,
                   }),
                   farm_size_uom_id: newRow.farmSizeUom?.id,
+                  farm_spacing_uom_id: newRow.farmSpacingUom.id,
                   country_id: newRow.country?.id,
                 },
               },

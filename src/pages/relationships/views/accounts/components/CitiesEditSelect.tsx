@@ -23,19 +23,13 @@ export const CitiesEditSelect = (
         field: props.field,
         value: newValue.name,
       });
-      apiRef.current.updateRows([
-        {
-          id: props.id,
-          city: newValue.name,
-        },
-      ]);
     }
   };
 
   return (
     <Autocomplete
       options={data?.cities.data || []}
-      value={{ id: -1, name: value || "" }}
+      defaultValue={{ id: -1, name: value || "" }}
       getOptionLabel={(option) => option?.name || ""}
       onChange={handleChange}
       fullWidth
