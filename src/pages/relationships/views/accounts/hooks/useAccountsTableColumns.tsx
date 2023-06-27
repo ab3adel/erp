@@ -22,6 +22,7 @@ import { AccountFarmSizeUoMEditSelect } from "../components/AccountFarmSizeUoMEd
 import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacingUoMEditSelect";
 import { updateContactValueSetter } from "../utils/updateContactValueSetter";
 import { CitiesEditSelect } from "../components/CitiesEditSelect";
+import { AccountTypesSelect } from "../components/AccountTypesSelect";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -78,7 +79,13 @@ function DataGridAccountCell(props: GridRenderCellParams) {
   }
 }
 
-export const useAccountsTableColumns = () => {
+export const useAccountsTableColumns = ({
+  setTypeId,
+  typeId,
+}: {
+  typeId: number;
+  setTypeId: (value: number) => void;
+}) => {
   const navigate = useNavigate();
   const { data } = useQuery<{
     accountTypes: { data: Account["accountType"][] };
@@ -191,6 +198,9 @@ export const useAccountsTableColumns = () => {
       group: "account details",
       editable: true,
       type: "singleSelect",
+      renderHeaderFilter: () => {
+        return <AccountTypesSelect typeId={typeId} setTypeId={setTypeId} />;
+      },
       renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
       renderCell: ({ row }) => (
         <Typography

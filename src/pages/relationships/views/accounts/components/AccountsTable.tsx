@@ -29,12 +29,14 @@ export const AccountsTable = ({
     page: 0,
     pageSize: 10,
   });
+  const [typeId, setTypeId] = useState(0);
   const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const { rows, loading, paginationInfo } = useAccountsTableRows(
     paginationModel,
-    filterModel
+    filterModel,
+    typeId
   );
-  const columns = useAccountsTableColumns();
+  const columns = useAccountsTableColumns({ typeId, setTypeId });
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
   const [model, setModel] = useState<GridColumnVisibilityModel>();
@@ -151,7 +153,7 @@ export const AccountsTable = ({
                     type_id: newRow.accountType.id,
                   }),
                   farm_size_uom_id: newRow.farmSizeUom?.id,
-                  farm_spacing_uom_id: newRow.farmSpacingUom.id,
+                  farm_spacing_uom_id: newRow.farmSpacingUom?.id,
                   country_id: newRow.country?.id,
                 },
               },

@@ -39,7 +39,8 @@ export const AccountsCustomViewTable = ({
   } = useCurvedTabs({
     localStorageKey: "relationships",
   });
-  const rawColumns = useAccountsTableColumns();
+  const [typeId, setTypeId] = useState<number>(0);
+  const rawColumns = useAccountsTableColumns({ typeId, setTypeId });
 
   const [params] = useSearchParams();
   const tabParam = params.get("tab");
@@ -57,7 +58,8 @@ export const AccountsCustomViewTable = ({
   );
   const { rows, loading, paginationInfo } = useAccountsTableRows(
     paginationModel,
-    filterModel
+    filterModel,
+    typeId
   );
 
   const handleCreateView = (form: {
