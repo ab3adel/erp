@@ -1,21 +1,23 @@
+import { uniqueId } from "lodash";
 import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { useOriginSettingGetter } from "../../../hooks/states";
 
 const columns: GridColDef[] = [
   {
     headerName: "Our Words",
-    field: "ours",
+    field: "coffee_state",
     sortable: false,
     flex: 2,
   },
   {
     headerName: "Your Words",
-    field: "yours",
+    field: "label",
     sortable: false,
     flex: 2,
   },
   {
     headerName: "Sub-Type/Grade",
-    field: "grade",
+    field: "grades",
     sortable: false,
     flex: 3,
     valueFormatter: (params) => params.value.join(", "),
@@ -29,50 +31,31 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    ours: "Cherry",
-    yours: "Uva",
-    grade: ["A", "B"],
-    locations: ["Reception Point", "Wet Mill"],
-  },
-  {
-    id: 2,
-    ours: "Wet Parchment",
-    yours: "Pergamino",
-    grade: ["A1", "A2", "A3", "A4"],
-    locations: ["Wet Mill", "Fermentation Tanks"],
-  },
-  {
-    id: 3,
-    ours: "Dry Parchment",
-    yours: "Pergamino Seco",
-    grade: ["A1", "A2", "A3", "A4"],
-    locations: ["Drying Beds", "Storage"],
-  },
-  {
-    id: 4,
-    ours: "Green",
-    yours: "Verde",
-    grade: ["14/15", "16+", "17/18", "Triage", "15+", "13/14", "+1"],
-    locations: ["Dry Mill", "Storage"],
-  },
-];
+const CoffeeTermsTable = () => {
+  const rows = useOriginSettingGetter(
+    "coffee_terms",
+    "main",
+    (payload: Record<string, any>[]) =>
+      payload?.map((row) => ({
+        ...row,
+        id: uniqueId(),
+      }))
+  );
 
-const CoffeeTermsTable = () => (
-  <DataGridPro
-    sx={{
-      overflowX: "scroll",
-      "& .MuiDataGrid-row:last-child > *": {
-        border: "none",
-      },
-    }}
-    rowHeight={80}
-    columns={columns}
-    disableRowSelectionOnClick
-    hideFooter
-    rows={rows}
-  />
-);
+  return (
+    <DataGridPro
+      sx={{
+        overflowX: "scroll",
+        "& .MuiDataGrid-row:last-child > *": {
+          border: "none",
+        },
+      }}
+      rowHeight={80}
+      columns={columns}
+      disableRowSelectionOnClick
+      hideFooter
+      rows={(rows as []) || []}
+    />
+  );
+};
 export default CoffeeTermsTable;
