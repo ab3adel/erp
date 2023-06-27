@@ -1,25 +1,38 @@
 import { useState } from "react";
-import { Box, Button, Divider, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
 import { TabContext, TabPanel } from "@mui/lab";
-import { KeyboardArrowRight } from "@mui/icons-material";
-import { WizardTab, tabNames, firstTabName, getNextTab } from "./tabs";
+import { KeyboardArrowRight as KeyboardArrowRightIcon } from "@mui/icons-material";
 import { GenericDialog, useDialog } from "@/shared";
-import { useGridApiRef } from "@mui/x-data-grid-pro";
+import { useOriginSettingState } from "../../hooks/states";
+import { useAllOriginSettingsQuery } from "../../hooks/queries";
+import {
+  WizardTab,
+  tabNames,
+  firstTabName,
+  getNextTab,
+  isLastTab,
+} from "./tabs";
+import { useSaveOriginSettings } from "../../hooks/utils";
 
 const OriginWizard = () => {
   const { openDialog, closeDialog, isDialogOpen } =
     useDialog<"discard-wizard-changes">();
-  const [value, setValue] = useState(firstTabName);
-  const ref = useGridApiRef();
+  const [currentTab, setCurrentTab] = useState(firstTabName);
+
+  const { state } = useOriginSettingState();
+
+  // useAllOriginSettingsQuery(init);
+
+  const save = useSaveOriginSettings();
 
   return (
     <Box display="flex" flexDirection="column">
       <Box flexGrow={1} p={1} pt={7} display="flex">
-        <TabContext value={value}>
+        <TabContext value={currentTab}>
           <Tabs
             orientation="vertical"
-            value={value}
-            onChange={(_, newValue) => setValue(newValue)}
+            value={currentTab}
+            onChange={(_, newValue) => setCurrentTab(newValue)}
             sx={{
               position: "relative",
               height: "min-content",
@@ -67,7 +80,7 @@ const OriginWizard = () => {
                 paddingLeft: 8,
               }}
             >
-              <WizardTab tabKey={tab.key} datagridRef={ref} />
+              <WizardTab tabKey={tab.key} />
             </TabPanel>
           ))}
         </TabContext>
@@ -90,12 +103,15 @@ const OriginWizard = () => {
         </Button>
         <Button
           disableElevation={false}
-          endIcon={<KeyboardArrowRight />}
+          endIcon={<KeyboardArrowRightIcon />}
           onClick={() => {
-            console.log(ref.current.getRowModels());
+            console.log(state);
+            isLastTab(currentTab)
+              ? save()
+              : setCurrentTab(getNextTab(currentTab));
           }}
         >
-          Next
+          {isLastTab(currentTab) ? "Save" : "Next"}
         </Button>
       </Box>
       {/* FIXME: make the dialog styling more accurate */}

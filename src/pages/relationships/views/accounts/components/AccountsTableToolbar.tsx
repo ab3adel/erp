@@ -29,7 +29,7 @@ import {
 import { deleteAccount } from "../graphql/mutations/deleteAccount";
 import { Action } from "../hooks/useAddAccount";
 import ViewWeekIcon from "@mui/icons-material/ViewWeek";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TagsSelect } from "@/shared/components/tags/TagsSelect";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
@@ -38,25 +38,33 @@ import { useDownloadReport } from "@/shared/hooks/useDownloadReport";
 import { Account, Tag } from "@/shared/models/models";
 import { isAccountRowValid } from "../utils/isAccountRowValid";
 import { remvoeTagRelation } from "../graphql/mutations/removeTagRelation";
+import { useSnackbar } from "notistack";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
   const { openDialog, closeDialog, isDialogOpen } =
     useDialog<"deleteAccount">();
+  const controller = useRef(new AbortController());
+
   const [removeAccount] = useGenericMutation<
     { __typename: string },
     { id: string }
-  >(deleteAccount, { refetchQueries: ["AccountsQuery"] });
+  >(deleteAccount, {
+    refetchQueries: ["AccountsQuery"],
+    context: {
+      signal: controller.current.signal,
+    },
+  });
   const [isMerged, setIsMerged] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [showSnackbar, setShowSnackbar] = useState(false);
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
-  const [isDeleteCancelled, setIsDeleteCancelled] = useState(false);
   const newRow = apiRef.current.getRowModels().get("new") as Account;
   const isDisabled = !isAccountRowValid(newRow);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const [removeTag] = useGenericMutation(remvoeTagRelation, {
     refetchQueries: ["AccountsQuery"],
   });
@@ -204,30 +212,46 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
       {isRowAdded ? (
         <>
           <Box display="flex" columnGap={2}>
-            <Tooltip
-              title="Please fill Account Name , Account type , Address1 , Country , Subscription Type , Currency  fields"
-              slotProps={{
-                tooltip: {
-                  sx: {
-                    bgcolor: "error.main",
-                    color: "common.white",
+            {isDisabled ? (
+              <Tooltip
+                title={`Please fill Account Name , Account type , Address1 , Country ${
+                  newRow.accountType?.category === "farmer"
+                    ? ", Subscription Type"
+                    : ""
+                }  , Currency  fields`}
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "error.main",
+                      color: "common.white",
+                    },
                   },
-                },
-              }}
-            >
-              <span>
-                <Button
-                  variant="text"
-                  startIcon={<SaveIcon />}
-                  onClick={() => {
-                    dispatch({ type: "SAVE_ACCOUNT" });
-                  }}
-                  disabled={isDisabled}
-                >
-                  Save row
-                </Button>
-              </span>
-            </Tooltip>
+                }}
+              >
+                <span>
+                  <Button
+                    variant="text"
+                    startIcon={<SaveIcon />}
+                    onClick={() => {
+                      dispatch({ type: "SAVE_ACCOUNT" });
+                    }}
+                    disabled={isDisabled}
+                  >
+                    Save row
+                  </Button>
+                </span>
+              </Tooltip>
+            ) : (
+              <Button
+                variant="text"
+                startIcon={<SaveIcon />}
+                onClick={() => {
+                  dispatch({ type: "SAVE_ACCOUNT" });
+                }}
+              >
+                Save row
+              </Button>
+            )}
             <Button
               variant="text"
               startIcon={<DeleteIcon />}
@@ -326,7 +350,30 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           },
         }}
         onSubmit={() => {
-          setShowSnackbar(true);
+          enqueueSnackbar("Delteing account", {
+            variant: "error",
+            autoHideDuration: 3000,
+            anchorOrigin: {
+              horizontal: "center",
+              vertical: "top",
+            },
+            onClose: () => {
+              handleDeleteAccount();
+            },
+            action: () => (
+              <Button
+                color="inherit"
+                variant="text"
+                onClick={() => {
+                  controller.current.abort();
+                  closeSnackbar();
+                }}
+                sx={{ zIndex: 1 }}
+              >
+                UNDO
+              </Button>
+            ),
+          });
           closeDialog();
         }}
       >
@@ -353,39 +400,6 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           </Box>
         </Typography>
       </GenericDialog>
-
-      <Snackbar
-        open={showSnackbar}
-        anchorOrigin={{
-          horizontal: "center",
-          vertical: "top",
-        }}
-        autoHideDuration={5000}
-        onClose={() => {
-          setShowSnackbar(false);
-          setIsDeleteCancelled(false);
-          handleDeleteAccount();
-        }}
-      >
-        <Alert
-          severity="error"
-          action={
-            <Button
-              color="inherit"
-              variant="text"
-              onClick={() => {
-                setShowSnackbar(false);
-                setIsDeleteCancelled(true);
-              }}
-              sx={{ zIndex: 1 }}
-            >
-              UNDO
-            </Button>
-          }
-        >
-          Delteing account
-        </Alert>
-      </Snackbar>
     </GridToolbarContainer>
   );
 };

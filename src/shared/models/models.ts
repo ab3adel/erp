@@ -72,7 +72,10 @@ export interface Farm {
   farm_name: string;
   size: number;
   spacing: number;
-  varietals: string;
+  varietal: {
+    name: string;
+    id: number;
+  };
   files: Media[];
 }
 
@@ -141,6 +144,11 @@ export interface Media {
 }
 
 type Country = {
+  id: number;
+  name: string;
+};
+
+type City = {
   id: number;
   name: string;
 };

@@ -5,9 +5,9 @@ import { accountTypes } from "../graphql/queries/AccountTypesQuery";
 import { Account } from "@/shared/models/models";
 
 export const AccountTypesEditSelect = (
-  props: GridRenderCellParams<any, Account["accountType"]>
+  props: GridRenderCellParams<Account, Account["accountType"]>
 ) => {
-  const { id, value, field } = props;
+  const { id, value, field, row } = props;
   const apiRef = useGridApiContext();
   const { data } = useQuery<AccountTypes>(accountTypes);
 
@@ -20,7 +20,12 @@ export const AccountTypesEditSelect = (
       field,
       value: accountType,
     });
-    apiRef.current.updateRows([{ id, accountType }]);
+    apiRef.current.updateRows([
+      {
+        id,
+        accountType,
+      },
+    ]);
   };
 
   const handleRef = (element: HTMLSpanElement) => {
@@ -33,7 +38,12 @@ export const AccountTypesEditSelect = (
   };
 
   return (
-    <Select ref={handleRef} value={value?.id} onChange={handleChange} fullWidth>
+    <Select
+      ref={handleRef}
+      value={row.accountType?.id}
+      onChange={handleChange}
+      fullWidth
+    >
       {data?.accountTypes?.data?.map?.((type) => (
         <MenuItem key={type.id} value={type.id}>
           {type.name}

@@ -7,20 +7,25 @@ import { Account } from "@/shared/models/models";
 
 export const useAccountsTableRows = (
   paginationModel: GridPaginationModel,
-  filterModel?: GridFilterModel
+  filterModel?: GridFilterModel,
+  typeId?: number
 ) => {
   const { data, loading } = useQuery<AccountsResponse>(accountsQuery, {
     variables: {
       first: paginationModel.pageSize,
       page: paginationModel.page + 1,
-      filter: filterModel?.items.reduce((acc, item) => {
-        return {
-          ...acc,
-          [item.field]: Number(item.value)
-            ? { min: Number(item.value), max: Number(item.value) }
-            : item.value,
-        };
-      }, {}),
+      ...(typeId && { filter: { type_id: typeId } }),
+      ...(filterModel && {
+        filter: filterModel?.items.reduce((acc, item) => {
+          return {
+            ...acc,
+            [item.field]: Number(item.value)
+              ? { min: Number(item.value), max: Number(item.value) }
+              : "%" + item.value + "%",
+            ...(typeId && { type_id: typeId }),
+          };
+        }, {}),
+      }),
     },
   });
 

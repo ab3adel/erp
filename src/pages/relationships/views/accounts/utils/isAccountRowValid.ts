@@ -5,8 +5,12 @@ export const isAccountRowValid = (row: Account) => {
     row?.name &&
     row?.address1 &&
     row?.accountType &&
-    row.country &&
-    row.subscription_type &&
-    row.currency
+    row?.country &&
+    row?.currency &&
+    (row?.accountType?.category === "farmer"
+      ? row?.subscription_type
+        ? true
+        : false
+      : true)
   );
 };

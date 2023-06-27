@@ -132,7 +132,9 @@ export const useCurvedTabs = ({
   const getGridFilterModelByTabParam = (tabParam: string) => {
     const customViews = getCustomViews();
     const customView = customViews.find(
-      (view) => view.label === tabParam.split("-").join(" ")
+      (view) =>
+        view.label?.toLowerCase() ===
+        tabParam?.toLowerCase().split("-").join(" ")
     );
     return customView?.filterModel;
   };

@@ -1,4 +1,6 @@
+import { uniqueId } from "lodash";
 import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { useOriginSettingGetter } from "../../../../hooks/states";
 
 const columns: GridColDef[] = [
   {
@@ -6,6 +8,7 @@ const columns: GridColDef[] = [
     field: "quantity",
     width: 88,
     sortable: false,
+    valueGetter: () => 1,
   },
   {
     headerName: "Your Unit of Measure",
@@ -15,34 +18,38 @@ const columns: GridColDef[] = [
   },
   {
     headerName: "Equivalent in Litres (L)",
-    field: "eq",
+    field: "value",
     flex: 1,
     sortable: false,
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    quantity: 1,
-    uom: "Bag",
-    eq: 132.277,
-  },
-];
+const WeightTable = () => {
+  const rows = useOriginSettingGetter(
+    "uom",
+    "toL",
+    (payload: Record<string, any>[]) =>
+      payload?.map((row) => ({
+        ...row,
+        id: uniqueId(),
+      }))
+  );
 
-const WeightTable = () => (
-  <DataGridPro
-    sx={{
-      overflowX: "scroll",
-      "& .MuiDataGrid-row:last-child > *": {
-        border: "none",
-      },
-    }}
-    rowHeight={80}
-    columns={columns}
-    disableRowSelectionOnClick
-    hideFooter
-    rows={rows}
-  />
-);
+  return (
+    <DataGridPro
+      sx={{
+        overflowX: "scroll",
+        "& .MuiDataGrid-row:last-child > *": {
+          border: "none",
+        },
+      }}
+      autoHeight
+      rowHeight={80}
+      columns={columns}
+      disableRowSelectionOnClick
+      hideFooter
+      rows={rows ?? []}
+    />
+  );
+};
 export default WeightTable;

@@ -6,10 +6,16 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { ThemeProvider, responsiveFontSizes, CssBaseline } from "@mui/material";
+import {
+  ThemeProvider,
+  responsiveFontSizes,
+  CssBaseline,
+  styled,
+  alpha,
+} from "@mui/material";
 import { router } from "./routes";
 import { theme } from "./theme";
-import { SnackbarProvider } from "notistack";
+import { MaterialDesignContent, SnackbarProvider } from "notistack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { LicenseInfo } from "@mui/x-license-pro";
@@ -46,7 +52,13 @@ function App() {
       <ThemeProvider theme={responsiveFontSizes(theme)}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CssBaseline />
-          <SnackbarProvider autoHideDuration={2000}>
+          <SnackbarProvider
+            autoHideDuration={2000}
+            Components={{
+              success: StyledMaterialDesignContent,
+              error: StyledMaterialDesignContent,
+            }}
+          >
             <RouterProvider router={router(client)} />
           </SnackbarProvider>
         </LocalizationProvider>
@@ -54,5 +66,26 @@ function App() {
     </ApolloProvider>
   );
 }
+
+const StyledMaterialDesignContent = styled(MaterialDesignContent)(
+  ({ theme }) => ({
+    "&.notistack-MuiContent-success": {
+      color: theme.palette.success.main,
+      backgroundColor: alpha(theme.palette.success.main, 0.2),
+      border: `1px solid ${theme.palette.success.main}`,
+      paddingTop: 4,
+      paddingBottom: 4,
+      marginTop: 20,
+    },
+    "&.notistack-MuiContent-error": {
+      color: theme.palette.error.main,
+      backgroundColor: alpha(theme.palette.error.main, 0.2),
+      border: `1px solid ${theme.palette.error.main}`,
+      paddingTop: 4,
+      paddingBottom: 4,
+      marginTop: 20,
+    },
+  })
+);
 
 export default App;

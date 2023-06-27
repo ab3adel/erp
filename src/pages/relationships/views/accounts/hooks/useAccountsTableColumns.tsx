@@ -14,9 +14,15 @@ import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
 import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSelect";
-import { Account } from "@/shared/models/models";
+import { Account, Contact } from "@/shared/models/models";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
+import { CurrencyEditCell } from "../components/CurrencyEditCell";
+import { AccountFarmSizeUoMEditSelect } from "../components/AccountFarmSizeUoMEditSelect";
+import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacingUoMEditSelect";
+import { updateContactValueSetter } from "../utils/updateContactValueSetter";
+import { CitiesEditSelect } from "../components/CitiesEditSelect";
+import { AccountTypesSelect } from "../components/AccountTypesSelect";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -56,20 +62,30 @@ function DataGridAccountCell(props: GridRenderCellParams) {
   const type = props.row.accountType?.category.toLowerCase() as string;
   const isEditable = isAccountCellEditable(type, props.field);
 
-  return (
-    <Typography
-      variant="body2"
-      sx={{
-        fontWeight: 400,
-        color: isEditable ? "common.black" : "text.disabled",
-      }}
-    >
-      {props.value}
-    </Typography>
-  );
+  if (isEditable) {
+    return (
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 400,
+          color: "common.black",
+        }}
+      >
+        {props.value}
+      </Typography>
+    );
+  } else {
+    return <Box width="100%" height="100%" sx={{ bgcolor: "#e7e7e761" }} />;
+  }
 }
 
-export const useAccountsTableColumns = () => {
+export const useAccountsTableColumns = ({
+  setTypeId,
+  typeId,
+}: {
+  typeId: number;
+  setTypeId: (value: number) => void;
+}) => {
   const navigate = useNavigate();
   const { data } = useQuery<{
     accountTypes: { data: Account["accountType"][] };
@@ -147,6 +163,15 @@ export const useAccountsTableColumns = () => {
           <GridEditInputCell {...props} />
         </Tooltip>
       ),
+      valueSetter: ({ row, value = "" }) => {
+        const [firstName, lastName] = value.split(" ");
+        return {
+          ...row,
+          first_name: firstName,
+          last_name: lastName,
+          name: value,
+        };
+      },
     },
     {
       field: "id",
@@ -173,10 +198,21 @@ export const useAccountsTableColumns = () => {
       group: "account details",
       editable: true,
       type: "singleSelect",
-      renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
-      valueGetter: (params) => {
-        return params.row.accountType?.name;
+      renderHeaderFilter: () => {
+        return <AccountTypesSelect typeId={typeId} setTypeId={setTypeId} />;
       },
+      renderEditCell: (props) => <AccountTypesEditSelect {...props} />,
+      renderCell: ({ row }) => (
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 400,
+            color: "common.black",
+          }}
+        >
+          {row.accountType?.name}
+        </Typography>
+      ),
       valueOptions: data?.accountTypes.data.map(
         (data) => data?.name as string
       ) || ["buyer", "farmer", "plot", "agent"],
@@ -239,35 +275,88 @@ export const useAccountsTableColumns = () => {
       ),
     },
     {
-      field: "language",
-      headerName: "Language",
+      field: "farms.farm_name",
+      headerName: "Farm Name",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.farm_name}
+        />
+      ),
+    },
+    {
+      field: "farms.average_tree_age",
+      headerName: "Average Tree Age",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.average_tree_age}
+        />
+      ),
+    },
+    {
+      field: "farms.size",
+      headerName: "Size",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farms?.[0]?.size} />
+      ),
+    },
+    {
+      field: "farmSizeUom",
+      headerName: "Farm Size UoM",
       width: 150,
       editable: true,
-      type: "singleSelect",
       group: "location details",
-      valueOptions: [
-        "Australia",
-        "Brazil",
-        "Canada",
-        "China",
-        "East Africa",
-        "Finland",
-        "France",
-        "Germany",
-        "Hong Kong",
-        "India",
-        "Ireland",
-        "Italy",
-        "Japan",
-        "Mexico and Central America",
-        "Netherlands",
-        "New Zealand",
-        "Sout America",
-        "Spain",
-        "Sweden",
-        "United Kingdom",
-        "United States",
-      ],
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farmSizeUom?.name} />
+      ),
+      renderEditCell: (props) => <AccountFarmSizeUoMEditSelect {...props} />,
+    },
+    {
+      field: "farms.spacing",
+      headerName: "Spacing",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farms?.[0]?.spacing} />
+      ),
+    },
+    {
+      field: "farmSpacingUom",
+      headerName: "Spacing UoM",
+      width: 150,
+      editable: true,
+      group: "location details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farmSpacingUom?.name}
+        />
+      ),
+      renderEditCell: (props) => <AccountFarmSpacingUoMEditSelect {...props} />,
+    },
+    {
+      field: "farms.varietal",
+      headerName: "varietals",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.varietal?.name}
+        />
+      ),
     },
     {
       field: "region",
@@ -283,15 +372,7 @@ export const useAccountsTableColumns = () => {
       editable: true,
       group: "location details",
     },
-    {
-      field: "unit_of_measurement",
-      headerName: "UoM",
-      width: 150,
-      editable: true,
-      group: "location details",
-      valueGetter: ({ row }) => row.farmSizeUom?.name,
-      renderCell: (props) => <DataGridAccountCell {...props} />,
-    },
+
     {
       field: "education_level",
       headerName: "Education Level",
@@ -376,7 +457,34 @@ export const useAccountsTableColumns = () => {
       group: "contact details",
       editable: true,
       valueGetter: ({ row }) =>
-        row.contacts?.find((contact) => contact.type === "phone")?.contact_info,
+        row.contacts?.find(
+          (contact) => contact.type === "phone" && contact.is_primary
+        )?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "phone" }),
+    },
+    {
+      field: "whatsapp",
+      headerName: "Whatsapp",
+      width: 150,
+      group: "contact details",
+      editable: true,
+      valueGetter: ({ row }) =>
+        row.contacts?.find((contact) => contact.type === "whatsapp")
+          ?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "whatsapp" }),
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      width: 150,
+      group: "contact details",
+      editable: true,
+      valueGetter: ({ row }) =>
+        row.contacts?.find((contact) => contact.type === "email")?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "email" }),
     },
     {
       field: "district",
@@ -407,6 +515,7 @@ export const useAccountsTableColumns = () => {
       type: "date",
       editable: true,
       valueGetter: ({ value }) => (value ? new Date(value) : ""),
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "city",
@@ -414,6 +523,7 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       group: "location details",
+      renderEditCell: (props) => <CitiesEditSelect {...props} />,
     },
     {
       field: "country",
@@ -422,14 +532,19 @@ export const useAccountsTableColumns = () => {
       editable: true,
       renderEditCell: (props) => <AccountsCountryEditSelect {...props} />,
       group: "location details",
-      valueGetter: ({ row }) => row.country?.name,
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row?.country?.name} />
+      ),
     },
     {
       field: "currency",
       headerName: "Currency",
       width: 200,
       editable: true,
-      valueGetter: ({ row }) => row.currency?.name,
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row?.currency?.name} />
+      ),
+      renderEditCell: (params) => <CurrencyEditCell {...params} />,
     },
     {
       field: "gender",

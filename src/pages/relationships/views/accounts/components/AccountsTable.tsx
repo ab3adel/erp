@@ -18,7 +18,7 @@ import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
-import { Contact } from "@/shared/models/models";
+import { Account, Contact } from "@/shared/models/models";
 
 export const AccountsTable = ({
   apiRef,
@@ -29,12 +29,14 @@ export const AccountsTable = ({
     page: 0,
     pageSize: 10,
   });
+  const [typeId, setTypeId] = useState(0);
   const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const { rows, loading, paginationInfo } = useAccountsTableRows(
     paginationModel,
-    filterModel
+    filterModel,
+    typeId
   );
-  const columns = useAccountsTableColumns();
+  const columns = useAccountsTableColumns({ typeId, setTypeId });
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const { createTab } = useCurvedTabs({ localStorageKey: "relationships" });
   const [model, setModel] = useState<GridColumnVisibilityModel>();
@@ -98,6 +100,16 @@ export const AccountsTable = ({
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
           }}
+          onCellClick={(params, event) => {
+            const element = event.target as HTMLElement;
+            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+              return;
+            }
+            apiRef.current.startCellEditMode({
+              id: params.id,
+              field: params.field,
+            });
+          }}
           checkboxSelection
           paginationMode="server"
           slots={{
@@ -111,56 +123,48 @@ export const AccountsTable = ({
               openDialog,
               setOpenColumnsDialog,
             },
+            headerFilterCell: {
+              InputComponentProps: {
+                sx: {
+                  "&::before, &::after": {
+                    borderBottom: "none !important",
+                  },
+                  "& .MuiInputBase-root": {
+                    "&::before, &::after": {
+                      borderBottom: "none !important",
+                    },
+                  },
+                },
+              },
+            },
           }}
-          processRowUpdate={(newRow, oldRow) => {
+          processRowUpdate={(
+            newRow: Account & { mobileNumber: string },
+            oldRow
+          ) => {
             const updatedValues: Record<string, any> = {};
-            if (newRow.id === "new") {
+            if (String(newRow.id) === "new") {
               return Promise.resolve(newRow);
             }
             for (const key in newRow) {
               if (
-                newRow[key] !== oldRow[key] &&
-                key !== "type" &&
-                key !== "mobileNumber"
+                newRow[key as keyof Account] !== oldRow[key] &&
+                !["mobileNumber"].includes(key)
               ) {
-                updatedValues[key] = newRow[key];
+                updatedValues[key] = newRow[key as keyof Account];
               }
             }
-            if (newRow.mobileNumber !== oldRow.mobileNumber) {
-              const mobileNumberContact = newRow?.contacts?.find(
-                (contact: Contact) => contact.type === "phone"
-              );
-              if (mobileNumberContact) {
-                const contacts = newRow?.contacts?.filter(
-                  (contact: Contact) => contact.id !== mobileNumberContact?.id
-                );
-                updatedValues.contacts = [
-                  ...contacts,
-                  {
-                    ...mobileNumberContact,
-                    contact_info: newRow.mobileNumber,
-                  },
-                ];
-              } else {
-                updatedValues.contacts = [
-                  {
-                    type: "phone",
-                    contact_info: newRow.mobileNumber,
-                    id: null,
-                    is_primary: true,
-                  },
-                ];
-              }
-            }
-
             return edit({
               variables: {
                 input: {
                   ...updatedValues,
                   id: newRow.id,
-                  ...(newRow.type && {
-                    type_id: newRow.type.value,
+                  ...(newRow.accountType && {
+                    type_id: newRow.accountType.id,
                   }),
+                  farm_size_uom_id: newRow.farmSizeUom?.id,
+                  farm_spacing_uom_id: newRow.farmSpacingUom?.id,
+                  country_id: newRow.country?.id,
                 },
               },
             }).then((value) => {

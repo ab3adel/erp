@@ -172,7 +172,6 @@ export const UserProfileInfo: React.FC = () => {
         },
       ],
       subscription_type: updatedContactDetails?.subscription_type,
-      language: updatedContactDetails?.language,
     };
     edit({
       variables: {
