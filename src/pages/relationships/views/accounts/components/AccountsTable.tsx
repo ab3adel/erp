@@ -123,36 +123,9 @@ export const AccountsTable = ({
             for (const key in newRow) {
               if (
                 newRow[key as keyof Account] !== oldRow[key] &&
-                key !== "mobileNumber"
+                !["mobileNumber"].includes(key)
               ) {
                 updatedValues[key] = newRow[key as keyof Account];
-              }
-            }
-            if (newRow.mobileNumber !== oldRow.mobileNumber) {
-              const mobileNumberContact = newRow?.contacts?.find(
-                (contact: Contact) => contact.type === "phone"
-              );
-              if (mobileNumberContact) {
-                const contacts =
-                  newRow?.contacts?.filter(
-                    (contact: Contact) => contact.id !== mobileNumberContact?.id
-                  ) || [];
-                updatedValues.contacts = [
-                  ...contacts,
-                  {
-                    ...mobileNumberContact,
-                    contact_info: newRow.mobileNumber,
-                  },
-                ];
-              } else {
-                updatedValues.contacts = [
-                  {
-                    type: "phone",
-                    contact_info: newRow.mobileNumber,
-                    id: null,
-                    is_primary: true,
-                  },
-                ];
               }
             }
 

@@ -14,12 +14,13 @@ import { AccountTypesEditSelect } from "../components/AccountTypesEditSelect";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { accountNameSearch } from "../graphql/queries/AccountNameSearch";
 import { AccountsCountryEditSelect } from "../components/AccountsCountryEditSelect";
-import { Account } from "@/shared/models/models";
+import { Account, Contact } from "@/shared/models/models";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
 import { CurrencyEditCell } from "../components/CurrencyEditCell";
 import { AccountFarmSizeUoMEditSelect } from "../components/AccountFarmSizeUoMEditSelect";
 import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacingUoMEditSelect";
+import { updateContactValueSetter } from "../utils/updateContactValueSetter";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -311,7 +312,7 @@ export const useAccountsTableColumns = () => {
     },
     {
       field: "farms.spacing",
-      headerName: "Size",
+      headerName: "Spacing",
       width: 150,
       editable: false,
       group: "farm details",
@@ -445,26 +446,34 @@ export const useAccountsTableColumns = () => {
       group: "contact details",
       editable: true,
       valueGetter: ({ row }) =>
-        row.contacts?.find((contact) => contact.type === "phone")?.contact_info,
+        row.contacts?.find(
+          (contact) => contact.type === "phone" && contact.is_primary
+        )?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "phone" }),
     },
     {
       field: "whatsapp",
       headerName: "Whatsapp",
       width: 150,
       group: "contact details",
-      editable: false,
+      editable: true,
       valueGetter: ({ row }) =>
         row.contacts?.find((contact) => contact.type === "whatsapp")
           ?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "whatsapp" }),
     },
     {
       field: "email",
       headerName: "Email",
       width: 150,
       group: "contact details",
-      editable: false,
+      editable: true,
       valueGetter: ({ row }) =>
         row.contacts?.find((contact) => contact.type === "email")?.contact_info,
+      valueSetter: (params) =>
+        updateContactValueSetter({ ...params, type: "email" }),
     },
     {
       field: "district",
