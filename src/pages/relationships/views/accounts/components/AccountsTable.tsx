@@ -100,6 +100,16 @@ export const AccountsTable = ({
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
           }}
+          onCellClick={(params, event) => {
+            const element = event.target as HTMLElement;
+            if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
+              return;
+            }
+            apiRef.current.startCellEditMode({
+              id: params.id,
+              field: params.field,
+            });
+          }}
           checkboxSelection
           paginationMode="server"
           slots={{
