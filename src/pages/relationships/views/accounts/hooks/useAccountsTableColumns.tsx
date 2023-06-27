@@ -504,6 +504,7 @@ export const useAccountsTableColumns = () => {
       type: "date",
       editable: true,
       valueGetter: ({ value }) => (value ? new Date(value) : ""),
+      renderCell: (props) => <DataGridAccountCell {...props} />,
     },
     {
       field: "city",
