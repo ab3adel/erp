@@ -97,7 +97,7 @@ export const AccountNotes: React.FC = () => {
       note_body: `Note content`,
       created_at: "",
       id: _.uniqueId("newNote") as any,
-    } as Note;
+    } as unknown as Note;
     setNotes([...notes, newNoteData]);
     setSelectedNote(newNoteData);
     setIsEditModeActive(true);

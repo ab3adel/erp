@@ -152,6 +152,7 @@ export const AccountsTable = ({
                     type_id: newRow.accountType.id,
                   }),
                   farm_size_uom_id: newRow.farmSizeUom?.id,
+                  country_id: newRow.country?.id,
                 },
               },
             }).then((value) => {

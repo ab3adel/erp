@@ -214,7 +214,11 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           <Box display="flex" columnGap={2}>
             {isDisabled ? (
               <Tooltip
-                title="Please fill Account Name , Account type , Address1 , Country , Subscription Type , Currency  fields"
+                title={`Please fill Account Name , Account type , Address1 , Country ${
+                  newRow.accountType?.category === "farmer"
+                    ? ", Subscription Type"
+                    : ""
+                }  , Currency  fields`}
                 slotProps={{
                   tooltip: {
                     sx: {

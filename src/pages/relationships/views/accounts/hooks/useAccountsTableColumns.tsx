@@ -520,7 +520,9 @@ export const useAccountsTableColumns = () => {
       editable: true,
       renderEditCell: (props) => <AccountsCountryEditSelect {...props} />,
       group: "location details",
-      valueGetter: ({ row }) => row.country?.name,
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row?.country?.name} />
+      ),
     },
     {
       field: "currency",
