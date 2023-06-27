@@ -111,6 +111,20 @@ export const AccountsTable = ({
               openDialog,
               setOpenColumnsDialog,
             },
+            headerFilterCell: {
+              InputComponentProps: {
+                sx: {
+                  "&::before, &::after": {
+                    borderBottom: "none !important",
+                  },
+                  "& .MuiInputBase-root": {
+                    "&::before, &::after": {
+                      borderBottom: "none !important",
+                    },
+                  },
+                },
+              },
+            },
           }}
           processRowUpdate={(
             newRow: Account & { mobileNumber: string },
