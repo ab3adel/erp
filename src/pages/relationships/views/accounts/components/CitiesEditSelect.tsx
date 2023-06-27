@@ -3,30 +3,30 @@ import { useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import { useQuery } from "@apollo/client";
 import { Account } from "@/shared/models/models";
-import { currenciesQuery } from "../graphql/queries/Currencies";
+import { citiesQuery } from "../graphql/queries/Cities";
 
-export const CurrencyEditCell = (
-  props: GridRenderCellParams<Account, Account["currency"]>
+export const CitiesEditSelect = (
+  props: GridRenderCellParams<Account, Account["city"]>
 ) => {
   const [value, setValue] = useState(props.value);
   const apiRef = useGridApiContext();
-  const { data } = useQuery<Response>(currenciesQuery);
+  const { data } = useQuery<Response>(citiesQuery);
 
   const handleChange = (
     _: React.SyntheticEvent,
-    newValue: Account["currency"] | null
+    newValue: { name: string; id: number } | null
   ) => {
     if (newValue) {
-      setValue(newValue);
+      setValue(newValue.name);
       apiRef.current.setEditCellValue({
         id: props.id,
         field: props.field,
-        value: newValue,
+        value: newValue.name,
       });
       apiRef.current.updateRows([
         {
           id: props.id,
-          currency: newValue,
+          city: newValue.name,
         },
       ]);
     }
@@ -34,9 +34,9 @@ export const CurrencyEditCell = (
 
   return (
     <Autocomplete
-      options={data?.currencies.data || []}
-      value={value}
-      getOptionLabel={(option: Account["currency"]) => option?.name || ""}
+      options={data?.cities.data || []}
+      value={{ id: -1, name: value || "" }}
+      getOptionLabel={(option) => option?.name || ""}
       onChange={handleChange}
       fullWidth
       renderInput={(params) => (
@@ -47,7 +47,7 @@ export const CurrencyEditCell = (
 };
 
 type Response = {
-  currencies: {
-    data: Account["currency"][];
+  cities: {
+    data: { name: string; id: number }[];
   };
 };

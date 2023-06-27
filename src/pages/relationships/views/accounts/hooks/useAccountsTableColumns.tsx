@@ -21,6 +21,7 @@ import { CurrencyEditCell } from "../components/CurrencyEditCell";
 import { AccountFarmSizeUoMEditSelect } from "../components/AccountFarmSizeUoMEditSelect";
 import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacingUoMEditSelect";
 import { updateContactValueSetter } from "../utils/updateContactValueSetter";
+import { CitiesEditSelect } from "../components/CitiesEditSelect";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -512,6 +513,7 @@ export const useAccountsTableColumns = () => {
       width: 150,
       editable: true,
       group: "location details",
+      renderEditCell: (props) => <CitiesEditSelect {...props} />,
     },
     {
       field: "country",
@@ -529,7 +531,9 @@ export const useAccountsTableColumns = () => {
       headerName: "Currency",
       width: 200,
       editable: true,
-      valueGetter: ({ row }) => row.currency?.name,
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row?.currency?.name} />
+      ),
       renderEditCell: (params) => <CurrencyEditCell {...params} />,
     },
     {
