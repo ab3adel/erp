@@ -1,9 +1,11 @@
+import { uniqueId } from "lodash";
 import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { useOriginSettingGetter } from "../../../hooks/states";
 
 const columns: GridColDef[] = [
   {
     headerName: "Certification",
-    field: "cert",
+    field: "name",
     flex: 1,
     sortable: false,
   },
@@ -22,28 +24,32 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  { id: "1", cert: "Fairtrade", code: "F", active: true },
-  { id: "2", cert: "Organic", code: "O", active: true },
-  { id: "3", cert: "C.A.F.E. Practices (Starbucks)", code: "C" },
-  { id: "4", cert: "4C", code: "4" },
-  { id: "5", cert: "Rainforest Alliance", code: "R" },
-  { id: "6", cert: "Bird Friendly", code: "B" },
-];
+const CertificationsTable = () => {
+  const rows = useOriginSettingGetter(
+    "tenant",
+    "certifications",
+    (payload: Record<string, any>[]) =>
+      payload?.map((row) => ({
+        ...row,
+        id: uniqueId(),
+      }))
+  );
 
-const CertificationsTable = () => (
-  <DataGridPro
-    sx={{
-      overflowX: "scroll",
-      "& .MuiDataGrid-row:last-child > *": {
-        border: "none",
-      },
-    }}
-    rowHeight={80}
-    columns={columns}
-    disableRowSelectionOnClick
-    hideFooter
-    rows={rows}
-  />
-);
+  return (
+    <DataGridPro
+      sx={{
+        overflowX: "scroll",
+        "& .MuiDataGrid-row:last-child > *": {
+          border: "none",
+        },
+      }}
+      autoHeight
+      rowHeight={80}
+      columns={columns}
+      disableRowSelectionOnClick
+      hideFooter
+      rows={rows ?? []}
+    />
+  );
+};
 export default CertificationsTable;

@@ -1,4 +1,6 @@
 import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { uniqueId } from "lodash";
+import { useOriginSettingGetter } from "../../../../hooks/states";
 
 const columns: GridColDef[] = [
   {
@@ -6,6 +8,7 @@ const columns: GridColDef[] = [
     field: "quantity",
     width: 88,
     sortable: false,
+    valueGetter: () => 1,
   },
   {
     headerName: "Your Unit of Measure",
@@ -15,72 +18,50 @@ const columns: GridColDef[] = [
   },
   {
     headerName: "State of Coffee",
-    field: "soc",
+    field: "coffee_state",
     flex: 1,
     sortable: false,
   },
   {
     headerName: "Equivalent in (L)",
-    field: "eqL",
+    field: "toL",
     flex: 1,
     sortable: false,
   },
   {
     headerName: "Equivalent in (Kg)",
-    field: "eqKg",
+    field: "toKg",
     flex: 1,
     sortable: false,
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    quantity: 1,
-    uom: "Saco",
-    soc: "Uva",
-    eqL: 4,
-    eqKg: 2,
-  },
-  {
-    id: 2,
-    quantity: 1,
-    uom: "Saco",
-    soc: "Pergamino Mojado",
-    eqL: 4,
-    eqKg: 4,
-},
-{
-    id: 3,
-    quantity: 1,
-    uom: "Saco",
-    soc: "Pergamino Seco",
-    eqL: 4,
-    eqKg: 4,
-},
-{
-    id: 4,
-    quantity: 1,
-    uom: "Saco",
-    soc: "Verde",
-    eqL: 4,
-    eqKg: 6,
-  },
-];
+const WeightTable = () => {
+  const rows = useOriginSettingGetter(
+    "uom",
+    "LtoKg",
+    (payload: Record<string, any>[]) =>
+      payload?.map((row) => ({
+        ...row,
+        id: uniqueId(),
+      }))
+  );
 
-const WeightTable = () => (
-  <DataGridPro
-    sx={{
-      overflowX: "scroll",
-      "& .MuiDataGrid-row:last-child > *": {
-        border: "none",
-      },
-    }}
-    rowHeight={80}
-    columns={columns}
-    disableRowSelectionOnClick
-    hideFooter
-    rows={rows}
-  />
-);
+  return (
+    <DataGridPro
+      sx={{
+        overflowX: "scroll",
+        "& .MuiDataGrid-row:last-child > *": {
+          border: "none",
+        },
+      }}
+      autoHeight
+      rowHeight={80}
+      columns={columns}
+      disableRowSelectionOnClick
+      hideFooter
+      rows={rows ?? []}
+    />
+  );
+};
 export default WeightTable;

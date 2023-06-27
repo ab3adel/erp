@@ -1,29 +1,31 @@
+import { uniqueId } from "lodash";
 import { DataGridPro, GridColDef } from "@mui/x-data-grid-pro";
+import { useOriginSettingGetter } from "../../../hooks/states";
 
 const columns: GridColDef[] = [
   {
     headerName: "Process Method",
-    field: "pm",
+    field: "process_method",
     flex: 1,
     sortable: false,
   },
   {
     headerName: "Cherry to Wet %",
-    field: "ctw",
+    field: "cherry_to_wet",
     flex: 1,
     sortable: false,
     align: "center",
   },
   {
     headerName: "Wet to Dry %",
-    field: "wtd",
+    field: "wet_to_dry",
     flex: 1,
     sortable: false,
     align: "center",
   },
   {
     headerName: "Dry to Green %",
-    field: "dtg",
+    field: "dry_to_green",
     flex: 1,
     sortable: false,
     align: "center",
@@ -38,27 +40,32 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  { id: 1, pm: "Natural", ctw: 100, wtd: 40, dtg: 40, total: 16 },
-  { id: 2, pm: "Honey", ctw: 80, wtd: 60, dtg: 60, total: 17 },
-  { id: 3, pm: "Fully Washed", ctw: 75, wtd: 55, dtg: 60, total: 25 },
-  { id: 4, pm: "Experimental-Washed", ctw: 75, wtd: 55, dtg: 60, total: 25 },
-  { id: 5, pm: "Experimental-Natural", ctw: 100, wtd: 40, dtg: 40, total: 16 },
-];
+const YieldEstimationsTable = () => {
+  const rows = useOriginSettingGetter(
+    "yield_estimations",
+    "main",
+    (payload: Record<string, any>[]) =>
+      payload?.map((row) => ({
+        ...row,
+        id: uniqueId(),
+      }))
+  );
 
-const YieldEstimationsTable = () => (
-  <DataGridPro
-    sx={{
-      overflowX: "scroll",
-      "& .MuiDataGrid-row:last-child > *": {
-        border: "none",
-      },
-    }}
-    rowHeight={80}
-    columns={columns}
-    disableRowSelectionOnClick
-    hideFooter
-    rows={rows}
-  />
-);
+  return (
+    <DataGridPro
+      sx={{
+        overflowX: "scroll",
+        "& .MuiDataGrid-row:last-child > *": {
+          border: "none",
+        },
+      }}
+      autoHeight
+      rowHeight={80}
+      columns={columns}
+      disableRowSelectionOnClick
+      hideFooter
+      rows={rows ?? []}
+    />
+  );
+};
 export default YieldEstimationsTable;

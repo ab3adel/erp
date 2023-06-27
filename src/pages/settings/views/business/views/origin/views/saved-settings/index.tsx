@@ -21,6 +21,7 @@ import {
   YieldEstimationsTable,
 } from "./grids";
 import Section from "../../components/Section";
+import { useNavigate } from "react-router-dom";
 
 type CustomAccordionProps = {
   title: string;
@@ -44,10 +45,16 @@ const CustomAccordion = ({ title, children }: CustomAccordionProps) => (
   </Accordion>
 );
 const SavedSettings = () => {
+  const navigate = useNavigate();
+
   return (
     <Box minHeight={597} p={3} pt={4}>
       <Box display="flex" justifyContent="flex-end">
-        <Button startIcon={<EditOutlined />} sx={{ mb: 2 }}>
+        <Button
+          startIcon={<EditOutlined />}
+          sx={{ mb: 2 }}
+          onClick={() => navigate("../wizard")}
+        >
           Customize Settings
         </Button>
       </Box>

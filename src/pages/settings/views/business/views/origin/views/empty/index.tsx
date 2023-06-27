@@ -1,9 +1,18 @@
 import { BuildOutlined, EditOutlined } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useOriginSettingState } from "../../hooks/states";
+import { useEffect } from "react";
 
 const Empty = () => {
   const navigate = useNavigate();
+
+  const empty = useOriginSettingState((state) => state.empty);
+
+  useEffect(() => {
+    if (!empty) navigate("saved-settings");
+  }, []);
+
   return (
     <Box
       height="100%"
