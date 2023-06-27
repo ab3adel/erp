@@ -18,6 +18,8 @@ import { Account } from "@/shared/models/models";
 import { accountTypes } from "../graphql/queries/AccountTypesQuery";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
 import { CurrencyEditCell } from "../components/CurrencyEditCell";
+import { AccountFarmSizeUoMEditSelect } from "../components/AccountFarmSizeUoMEditSelect";
+import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacingUoMEditSelect";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -57,17 +59,21 @@ function DataGridAccountCell(props: GridRenderCellParams) {
   const type = props.row.accountType?.category.toLowerCase() as string;
   const isEditable = isAccountCellEditable(type, props.field);
 
-  return (
-    <Typography
-      variant="body2"
-      sx={{
-        fontWeight: 400,
-        color: isEditable ? "common.black" : "text.disabled",
-      }}
-    >
-      {props.value}
-    </Typography>
-  );
+  if (isEditable) {
+    return (
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 400,
+          color: "common.black",
+        }}
+      >
+        {props.value}
+      </Typography>
+    );
+  } else {
+    return <Box width="100%" height="100%" sx={{ bgcolor: "#e7e7e761" }} />;
+  }
 }
 
 export const useAccountsTableColumns = () => {
@@ -148,6 +154,15 @@ export const useAccountsTableColumns = () => {
           <GridEditInputCell {...props} />
         </Tooltip>
       ),
+      valueSetter: ({ row, value = "" }) => {
+        const [firstName, lastName] = value.split(" ");
+        return {
+          ...row,
+          first_name: firstName,
+          last_name: lastName,
+          name: value,
+        };
+      },
     },
     {
       field: "id",
@@ -248,6 +263,90 @@ export const useAccountsTableColumns = () => {
       ),
     },
     {
+      field: "farms.farm_name",
+      headerName: "Farm Name",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.farm_name}
+        />
+      ),
+    },
+    {
+      field: "farms.average_tree_age",
+      headerName: "Average Tree Age",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.average_tree_age}
+        />
+      ),
+    },
+    {
+      field: "farms.size",
+      headerName: "Size",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farms?.[0]?.size} />
+      ),
+    },
+    {
+      field: "farmSizeUom",
+      headerName: "Farm Size UoM",
+      width: 150,
+      editable: true,
+      group: "location details",
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farmSizeUom?.name} />
+      ),
+      renderEditCell: (props) => <AccountFarmSizeUoMEditSelect {...props} />,
+    },
+    {
+      field: "farms.spacing",
+      headerName: "Size",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell {...props} value={props.row.farms?.[0]?.spacing} />
+      ),
+    },
+    {
+      field: "farmSpacingUom",
+      headerName: "Spacing UoM",
+      width: 150,
+      editable: true,
+      group: "location details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farmSpacingUom?.name}
+        />
+      ),
+      renderEditCell: (props) => <AccountFarmSpacingUoMEditSelect {...props} />,
+    },
+    {
+      field: "farms.varietal",
+      headerName: "varietals",
+      width: 150,
+      editable: false,
+      group: "farm details",
+      renderCell: (props) => (
+        <DataGridAccountCell
+          {...props}
+          value={props.row.farms?.[0]?.varietal?.name}
+        />
+      ),
+    },
+    {
       field: "region",
       headerName: "Zone",
       width: 150,
@@ -261,15 +360,7 @@ export const useAccountsTableColumns = () => {
       editable: true,
       group: "location details",
     },
-    {
-      field: "unit_of_measurement",
-      headerName: "UoM",
-      width: 150,
-      editable: true,
-      group: "location details",
-      valueGetter: ({ row }) => row.farmSizeUom?.name,
-      renderCell: (props) => <DataGridAccountCell {...props} />,
-    },
+
     {
       field: "education_level",
       headerName: "Education Level",

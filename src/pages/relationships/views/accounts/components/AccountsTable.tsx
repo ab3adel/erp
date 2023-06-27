@@ -18,7 +18,7 @@ import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
-import { Contact } from "@/shared/models/models";
+import { Account, Contact } from "@/shared/models/models";
 
 export const AccountsTable = ({
   apiRef,
@@ -112,14 +112,20 @@ export const AccountsTable = ({
               setOpenColumnsDialog,
             },
           }}
-          processRowUpdate={(newRow, oldRow) => {
+          processRowUpdate={(
+            newRow: Account & { mobileNumber: string },
+            oldRow
+          ) => {
             const updatedValues: Record<string, any> = {};
-            if (newRow.id === "new") {
+            if (String(newRow.id) === "new") {
               return Promise.resolve(newRow);
             }
             for (const key in newRow) {
-              if (newRow[key] !== oldRow[key] && key !== "mobileNumber") {
-                updatedValues[key] = newRow[key];
+              if (
+                newRow[key as keyof Account] !== oldRow[key] &&
+                key !== "mobileNumber"
+              ) {
+                updatedValues[key] = newRow[key as keyof Account];
               }
             }
             if (newRow.mobileNumber !== oldRow.mobileNumber) {
@@ -127,9 +133,10 @@ export const AccountsTable = ({
                 (contact: Contact) => contact.type === "phone"
               );
               if (mobileNumberContact) {
-                const contacts = newRow?.contacts?.filter(
-                  (contact: Contact) => contact.id !== mobileNumberContact?.id
-                );
+                const contacts =
+                  newRow?.contacts?.filter(
+                    (contact: Contact) => contact.id !== mobileNumberContact?.id
+                  ) || [];
                 updatedValues.contacts = [
                   ...contacts,
                   {
@@ -157,6 +164,7 @@ export const AccountsTable = ({
                   ...(newRow.accountType && {
                     type_id: newRow.accountType.id,
                   }),
+                  farm_size_uom_id: newRow.farmSizeUom?.id,
                 },
               },
             }).then((value) => {

@@ -30,6 +30,18 @@ export const accountsQuery = gql`
           id
           name
         }
+        farms {
+          id
+          size
+          average_tree_age
+          farm_name
+          spacing
+          varietal {
+            id
+            name
+          }
+          farm_name
+        }
         district
         government_id
         region

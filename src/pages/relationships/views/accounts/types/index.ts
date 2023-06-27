@@ -46,4 +46,6 @@ export type AccountInput = {
   type_id?: number;
   tags?: Tag[];
   notes?: Note[];
+  farm_size_uom_id?: number;
+  farm_spacing_uom_id?: number;
 };

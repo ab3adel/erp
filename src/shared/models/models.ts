@@ -72,7 +72,10 @@ export interface Farm {
   farm_name: string;
   size: number;
   spacing: number;
-  varietals: string;
+  varietal: {
+    name: string;
+    id: number;
+  };
   files: Media[];
 }
 
