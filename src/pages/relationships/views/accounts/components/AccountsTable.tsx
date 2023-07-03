@@ -19,6 +19,7 @@ import { saveAccount } from "../graphql/mutations/saveAccount";
 import { AccountInput } from "../types";
 import { isAccountCellEditable } from "../utils/isAccountCellEditable";
 import { Account, Contact } from "@/shared/models/models";
+import { CustomPagination } from "./CustomPagination";
 
 export const AccountsTable = ({
   apiRef,
@@ -114,6 +115,12 @@ export const AccountsTable = ({
           paginationMode="server"
           slots={{
             toolbar: AccountsTableToolbar,
+            pagination: CustomPagination,
+          }}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10 },
+            },
           }}
           slotProps={{
             toolbar: {
