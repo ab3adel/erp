@@ -19,6 +19,7 @@ import { GenericDialog, useDialog, useGenericMutation } from "@/shared";
 import { saveAccount } from "../graphql/mutations/saveAccount";
 import { CreateViewForm } from "./CreateViewForm";
 import { AccountInput } from "../types";
+import { CustomPagination } from "./CustomPagination";
 
 export const AccountsCustomViewTable = ({
   apiRef,
@@ -112,6 +113,12 @@ export const AccountsCustomViewTable = ({
           paginationMode="server"
           slots={{
             toolbar: AccountsTableToolbar,
+            pagination: CustomPagination,
+          }}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 10 },
+            },
           }}
           processRowUpdate={(newRow: any, oldRow) => {
             const updatedValues: Record<string, any> = {};
