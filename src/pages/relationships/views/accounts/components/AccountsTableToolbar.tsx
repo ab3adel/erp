@@ -39,6 +39,7 @@ import { Account, Tag } from "@/shared/models/models";
 import { isAccountRowValid } from "../utils/isAccountRowValid";
 import { remvoeTagRelation } from "../graphql/mutations/removeTagRelation";
 import { useSnackbar } from "notistack";
+import { capitalizeEachWord } from "@/shared/utils/capitalizeEachWord";
 
 export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const { rowsSelection, dispatch, isRowAdded } = props;
@@ -61,6 +62,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
   const apiRef = useGridApiContext();
   const selectedRows = apiRef.current.getSelectedRows().values();
   const selectedRow = selectedRows.next().value;
+
   const newRow = apiRef.current.getRowModels().get("new") as Account;
   const isDisabled = !isAccountRowValid(newRow);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -350,30 +352,35 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
           },
         }}
         onSubmit={() => {
-          enqueueSnackbar("Delteing account", {
-            variant: "error",
-            autoHideDuration: 3000,
-            anchorOrigin: {
-              horizontal: "center",
-              vertical: "top",
-            },
-            onClose: () => {
-              handleDeleteAccount();
-            },
-            action: () => (
-              <Button
-                color="inherit"
-                variant="text"
-                onClick={() => {
-                  controller.current.abort();
-                  closeSnackbar();
-                }}
-                sx={{ zIndex: 1 }}
-              >
-                UNDO
-              </Button>
-            ),
-          });
+          enqueueSnackbar(
+            `Account ${capitalizeEachWord(selectedRow.name)} ID ${
+              selectedRow.id
+            } deleted.`,
+            {
+              variant: "default",
+              autoHideDuration: 3000,
+              anchorOrigin: {
+                horizontal: "center",
+                vertical: "bottom",
+              },
+              onClose: () => {
+                handleDeleteAccount();
+              },
+              action: () => (
+                <Button
+                  color="inherit"
+                  variant="text"
+                  onClick={() => {
+                    controller.current.abort();
+                    closeSnackbar();
+                  }}
+                  sx={{ zIndex: 1 }}
+                >
+                  UNDO
+                </Button>
+              ),
+            }
+          );
           closeDialog();
         }}
       >
