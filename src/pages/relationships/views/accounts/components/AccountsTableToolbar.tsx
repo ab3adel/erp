@@ -402,6 +402,9 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
                 variant="filled"
                 sx={{ width: "100%" }}
                 label="Select Account"
+                helperText={`Merge “${capitalizeEachWord(
+                  selectedRow.name
+                )}” ID ${selectedRow.id} with this account`}
               />
             )}
           </Box>
