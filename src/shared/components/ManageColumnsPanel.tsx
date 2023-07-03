@@ -27,6 +27,16 @@ import DragIndicatorOutlined from "@mui/icons-material/DragIndicatorOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 
+const requiredFields = [
+  "name",
+  "address1",
+  "accountType",
+  "country",
+  "currency",
+  "accountType",
+  "subscription_type",
+];
+
 const DragHandle = SortableHandle(() => (
   <DragIndicatorOutlined
     sx={{
@@ -197,6 +207,9 @@ export const ManageColumnsPanel = ({
                                 (c) => c.field === column.field
                               )}
                               onChange={(e) => {
+                                if (requiredFields.includes(column.field)) {
+                                  return;
+                                }
                                 if (e.target.checked) {
                                   setState([...state, column]);
                                 } else {
