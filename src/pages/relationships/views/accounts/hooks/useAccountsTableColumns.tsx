@@ -23,6 +23,7 @@ import { AccountFarmSpacingUoMEditSelect } from "../components/AccountFarmSpacin
 import { updateContactValueSetter } from "../utils/updateContactValueSetter";
 import { CitiesEditSelect } from "../components/CitiesEditSelect";
 import { AccountTypesSelect } from "../components/AccountTypesSelect";
+import { BirthdateEditCell } from "../components/BirthdateEditCell";
 
 function LinearProgressWithLabel(
   props: LinearProgressProps & { value: number }
@@ -516,6 +517,7 @@ export const useAccountsTableColumns = ({
       editable: true,
       valueGetter: ({ value }) => (value ? new Date(value) : ""),
       renderCell: (props) => <DataGridAccountCell {...props} />,
+      renderEditCell: (props) => <BirthdateEditCell {...props} />,
     },
     {
       field: "city",

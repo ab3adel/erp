@@ -1,6 +1,6 @@
 export const isAccountCellEditable = (type: string, cell: string) => {
   const typeInteractiveCells: Record<string, string[]> = {
-    farmer: ["date_of_birth"],
+    farmer: [],
     buyer: [
       "government_id",
       "unit_of_measurement",
