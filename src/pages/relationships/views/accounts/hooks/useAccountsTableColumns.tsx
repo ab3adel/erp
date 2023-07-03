@@ -303,7 +303,7 @@ export const useAccountsTableColumns = ({
     },
     {
       field: "farms.size",
-      headerName: "Size",
+      headerName: "Farm Total Size",
       width: 150,
       editable: false,
       group: "farm details",
@@ -453,7 +453,7 @@ export const useAccountsTableColumns = ({
     },
     {
       field: "mobileNumber",
-      headerName: "Mobile Number",
+      headerName: "Mobile Phone",
       width: 150,
       group: "contact details",
       editable: true,
@@ -466,7 +466,7 @@ export const useAccountsTableColumns = ({
     },
     {
       field: "whatsapp",
-      headerName: "Whatsapp",
+      headerName: "WhatsApp",
       width: 150,
       group: "contact details",
       editable: true,
