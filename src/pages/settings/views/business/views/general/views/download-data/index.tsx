@@ -1,9 +1,7 @@
-import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { enqueueSnackbar } from "notistack";
 
 const DownloadData = () => {
-  const [showSnackbar, setShowSnackbar] = useState(false);
-
   return (
     <Box p={3} pt="38px" height="100%">
       <Box maxWidth="540px">
@@ -16,26 +14,22 @@ const DownloadData = () => {
           contain all data tables and attached documents from your
           organization(s).
         </Typography>
-        <Button variant="contained" onClick={() => setShowSnackbar(true)}>
+        <Button
+          variant="contained"
+          onClick={() =>
+            enqueueSnackbar({
+              anchorOrigin: {
+                horizontal: "center",
+                vertical: "top",
+              },
+              variant: "default",
+              message:
+                "Request sent! Expect a response from our team within 24 hours.",
+            })
+          }
+        >
           Request Data
         </Button>
-        <Snackbar
-          anchorOrigin={{
-            horizontal: "center",
-            vertical: "top",
-          }}
-          open={showSnackbar}
-          autoHideDuration={100000}
-          onClose={() => setShowSnackbar(false)}
-        >
-          <Alert
-            severity="info"
-            sx={{ width: "100%" }}
-            onClose={() => setShowSnackbar(false)}
-          >
-            Request sent! Expect a response from our team within 24 hours.
-          </Alert>
-        </Snackbar>
       </Box>
     </Box>
   );
