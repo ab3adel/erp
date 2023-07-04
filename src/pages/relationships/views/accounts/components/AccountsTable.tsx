@@ -73,14 +73,7 @@ export const AccountsTable = ({
           unstable_headerFilters
           loading={loading}
           rows={rows}
-          sx={{
-            "& .MuiPaginationItem-page": {
-              display: "none",
-            },
-            "& .MuiPaginationItem-ellipsis": {
-              display: "none",
-            },
-          }}
+          
           paginationModel={paginationModel}
           onPaginationModelChange={(newModel) => {
             setPaginationModel(newModel);
