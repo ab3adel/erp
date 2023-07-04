@@ -109,17 +109,15 @@ export const CurvedTabs = ({
   });
 
   // check if the current subString of pathname matches one of the tabs value and the `linkToRelativePaths` passed then this value should be selected
-  // const tabsValue = useMemo(
-  //   () =>
-  //     tabs.find((item) => location.pathname.indexOf(item.value) != -1)
-  //       ?.linkToRelativePaths
-  //       ? tabs.find((item) => location.pathname.indexOf(item.value) != -1)
-  //           ?.value
-  //       : location.pathname + location.search,
-  //   [location.pathname, location.search, tabs]
-  // );
-
-  const tabsValue = location.pathname + location.search;
+  const tabsValue = useMemo(
+    () =>
+      tabs.find((item) => location.pathname.indexOf(item.value) != -1)
+        ?.linkToRelativePaths
+        ? tabs.find((item) => location.pathname.indexOf(item.value) != -1)
+            ?.value
+        : location.pathname + location.search,
+    [location.pathname, location.search, tabs]
+  );
 
   const SortableCurvedTabList = SortableContainer<{
     children: ReactNode;
