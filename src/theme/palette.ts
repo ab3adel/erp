@@ -5,6 +5,7 @@ const PRIMARY_COLOR = "#008E8F";
 const SECONDARY_COLOR = "#FF8749";
 
 export const palette: PaletteOptions = {
+  text: { secondary: "rgb(3,40,40,0.6)" },
   primary: {
     main: PRIMARY_COLOR,
     light: `${PRIMARY_COLOR}14`,
@@ -18,7 +19,7 @@ export const palette: PaletteOptions = {
   },
   info: {
     main: "#121212",
-    dark:"#121212",
+    dark: "#121212",
     light: "#ffffff",
   },
   warning: {

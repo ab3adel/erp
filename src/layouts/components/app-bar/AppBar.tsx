@@ -14,6 +14,7 @@ import { DropDownMenu } from "@/shared";
 import { useSignout } from "../../hooks/useSignout";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import Organization from "./components/organizations/Organizations";
+import { Link } from "react-router-dom";
 
 export const AppBar = () => {
   const signout = useSignout();
@@ -32,9 +33,11 @@ export const AppBar = () => {
             alignItems: "center",
           }}
         >
-          <IconButton>
-            <img src={MainLogo} alt="logo" />
-          </IconButton>
+          <Box p={2}>
+            <Link to="#">
+              <img src={MainLogo} alt="logo" />
+            </Link>
+          </Box>
           <Box sx={{ mx: 2 }}>
             <Divider orientation="vertical" style={{ height: "30px" }} />
           </Box>

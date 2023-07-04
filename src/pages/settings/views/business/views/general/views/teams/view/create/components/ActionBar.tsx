@@ -1,9 +1,16 @@
-import BackButton from "@/shared/components/BackButton";
-import { Toolbar, Box, Button, Divider, ButtonProps } from "@mui/material";
+import {
+  Toolbar,
+  Box,
+  Button,
+  Divider,
+  ButtonProps,
+  useTheme,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FunctionComponent } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import ChevronRight from "@mui/icons-material/ChevronRight";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 
 interface ActionBarProps {
   confirmButtonIcon?: "arrow" | "check";
@@ -42,6 +49,8 @@ const ActionBar: FunctionComponent<ActionBarProps> = (props) => {
       confirmButtonIconPlace === "start" ? confirmButtonIconElement : undefined,
   };
 
+  const theme = useTheme();
+
   return (
     <>
       <Divider />
@@ -49,12 +58,20 @@ const ActionBar: FunctionComponent<ActionBarProps> = (props) => {
         <Toolbar sx={{ justifyContent: "space-between" }}>
           <Box display="flex" gap={2}>
             {showBackButton && (
-              <BackButton variant="outlined" {...backButtonProps}>
+              <Button
+                startIcon={<KeyboardArrowLeftIcon />}
+                variant="outlined"
+                {...backButtonProps}
+              >
                 Back
-              </BackButton>
+              </Button>
             )}
             {showCancelButton && (
-              <Button variant="text" {...cancelButtonProps}>
+              <Button
+                variant="text"
+                style={{ color: theme.palette.text.secondary }}
+                {...cancelButtonProps}
+              >
                 Cancel
               </Button>
             )}

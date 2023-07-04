@@ -217,9 +217,9 @@ const Permissions: FunctionComponent<PermissionsProps> = (props) => {
 
       <Box mt={1}>
         <Button
-          color="secondary"
+          color="primary"
           variant="text"
-          sx={{ color: "text.secondary" }}
+          sx={{ fontWeight: 500 }}
           startIcon={
             showCustomizationPanels ? (
               <KeyboardArrowDownIcon />

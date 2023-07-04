@@ -34,7 +34,7 @@ const Create: FunctionComponent = () => {
 
   return (
     <Box>
-      <Box px={18} py={4}>
+      <Box px={18} py={4} minHeight="calc(100vh - 290px)">
         <PageSectionContainer disableGutter>
           <Box mx={3}>
             <Stepper activeStep={currentStep} />

@@ -18,6 +18,7 @@ const Bussiness: FunctionComponent = () => {
           {
             label: "TEAM",
             value: "/settings/business/general/teams",
+            linkToRelativePaths: true,
           },
           {
             label: "Branding",
