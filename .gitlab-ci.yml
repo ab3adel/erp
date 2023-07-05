@@ -45,6 +45,7 @@ dev:
     - cd /var/www/mc-erp2/dev/mc-erp2.0-frontend-dev
     - git pull git@gitlab.turnsole.tech:mc/mc-erp2.0-frontend.git dev
     - echo "pull changes successfully"
+    - docker-compose build
     - docker-compose up -d
     - docker exec mc-erp20-frontend-dev_app_1 npm install --legacy-peer-deps
 #    - echo "Application successfully deployed."
