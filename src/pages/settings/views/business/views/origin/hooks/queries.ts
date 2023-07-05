@@ -31,11 +31,9 @@ type OriginSettingResponse = {
 const GetAllOriginSettingsQuery = gql`
   query GetAllOriginSettings {
     GetAllOriginSettings {
-      data {
         group
         key
         payload
-      }
     }
   }
 `;
