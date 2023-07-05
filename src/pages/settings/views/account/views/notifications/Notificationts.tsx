@@ -6,6 +6,7 @@ import {
   FormHelperText,
   Button,
   Checkbox,
+  Switch,
 } from "@mui/material";
 import { useLogic } from "./Notifications.logic.";
 import { CustomizedSwitch } from "@/shared/components/customizedSwitch/customizedSwitch";
@@ -29,7 +30,7 @@ export const Notificationts = () => {
       <Box sx={{ my: 3 }}>
         <FormControlLabel
           control={
-            <CustomizedSwitch
+            <Switch
               checked={form.values.email_notifications}
               onChange={form.handleChange}
               name="email_notifications"
