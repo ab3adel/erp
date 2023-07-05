@@ -213,7 +213,7 @@ export const useOriginSettingState = create<OriginSettingState>((set) => ({
   settings: {},
   empty: true,
   setter: (key: string, value: unknown[]) =>
-    set((state) => ({ ...state, state: { ...state.settings, [key]: value } })),
+    set((state) => ({ ...state, settings: { ...state.settings, [key]: value } })),
   init: (value) => {
     const empty = value.every((item) => item.group === "default");
     const newValue = value.reduce(

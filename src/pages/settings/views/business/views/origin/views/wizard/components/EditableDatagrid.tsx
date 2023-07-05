@@ -142,10 +142,12 @@ export const CellTextField = ({
   params,
   label = params.colDef.headerName,
   placeholder = "",
+  type
 }: {
   params: GridRenderEditCellParams;
   label?: string;
   placeholder?: string;
+  type?: string
 }) => {
   const apiRef = useGridApiContext();
   const { id, value, field } = params;
@@ -162,6 +164,7 @@ export const CellTextField = ({
       label={label}
       onChange={onChange}
       placeholder={placeholder}
+      type={type ? type : 'text'}
     />
   );
 };

@@ -9,16 +9,14 @@ const columns: GridColDef[] = [
     field: "ours",
     flex: 1,
     sortable: false,
-    renderCell: (params) => (
-      <Box>
-        <Typography variant="body2" color="text.primary">
-          {params.value.term}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {params.value.description}
-        </Typography>
-      </Box>
-    ),
+    renderCell: (params) => (        <Box>
+      <Typography variant="body2" color="text.primary">
+        {params.row?.term}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {params.row?.description}
+      </Typography>
+    </Box>)
   },
   {
     headerName: "Your Words",
@@ -38,7 +36,6 @@ const KeywordConfigurationTable = () => {
         id: uniqueId(),
       }))
   );
-
   return (
     <DataGridPro
       sx={{

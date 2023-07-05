@@ -7,13 +7,12 @@ import { useAllOriginSettingsQuery } from "./hooks/queries";
 
 const Origin: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { init } = useOriginSettingState();
+  const { init, settings } = useOriginSettingState();
 
   useAllOriginSettingsQuery((data) => {
     const empty = init(data);
     if (!empty) navigate("saved-settings");
   });
-
 
   return (
     <Box height="100%" display="flex" flexDirection="column">

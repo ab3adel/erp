@@ -38,7 +38,7 @@ export const useWeightColumns = (onDelete: (id: GridRowId) => void) =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Value in L" />
+          <CellTextField type="number" params={params} label="Value in L" />
         ),
       },
       {

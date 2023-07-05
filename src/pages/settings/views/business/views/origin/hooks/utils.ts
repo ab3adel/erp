@@ -22,6 +22,7 @@ export const useOriginSettingsRows = <TRow extends { id: GridRowId }>(
   options?: Options<TRow>
 ) => {
   const [state, setter] = useOriginSetting<TRow[]>(group, key);
+  
 
   const deleteRow = useCallback((id: GridRowId) => {
     const filterdRows = state.filter((row) => row.id !== id);
@@ -36,10 +37,8 @@ export const useOriginSettingsRows = <TRow extends { id: GridRowId }>(
 
   const handleRowChange = (newRow: TRow) => {
     const rowIndex = state.findIndex((row) => row.id === newRow.id);
-
     const updatedRows = [...state];
     updatedRows[rowIndex] = newRow;
-
     setter(updatedRows);
     options?.rowsChanged?.(updatedRows);
 
@@ -49,7 +48,7 @@ export const useOriginSettingsRows = <TRow extends { id: GridRowId }>(
   const ogRows = useMemo(
     () =>
       state?.map(
-        options?.customMapper ?? ((row) => ({ ...row, id: uniqueId() }))
+        options?.customMapper ?? ((row) => ({ ...row, id: row.id ?? uniqueId() }))
       ) ?? [],
     [state]
   );
@@ -73,12 +72,13 @@ export function certificationsInitializer(
   data: OriginSettings[],
   newValue: Record<string, any>
 ) {
-  const certificationsJson = data.find(
+  const certifications = data.find(
     (setting) => setting.group === "default" && setting.key === "certifications"
-  )?.payload;
-  const certifications = JSON.parse(
-    (certificationsJson ?? "[]") as string
-  ) as Certification[];
+  )?.payload as Certification[]
+
+  // const certifications = JSON.parse(
+  //   (certificationsJson ?? "[]") as string
+  // ) as Certification[];
 
   const myCertifications = data.find(
     (setting) => setting.group === "tenant" && setting.key === "certifications"
@@ -99,11 +99,11 @@ export function keywordInitializer(
   data: OriginSettings[],
   newValue: Record<string, any>
 ) {
-  const terminologyJson = data.find(
+  const terminology = data.find(
     (setting) =>
       setting.group === "default" && setting.key === "customized_terminology"
-  )?.payload;
-  const terminology = JSON.parse((terminologyJson ?? "[]") as string) as Term[];
+  )?.payload as Term[]
+  // const terminology = JSON.parse((terminologyJson ?? "[]") as string) as Term[];
 
   const myTerminology = data.find(
     (setting) => setting.group === "tenant" && setting.key === "terminology"
@@ -121,7 +121,7 @@ export function keywordInitializer(
 }
 
 export function useSaveOriginSettings() {
-  const settings = useOriginSettingState((state) => state.state) as Record<
+  const settings = useOriginSettingState((state) => state.settings) as Record<
     string,
     WithId<Record<string, any>>[]
   >;

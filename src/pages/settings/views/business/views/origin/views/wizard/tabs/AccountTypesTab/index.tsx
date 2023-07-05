@@ -7,10 +7,9 @@ import DataGrid from "../../components/EditableDatagrid";
 import { useAccountTypesColumns } from "./columns";
 
 const Tab = () => {
-  const accountCategories = useOriginSettingGetter<string, string[]>(
+  const accountCategories = useOriginSettingGetter<string[]>(
     "default",
-    "account_categories",
-    (payload) => JSON.parse(payload ?? "[]")
+    "account_categories"
   );
 
   const { rows, addRow, deleteRow, handleRowChange } = useOriginSettingsRows(
