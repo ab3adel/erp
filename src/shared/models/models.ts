@@ -72,6 +72,7 @@ export interface Farm {
   farm_name: string;
   size: number;
   spacing: number;
+  varietal_id: string;
   varietal: {
     name: string;
     id: number;

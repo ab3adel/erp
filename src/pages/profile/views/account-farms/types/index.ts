@@ -4,5 +4,6 @@ export interface FarmInput {
   farm_name?: string;
   size?: number;
   spacing?: number;
-  varietals?: string;
+  // varietals?: string;
+  varietal_id?: number;
 }

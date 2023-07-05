@@ -8,6 +8,7 @@ import {
   Grid,
   TextField,
   Tooltip,
+  MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/AddOutlined";
 import EditIcon from "@mui/icons-material/EditOutlined";
@@ -23,6 +24,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Account, Media } from "@/shared/models/models";
 import { accountProfile } from "../../graphql/queries/accountProfile";
 import { deleteFarm } from "./graphql/mutations/deleteFarm";
+import { useVarietals } from "./hooks/useVarietals";
 
 type Farm = {
   id: string;
@@ -40,6 +42,8 @@ export const AccountFarms = () => {
   const ref = useRef<HTMLInputElement | null>(null);
   const [files, setFiles] = useState<File[]>([]);
 
+  const { data } = useVarietals();
+
   const [newFarm, setNewFarm] = useState<Farm>({
     id: "",
     name: "",
@@ -56,6 +60,7 @@ export const AccountFarms = () => {
       id: Number(id),
     },
     onCompleted: (data) => {
+      setuserCurrentFarmsCount(data.account.farms?.length);
       setFarms(
         (data.account.farms?.map((farm) => ({
           averageTreeAge: farm.average_tree_age,
@@ -64,12 +69,17 @@ export const AccountFarms = () => {
           numberOfTrees: farm.average_tree_age,
           spacing: farm.spacing,
           totalSize: farm.size,
-          verticals: farm.varietals,
+          verticals: farm.varietal.id.toString(),
           files: farm.files,
         })) || []) as Farm[]
       );
     },
   });
+
+  const [userCurrentFarmsCount, setuserCurrentFarmsCount] = useState<
+    number | undefined
+  >(undefined);
+
   const [selectedFarm, setSelectedFarm] = useState<string>();
   const [mutate] = useGenericMutation<{
     farms: FarmInput[];
@@ -90,6 +100,7 @@ export const AccountFarms = () => {
     const id = _.uniqueId("newFarm");
 
     setFarms((prevFarms) => [{ ...newFarm, id }, ...prevFarms]);
+
     setNewFarm({
       name: "",
       totalSize: 0,
@@ -126,7 +137,7 @@ export const AccountFarms = () => {
       farm_name: newFarm.name,
       size: Number(newFarm.totalSize) || 0,
       spacing: Number(newFarm.spacing) || 0,
-      varietals: newFarm.verticals,
+      varietal_id: Number(newFarm.verticals),
     };
 
     mutate({
@@ -158,7 +169,13 @@ export const AccountFarms = () => {
   return (
     <Box p={3} minHeight="70vh">
       <Box display="flex" justifyContent="right" my={1}>
-        <Button startIcon={<AddIcon />} onClick={handleAddFarm}>
+        <Button
+          startIcon={<AddIcon />}
+          onClick={handleAddFarm}
+          disabled={
+            userCurrentFarmsCount && farms.length > userCurrentFarmsCount
+          }
+        >
           ADD NEW FARM
         </Button>
       </Box>
@@ -259,7 +276,14 @@ export const AccountFarms = () => {
                   onChange={handleFarmInputChange}
                   fullWidth
                   required
-                />
+                  select
+                >
+                  {data?.varietals.data.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
@@ -321,7 +345,11 @@ export const AccountFarms = () => {
                   Varietals
                 </Typography>
                 <Typography variant="body2" sx={{ color: "common.black" }}>
-                  {farm.verticals}
+                  {
+                    data?.varietals.data.find(
+                      (item) => item.id === Number(farm.verticals)
+                    )?.name
+                  }
                 </Typography>
               </Grid>
               <Grid item xs={6} md={4}>
