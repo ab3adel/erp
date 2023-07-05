@@ -43,7 +43,9 @@ export const useLogic = () => {
   );
 
   const abilitiesIdListToExclude = AvailableAbilites?.abilities.data
-    .filter((item) => item.category === "offer list")
+    .filter(
+      (item) => item.category === "offer list" || item.category === "payments"
+    )
     .map((item) => item.id);
 
   const groupedAbilites = _.groupBy(

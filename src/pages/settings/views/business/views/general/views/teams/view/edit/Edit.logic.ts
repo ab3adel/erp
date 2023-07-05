@@ -35,7 +35,9 @@ export const useLogic = () => {
   const loading = loadingUpdateAbilites || loadingUpdateMember;
 
   const abilitiesIdListToExclude = AvailableAbilites?.abilities.data
-    .filter((item) => item.category === "offer list")
+    .filter(
+      (item) => item.category === "offer list" || item.category === "payments"
+    )
     .map((item) => item.id);
 
   useEffect(() => {

@@ -4,5 +4,5 @@ export const modulesImages: { [category: string]: string } = {
   "harvest planner": "/modules/harvest-planner.svg",
   "offer list": "/modules/offer-list.svg",
   "dashboard": "/modules/dashboard.svg",
-  "payment": "/modules/payment.svg",
+  "payments": "/modules/payment.svg",
 };
