@@ -11,8 +11,9 @@ export type OriginSettings = {
 };
 
 type AllOriginSettingsResponse = {
-  GetAllOriginSettings: OriginSettings[];
-
+  GetAllOriginSettings: {
+    data: OriginSettings[];
+  };
 };
 
 type OriginSettingByGroupResponse = {
@@ -30,9 +31,11 @@ type OriginSettingResponse = {
 const GetAllOriginSettingsQuery = gql`
   query GetAllOriginSettings {
     GetAllOriginSettings {
+      data {
         group
         key
         payload
+      }
     }
   }
 `;
@@ -43,7 +46,7 @@ export const useAllOriginSettingsQuery = (
   const { data, loading } = useQuery<AllOriginSettingsResponse>(
     GetAllOriginSettingsQuery,
     {
-      onCompleted: (data) => onCompleted?.(data.GetAllOriginSettings),
+      onCompleted: (data) => onCompleted?.(data.GetAllOriginSettings.data),
     }
   );
   return { data, loading };
@@ -151,29 +154,30 @@ type Keys = typeof settings;
 
 export type MutationVariables = { [Key in Keys[number]]: any };
 export type DoMutationVariables = {
-  [K in Keys[number]as K extends string ? `do_${K}` : never]: any;
+  [K in Keys[number] as K extends string ? `do_${K}` : never]: any;
 };
 
 const originSettingMutation = gql`
   mutation CreateOrUpdateOriginSetting(
     ${settings.map(
-  (setting) => `
+      (setting) => `
     $${setting}: JSON!
     $do_${setting}: Boolean!
     `
-)}
+    )}
   ) {
     ${settings.map(
-  (setting) =>
-    `${setting}: CreateOrUpdateOriginSetting(
-        input: { group: "${setting.split("__")[0]}", key: "${setting.split("__")[1]
-    }", payload: $${setting} }
+      (setting) =>
+        `${setting}: CreateOrUpdateOriginSetting(
+        input: { group: "${setting.split("__")[0]}", key: "${
+          setting.split("__")[1]
+        }", payload: $${setting} }
         ) @include(if: $do_${setting}) {
           group
           key
           payload
         }`
-)}
+    )}
   }
 `;
 
