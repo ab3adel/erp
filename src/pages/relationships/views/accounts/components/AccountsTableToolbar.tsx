@@ -270,15 +270,17 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
         <></>
       )}
 
-      <Button
-        variant="text"
-        startIcon={<SaveIcon />}
-        onClick={() => {
-          props.openDialog("save_view");
-        }}
-      >
-        Save view
-      </Button>
+      {!isRowAdded && (
+        <Button
+          variant="text"
+          startIcon={<SaveIcon />}
+          onClick={() => {
+            props.openDialog("save_view");
+          }}
+        >
+          Save view
+        </Button>
+      )}
       <Divider orientation="vertical" />
       <DropDownMenu
         button={(props) => (
