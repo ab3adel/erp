@@ -173,7 +173,7 @@ export const AccountFarms = () => {
           startIcon={<AddIcon />}
           onClick={handleAddFarm}
           disabled={
-            userCurrentFarmsCount && farms.length > userCurrentFarmsCount
+            !!userCurrentFarmsCount && farms.length > userCurrentFarmsCount
           }
         >
           ADD NEW FARM
