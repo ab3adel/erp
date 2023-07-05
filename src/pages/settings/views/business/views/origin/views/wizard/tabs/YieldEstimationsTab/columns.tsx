@@ -27,7 +27,7 @@ export const useYieldEstimationsColumns = () =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Enter %" />
+          <CellTextField type="number" params={params} label="Enter %" />
         ),
       },
       {
@@ -37,7 +37,7 @@ export const useYieldEstimationsColumns = () =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Enter %" />
+          <CellTextField type="number" params={params} label="Enter %" />
         ),
       },
       {
@@ -47,7 +47,7 @@ export const useYieldEstimationsColumns = () =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Enter %" />
+          <CellTextField type="number" params={params} label="Enter %" />
         ),
       },
       {

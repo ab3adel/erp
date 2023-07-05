@@ -19,7 +19,9 @@ const OriginWizard = () => {
     useDialog<"discard-wizard-changes">();
   const [currentTab, setCurrentTab] = useState(firstTabName);
 
-  const { state } = useOriginSettingState();
+  const { settings } = useOriginSettingState();
+
+  console.log(settings)
 
   // useAllOriginSettingsQuery(init);
 
@@ -105,7 +107,6 @@ const OriginWizard = () => {
           disableElevation={false}
           endIcon={<KeyboardArrowRightIcon />}
           onClick={() => {
-            console.log(state);
             isLastTab(currentTab)
               ? save()
               : setCurrentTab(getNextTab(currentTab));

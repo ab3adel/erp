@@ -15,14 +15,14 @@ const columns: GridColDef[] = [
     field: "start",
     flex: 1,
     sortable: false,
-    valueFormatter: (params) => params.value.format('ll')
+    valueFormatter: (params) => params.value.format("ll"),
   },
   {
     headerName: "End",
     field: "end",
     flex: 1,
     sortable: false,
-    valueFormatter: (params) => params.value.format('ll')
+    valueFormatter: (params) => params.value.format("ll"),
   },
   {
     headerName: "Show in Inventory",

@@ -38,7 +38,7 @@ export const useVolToWeColumns = () =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Value in Litres" />
+          <CellTextField type="number" params={params} label="Value in Litres" />
         ),
       },
       {
@@ -48,7 +48,7 @@ export const useVolToWeColumns = () =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Value in Kilograms" />
+          <CellTextField type="number" params={params} label="Value in Kilograms" />
         ),
       },
     ],

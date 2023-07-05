@@ -12,10 +12,9 @@ import { WithId, YieldEstimation } from "../../../../types";
 import { uniqueId } from "lodash";
 
 const Tab = () => {
-  const accountCategories = useOriginSettingGetter<string, string[]>(
+  const accountCategories = useOriginSettingGetter<string[]>(
     "default",
-    "account_categories",
-    (payload) => JSON.parse(payload ?? "[]")
+    "account_categories"
   );
 
   const setYieldEstimations = useOriginSettingSetter<

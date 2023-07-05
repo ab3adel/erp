@@ -11,9 +11,8 @@ export type OriginSettings = {
 };
 
 type AllOriginSettingsResponse = {
-  GetAllOriginSettings: {
-    data: OriginSettings[];
-  };
+  GetAllOriginSettings: OriginSettings[];
+ 
 };
 
 type OriginSettingByGroupResponse = {
@@ -31,11 +30,9 @@ type OriginSettingResponse = {
 const GetAllOriginSettingsQuery = gql`
   query GetAllOriginSettings {
     GetAllOriginSettings {
-      data {
         group
         key
         payload
-      }
     }
   }
 `;
@@ -46,7 +43,7 @@ export const useAllOriginSettingsQuery = (
   const { data, loading } = useQuery<AllOriginSettingsResponse>(
     GetAllOriginSettingsQuery,
     {
-      onCompleted: (data) => onCompleted?.(data.GetAllOriginSettings.data),
+      onCompleted: (data) => onCompleted?.(data.GetAllOriginSettings),
     }
   );
   return { data, loading };

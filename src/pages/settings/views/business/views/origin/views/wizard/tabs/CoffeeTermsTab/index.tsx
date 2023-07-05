@@ -29,10 +29,9 @@ const Tab = () => {
     "LtoKg"
   );
 
-  const defaultCoffeeStates = useOriginSettingGetter<string, string[]>(
+  const defaultCoffeeStates = useOriginSettingGetter< string[]>(
     "default",
-    "coffee_states",
-    (payload) => JSON.parse(payload ?? "[]")
+    "coffee_states"
   );
 
   const { rows, addRow, deleteRow, handleRowChange } =

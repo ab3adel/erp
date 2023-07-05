@@ -38,7 +38,7 @@ export const useAreaColumns = (onDelete: (id: GridRowId) => void) =>
         sortable: false,
         editable: true,
         renderEditCell: (params) => (
-          <CellTextField params={params} label="Value in Ha" />
+          <CellTextField type="number" params={params} label="Value in Ha" />
         ),
       },
       {

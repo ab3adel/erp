@@ -19,14 +19,14 @@ const columns: GridColDef[] = [
     field: "sub_locations",
     flex: 1,
     sortable: false,
-    valueFormatter: (params) => params.value.join(", ")
+    valueFormatter: (params) => params.value?.join(", ")
   },
   {
     headerName: "Processing Method",
     field: "process_methods",
     flex: 1,
     sortable: false,
-    valueFormatter: (params) => params.value.join(", ")
+    valueFormatter: (params) => params.value?.join(", ")
   },
   {
     headerName: "Release Inventory",
