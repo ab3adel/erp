@@ -10,21 +10,21 @@ export const useReceiptionsTableRows = (): {
   const { data, loading } = useQuery<Response>(receptions);
   const rows: DataGridRow[] = useMemo(() => {
     return (
-      data?.receptions?.data?.map?.((reception) => ({
-        id: reception.id,
-        receptionDate: new Date(reception.attributes.date),
-        status: reception.attributes.status,
-        accountId: reception.attributes.account.data?.id,
-        accountName: reception.attributes.account.data?.attributes?.name,
-        lotNumber: reception.attributes.lot.data?.attributes?.number,
-        grade: reception.attributes.lot.data?.attributes?.grade,
-        weight: reception.attributes.lot.data?.attributes?.weight,
-        totalCost: reception.attributes.totalCost,
-        payment: reception.attributes.payment,
-        commission: reception.attributes.comission,
-        uom: reception.attributes.lot.data?.attributes?.uom,
-        cherry_price: reception.attributes.cherryPrice,
-        currency_fixed: reception.attributes.currecnyFixed,
+      data?.lots?.data?.map?.((lot) => ({
+        id: lot.id,
+        receptionDate: lot.reception_date ? new Date(lot.reception_date) : new Date(),
+        status: lot.status,
+        accountId: lot.account.id,
+        accountName: lot.account.name,
+        lotNumber: '',
+        grade: lot.grade,
+        weight: lot.weight,
+        totalCost: lot.total_price,
+        payment: lot.is_paid,
+        commission: lot.commission_uom,
+        uom: lot.cost_per_uom,
+        cherry_price: lot.cherry_price,
+        currency_fixed: lot.currency.name,
       })) || []
     );
   }, [data]);

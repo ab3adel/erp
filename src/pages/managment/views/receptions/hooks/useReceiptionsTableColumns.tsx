@@ -54,26 +54,6 @@ export const useReceiptionsTableColumns = () => {
       editable: true,
     },
     {
-      field: "grade",
-      headerName: "Grade",
-      width: 100,
-      editable: true,
-    },
-    {
-      field: "weight",
-      headerName: "Weight",
-      width: 100,
-      editable: true,
-      type: "number",
-    },
-    {
-      field: "totalCost",
-      headerName: "Total Cost",
-      width: 150,
-      type: "number",
-      editable: true,
-    },
-    {
       field: "payment",
       headerName: "Payment",
       width: 100,
@@ -97,6 +77,26 @@ export const useReceiptionsTableColumns = () => {
             );
         }
       },
+      editable: true,
+    },
+    {
+      field: "grade",
+      headerName: "Grade",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "weight",
+      headerName: "Weight",
+      width: 100,
+      editable: true,
+      type: "number",
+    },
+    {
+      field: "totalCost",
+      headerName: "Total Cost",
+      width: 150,
+      type: "number",
       editable: true,
     },
     {

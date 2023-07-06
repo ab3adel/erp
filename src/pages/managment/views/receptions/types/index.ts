@@ -9,31 +9,40 @@ interface Lot {
   uom: string;
 }
 
-interface Reception {
-  date: string;
-  status: string;
-  account: {
-    data: {
-      id: string;
-      attributes: Account;
-    };
-  };
-  lot: {
-    data: {
-      id: string;
-      attributes: Lot;
-    };
-  };
-  totalCost: number;
-  payment: boolean;
-  comission: number;
-  cherryPrice: number;
-  currecnyFixed: string;
-}
-
 interface ReceptionEntity {
-  id: string;
-  attributes: Reception;
+  id: string,
+  uuid: string,
+  status: string,
+  grade: string,
+  weight: string,
+  commission_uom: string,
+  total_price: number,
+  cherry_price: number,
+  name: string,
+  cupping_score: string,
+  coffee_state: string,
+  reception_date: string,
+  cost_per_uom: string,
+  is_paid: boolean,
+  is_combined: true,
+  certification: string,
+  receivedTo: {
+    id: number,
+    name: string
+  },
+  account: {
+    id: number,
+    name: string
+  },
+  currency: {
+    id: string
+    name: string
+  }
+  tags: [
+    {
+      id: string
+    }
+  ]
 }
 
 interface ResponseCollectionMeta {
@@ -54,21 +63,21 @@ export interface DataGridRow {
   id: string;
   receptionDate: Date;
   status: string;
-  accountId: string;
+  accountId: number;
   accountName: string;
   lotNumber: string;
   grade: string;
-  weight: number;
+  weight: string;
   totalCost: number;
   payment: boolean;
-  commission: number;
+  commission: string;
   uom: string;
   cherry_price: number;
   currency_fixed: string;
 }
 
 export interface Response {
-  receptions: ReceptionEntityResponseCollection;
+  lots: ReceptionEntityResponseCollection;
 }
 
 type AddReceiptionAction = {
