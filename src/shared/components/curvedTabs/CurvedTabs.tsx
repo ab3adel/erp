@@ -94,6 +94,7 @@ export const CurvedTabs = ({
   canDelete = true,
   canDrag = true,
   localStorageKey = "",
+  onDelete,
 }: CurvedTabsProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -145,6 +146,7 @@ export const CurvedTabs = ({
           canDrag={canDrag && !tab.primary}
           canDelete={canDelete}
           onDelete={() => {
+            onDelete?.(tab.value);
             deleteTab(index, tab.id);
           }}
         />
@@ -167,6 +169,7 @@ type CurvedTabsProps = {
   canDrag?: boolean;
   canDelete?: boolean;
   localStorageKey?: string;
+  onDelete?: (value: string) => void;
 };
 
 type SortableCurvedTabProps = Record<string, any> & {

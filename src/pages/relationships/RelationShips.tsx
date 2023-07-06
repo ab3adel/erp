@@ -1,12 +1,14 @@
 import { Box, Typography, Paper, CircularProgress } from "@mui/material";
 import { CurvedTabs } from "@/shared/components/curvedTabs/CurvedTabs";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { CurvedTabsContainer } from "@/shared/components/curvedTabs/CurvedTabsContainer";
 import { useQuery } from "@apollo/client";
 import { accountsCustomViews } from "./views/accounts/graphql/queries/AccountsCustomViews";
 import { UserView } from "@/shared/models/models";
 
 export const RelationShips = () => {
+  const navigate = useNavigate();
+
   const { data, loading } = useQuery<
     {
       views_user: UserView[];
@@ -61,6 +63,7 @@ export const RelationShips = () => {
           })) || []),
         ]}
         localStorageKey="relationships"
+        onDelete={() => navigate("/relationships/accounts")}
       />
       <CurvedTabsContainer>
         <Outlet />
