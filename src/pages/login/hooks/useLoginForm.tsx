@@ -26,6 +26,7 @@ export const useLoginForm = () => {
       acceptTerms: false,
     },
     onSubmit: (result: { username: string; password: string }) => {
+      localStorage.clear();
       login({
         email: result.username,
         password: result.password,

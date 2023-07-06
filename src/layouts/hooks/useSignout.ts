@@ -24,7 +24,7 @@ export const useSignout = () => {
     signout({
       onCompleted: () => {
         client.clearStore();
-        localStorage.removeItem("token");
+        localStorage.clear();
         navigate("/login");
       },
       onError: () => {
