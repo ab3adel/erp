@@ -4,6 +4,7 @@ import { ReceiptionsTable } from "./components/ReceiptionsTable";
 import { useGridApiRef } from "@mui/x-data-grid-pro";
 import { useAddReceiption } from "./hooks";
 import DeleteLots from "./containers/deleteLots/DeleteLots";
+import ApproveLots from "./containers/approveLots/ApproveLots";
 
 export const Receiptions = () => {
   const apiRef = useGridApiRef();
@@ -12,6 +13,8 @@ export const Receiptions = () => {
   return (
     <Box>
       <DeleteLots />
+
+      <ApproveLots />
       <Button
         startIcon={<AddIcon />}
         sx={{ position: "absolute", top: "10px", right: 0 }}
