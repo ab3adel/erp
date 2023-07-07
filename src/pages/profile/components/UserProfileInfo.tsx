@@ -313,6 +313,7 @@ export const UserProfileInfo: React.FC = () => {
               selectedTags={data?.account.tags}
               onRemoveTag={handleDeleteTag}
               onSelectTag={handleAddTag}
+              type="Account" // To be changed 
             />
             <Tooltip title="message">
               <IconButton

@@ -168,6 +168,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
               selectedTags={selectedRow?.tags}
               onRemoveTag={handleDeleteTag}
               onSelectTag={handleAddTag}
+              type="Account"
             />
             {rowsSelection.length !== 1 ? (
               <Tooltip

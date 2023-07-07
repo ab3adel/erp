@@ -38,6 +38,7 @@ interface TagDropdownProps {
   onSelectTag: (tag: Tag) => void;
   onRemoveTag: (tag: Tag) => void;
   selectedTags?: Tag[];
+  type: "Account" | "Lot";
 }
 export const TagsSelect: React.FC<TagDropdownProps> = ({
   anchorEl,
@@ -45,11 +46,16 @@ export const TagsSelect: React.FC<TagDropdownProps> = ({
   selectedTags,
   onRemoveTag,
   onSelectTag,
+  type
 }) => {
   const [inputValue, setInputValue] = useState("");
   const { data } = useQuery<{
     tags: Tag[];
-  }>(accountTags);
+  }>(accountTags, {
+    variables: {
+      type: type,
+    },
+  });
   const filterdTags =
     inputValue.trim() === ""
       ? data?.tags
