@@ -1,11 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const accountTags = gql`
-  query accountTags {
-    tags {
-      id
-      name
-      color
+  query accountTags($type: String!) {
+    tags(group: $type) {
+        id
+        name
+        color
+        tenant_id
     }
-  }
+}
 `;
+

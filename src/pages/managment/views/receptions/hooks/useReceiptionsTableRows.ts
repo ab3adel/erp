@@ -3,9 +3,13 @@ import { DataGridRow, Response } from "../types";
 import { useMemo } from "react";
 import { receptions } from "../graphql/queries/receptions";
 import { PaginatorInfo } from "@/shared/models/models";
-import { GridPaginationModel } from "@mui/x-data-grid-pro";
+import { GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
 
-export const useReceiptionsTableRows = (paginationModel: GridPaginationModel): {
+export const useReceiptionsTableRows = (
+  paginationModel: GridPaginationModel,
+  filterModel?: GridFilterModel,
+  typeId?: number
+): {
   rows: DataGridRow[];
   loading: boolean;
   paginatorInfo: PaginatorInfo | null;
@@ -14,6 +18,17 @@ export const useReceiptionsTableRows = (paginationModel: GridPaginationModel): {
     variables: {
       first: paginationModel.pageSize,
       page: paginationModel.page + 1,
+      ...(filterModel && {
+        filter: filterModel?.items.reduce((acc, item) => {
+          return {
+            ...acc,
+            [item.field]: Number(item.value)
+              ? { min: Number(item.value), max: Number(item.value) }
+              : "%" + item.value + "%",
+            ...(typeId && { type_id: typeId }),
+          };
+        }, {}),
+      }),
     },
   });
 
@@ -39,8 +54,6 @@ export const useReceiptionsTableRows = (paginationModel: GridPaginationModel): {
   }, [data]);
 
   const paginatorInfo = data?.lots.paginatorInfo || null
-
-  console.log(data)
 
   return { rows, loading, paginatorInfo };
 };

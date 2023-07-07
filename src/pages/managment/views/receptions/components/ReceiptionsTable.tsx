@@ -1,6 +1,6 @@
 import { useReceiptionsTableColumns } from "../hooks/useReceiptionsTableColumns";
 import { useReceiptionsTableRows } from "../hooks/useReceiptionsTableRows";
-import { DataGridPro, GridColDef, GridColumnVisibilityModel, GridPaginationModel } from "@mui/x-data-grid-pro";
+import { DataGridPro, GridColDef, GridColumnVisibilityModel, GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
 import { ReceiptionsTableToolbar } from "./ReceiptionsTableToolbar";
 import { useState } from "react";
 import { Action } from "../types";
@@ -22,7 +22,9 @@ export const ReceiptionsTable = ({
     page: 0,
     pageSize: 10,
   });
-  const { rows, loading, paginatorInfo } = useReceiptionsTableRows(paginationModel);
+
+  const [filterModel, setFilterModel] = useState<GridFilterModel>();
+  const { rows, loading, paginatorInfo } = useReceiptionsTableRows(paginationModel, filterModel);
 
   return (
     <div style={{ width: "100%" }}>
@@ -33,6 +35,11 @@ export const ReceiptionsTable = ({
           rowSelectionModel={rowsSelection}
           onRowSelectionModelChange={(newSelection) => {
             setRowsSelection(newSelection as string[]);
+          }}
+          filterMode="server"
+          filterModel={filterModel}
+          onFilterModelChange={(newModel) => {
+            setFilterModel(newModel);
           }}
           paginationModel={paginationModel}
           onPaginationModelChange={(newModel) => {
@@ -50,6 +57,7 @@ export const ReceiptionsTable = ({
               dispatch,
             },
           }}
+          
           slots={{
             toolbar: ReceiptionsTableToolbar,
             pagination: CustomPagination,
