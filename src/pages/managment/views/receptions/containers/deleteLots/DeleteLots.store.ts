@@ -7,10 +7,12 @@ interface DeleteLotsStoreState {
   removeId: (id: number) => void;
 }
 
-export const useAddOwnerStore = create<DeleteLotsStoreState>((set) => ({
-  idList: [8],
-  clearList: () => set(() => ({ idList: [] })),
-  addId: (id) => set((state) => ({ idList: [...state.idList, id] })),
-  removeId: (id) =>
-    set((state) => ({ idList: state.idList.filter((item) => item !== id) })),
-}));
+export const useDeletePendingLotsStore = create<DeleteLotsStoreState>(
+  (set) => ({
+    idList: [],
+    clearList: () => set(() => ({ idList: [] })),
+    addId: (id) => set((state) => ({ idList: [...state.idList, id] })),
+    removeId: (id) =>
+      set((state) => ({ idList: state.idList.filter((item) => item !== id) })),
+  })
+);

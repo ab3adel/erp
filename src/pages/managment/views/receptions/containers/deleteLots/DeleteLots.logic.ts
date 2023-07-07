@@ -1,11 +1,11 @@
 import { useDeletePendingLotsMutation } from "@/shared/hooks/graphql/mutation/deletePendingLots/useDeletePendingLots";
-import { useAddOwnerStore } from "./DeleteLots.store";
+import { useDeletePendingLotsStore } from "./DeleteLots.store";
 import { enqueueSnackbar } from "notistack";
 
 export const useLogic = () => {
-  const idList = useAddOwnerStore((state) => state.idList);
+  const idList = useDeletePendingLotsStore((state) => state.idList);
 
-  const clearIdList = useAddOwnerStore((state) => state.clearList);
+  const clearIdList = useDeletePendingLotsStore((state) => state.clearList);
 
   const [mutateRemoveLots, { loading }] = useDeletePendingLotsMutation();
 
