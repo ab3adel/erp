@@ -3,6 +3,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { ReceiptionsTable } from "./components/ReceiptionsTable";
 import { useGridApiRef } from "@mui/x-data-grid-pro";
 import { useAddReceiption } from "./hooks";
+import DeleteLots from "./containers/deleteLots/DeleteLots";
 
 export const Receiptions = () => {
   const apiRef = useGridApiRef();
@@ -10,6 +11,7 @@ export const Receiptions = () => {
 
   return (
     <Box>
+      <DeleteLots />
       <Button
         startIcon={<AddIcon />}
         sx={{ position: "absolute", top: "10px", right: 0 }}
