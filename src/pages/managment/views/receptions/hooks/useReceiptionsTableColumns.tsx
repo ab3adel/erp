@@ -4,16 +4,18 @@ import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { AccountsEditSelect } from "../components/AccountsEditSelect";
+import DateRangeContainer from '@/shared/components/dateRangePicker/DateRangeContainer'
+
 export const useReceiptionsTableColumns = () => {
   const navigate = useNavigate();
-
+  
   const columns: GridColDef[] = [
     {
       field: "receptionDate",
       headerName: "Reception Date",
       width: 180,
-      type: "date",
-      editable: true,
+      editable: false,
+      renderCell: () => <DateRangeContainer  />
     },
     {
       field: "status",
@@ -22,7 +24,7 @@ export const useReceiptionsTableColumns = () => {
       type: "singleSelect",
       valueOptions: ["pending", "approved"],
       renderCell: ({ value }) =>
-        value ? <Chip label={value} color="primary" /> : <></>,
+        value ? <Chip label={value} color={value === 'pending' ? 'warning' : 'primary'} /> : <></>,
       editable: true,
     },
     {

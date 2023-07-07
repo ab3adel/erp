@@ -16,7 +16,7 @@ export const useReceiptionsTableRows = (): {
         status: lot.status,
         accountId: lot.account.id,
         accountName: lot.account.name,
-        lotNumber: '',
+        lotNumber: lot.uuid,
         grade: lot.grade,
         weight: lot.weight,
         totalCost: lot.total_price,

@@ -14,9 +14,7 @@ export const ReceiptionsTable = ({
   const { rows, loading } = useReceiptionsTableRows();
   const columns = useReceiptionsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
-
-  console.log(rows)
-
+  
   return (
     <div style={{ width: "100%" }}>
       <div style={{ height: 450, width: "100%" }}>
