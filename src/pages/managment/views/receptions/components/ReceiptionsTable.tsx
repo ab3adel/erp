@@ -23,7 +23,7 @@ export const ReceiptionsTable = ({
     pageSize: 10,
   });
   const { rows, loading, paginatorInfo } = useReceiptionsTableRows(paginationModel);
-console.log(paginatorInfo)
+
   return (
     <div style={{ width: "100%" }}>
       <div style={{ height: 450, width: "100%" }}>
