@@ -2,12 +2,21 @@ import { useQuery } from "@apollo/client";
 import { DataGridRow, Response } from "../types";
 import { useMemo } from "react";
 import { receptions } from "../graphql/queries/receptions";
+import { PaginatorInfo } from "@/shared/models/models";
+import { GridPaginationModel } from "@mui/x-data-grid-pro";
 
-export const useReceiptionsTableRows = (): {
+export const useReceiptionsTableRows = (paginationModel: GridPaginationModel): {
   rows: DataGridRow[];
   loading: boolean;
+  paginatorInfo: PaginatorInfo | null;
 } => {
-  const { data, loading } = useQuery<Response>(receptions);
+  const { data, loading } = useQuery<Response>(receptions, {
+    variables: {
+      first: paginationModel.pageSize,
+      page: paginationModel.page + 1,
+    },
+  });
+
   const rows: DataGridRow[] = useMemo(() => {
     return (
       data?.lots?.data?.map?.((lot) => ({
@@ -29,5 +38,9 @@ export const useReceiptionsTableRows = (): {
     );
   }, [data]);
 
-  return { rows, loading };
+  const paginatorInfo = data?.lots.paginatorInfo || null
+
+  console.log(data)
+
+  return { rows, loading, paginatorInfo };
 };

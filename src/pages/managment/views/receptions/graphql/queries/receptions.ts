@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const receptions = gql`
-query Lots {
-  lots(first: 10) {
+query Lots($first: Int!, $page: Int!) {
+    lots(first: $first, page: $page) {
       data {
           id
           uuid
@@ -35,6 +35,17 @@ query Lots {
             id
             name
           }
+
+      }
+      paginatorInfo {
+        count
+        currentPage
+        firstItem
+        hasMorePages
+        lastItem
+        lastPage
+        perPage
+        total
       }
   }
 }

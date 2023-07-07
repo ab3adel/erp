@@ -1,3 +1,5 @@
+import { PaginatorInfo } from "@/shared/models/models";
+
 interface Account {
   name: string;
 }
@@ -56,7 +58,7 @@ interface ResponseCollectionMeta {
 
 interface ReceptionEntityResponseCollection {
   data: ReceptionEntity[];
-  meta: ResponseCollectionMeta;
+  paginatorInfo: PaginatorInfo;
 }
 
 export interface DataGridRow {
