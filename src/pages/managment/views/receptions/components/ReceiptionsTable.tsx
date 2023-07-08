@@ -56,8 +56,21 @@ export const ReceiptionsTable = ({
               isRowAdded,
               dispatch,
             },
+            headerFilterCell: {
+              InputComponentProps: {
+                sx: {
+                  "&::before, &::after": {
+                    borderBottom: "none !important",
+                  },
+                  "& .MuiInputBase-root": {
+                    "&::before, &::after": {
+                      borderBottom: "none !important",
+                    },
+                  },
+                },
+              },
+            },
           }}
-          
           slots={{
             toolbar: ReceiptionsTableToolbar,
             pagination: CustomPagination,
