@@ -8,6 +8,6 @@ export interface MergeLotsInput {
 
 export const useMergeLotsMutation = () => {
   return useMutation<unknown, MergeLotsInput>(mutation, {
-    refetchQueries: [],
+    refetchQueries: ["Lots"],
   });
 };

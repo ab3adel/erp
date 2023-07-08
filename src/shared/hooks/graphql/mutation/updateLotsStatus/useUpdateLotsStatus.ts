@@ -8,6 +8,6 @@ export interface UpdateLotsStatusInput {
 
 export const useUpdateLotsStatusMutation = () => {
   return useMutation<unknown, UpdateLotsStatusInput>(mutation, {
-    refetchQueries: [],
+    refetchQueries: ["Lots"],
   });
 };
