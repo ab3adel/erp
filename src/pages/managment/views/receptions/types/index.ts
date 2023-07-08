@@ -1,4 +1,4 @@
-import { PaginatorInfo } from "@/shared/models/models";
+import { PaginatorInfo, Tag } from "@/shared/models/models";
 
 interface Account {
   name: string;
@@ -12,39 +12,39 @@ interface Lot {
 }
 
 interface ReceptionEntity {
-  id: string,
-  uuid: string,
-  status: string,
-  grade: string,
-  weight: string,
-  commission_uom: string,
-  total_price: number,
-  cherry_price: number,
-  name: string,
-  cupping_score: string,
-  coffee_state: string,
-  reception_date: string,
-  cost_per_uom: string,
-  is_paid: boolean,
-  is_combined: true,
-  certification: string,
+  id: string;
+  uuid: string;
+  status: string;
+  grade: string;
+  weight: string;
+  commission_uom: string;
+  total_price: number;
+  cherry_price: number;
+  name: string;
+  cupping_score: string;
+  coffee_state: string;
+  reception_date: string;
+  cost_per_uom: string;
+  is_paid: boolean;
+  is_combined: true;
+  certification: string;
   receivedTo: {
-    id: number,
-    name: string
-  },
+    id: number;
+    name: string;
+  };
   account: {
-    id: number,
-    name: string
-  },
+    id: number;
+    name: string;
+  };
   currency: {
-    id: string
-    name: string
-  }
+    id: string;
+    name: string;
+  };
   tags: [
     {
-      id: string
+      id: string;
     }
-  ]
+  ];
 }
 
 interface ResponseCollectionMeta {
@@ -76,6 +76,7 @@ export interface DataGridRow {
   uom: string;
   cherry_price: number;
   currency_fixed: string;
+  tags: Tag[];
 }
 
 export interface Response {
@@ -94,4 +95,7 @@ type SaveReceiptAction = {
   type: "SAVE_RECEIPTION";
 };
 
-export type Action = AddReceiptionAction | CancelReceiptionAction | SaveReceiptAction;
+export type Action =
+  | AddReceiptionAction
+  | CancelReceiptionAction
+  | SaveReceiptAction;

@@ -77,6 +77,7 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
     },
     { input: AccountInput }
   >(saveAccount, { refetchQueries: ["AccountsQuery"] });
+
   const columns = apiRef.current
     .getAllColumns()
     .map((clm) => clm.field)
@@ -113,7 +114,12 @@ export const AccountsTableToolbar = (props: AccountsTableToolbarProps) => {
               ...tag,
               id: Number(tag.id),
             })),
-            { ...tag, id: Number(tag.id), group: "Account", tenant_id: undefined },
+            {
+              ...tag,
+              id: Number(tag.id),
+              group: "Account",
+              tenant_id: undefined,
+            },
           ],
         },
       },

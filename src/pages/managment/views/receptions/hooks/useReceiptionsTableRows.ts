@@ -51,6 +51,7 @@ export const useReceiptionsTableRows = (
         uom: lot.cost_per_uom,
         cherry_price: lot.cherry_price,
         currency_fixed: lot.currency?.name,
+        tags: lot.tags,
       })) || []
     );
   }, [data]);

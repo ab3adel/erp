@@ -110,6 +110,7 @@ export const useAccountsTableColumns = ({
       width: 150,
       editable: true,
       group: "account details",
+
       renderCell: (params) => (
         <Link
           sx={{

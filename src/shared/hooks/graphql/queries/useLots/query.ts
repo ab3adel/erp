@@ -30,6 +30,10 @@ export const query = gql`
         }
         tags {
           id
+          name
+          color
+          group
+          tenant_id
         }
         currency {
           id

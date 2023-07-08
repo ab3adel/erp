@@ -12,6 +12,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import DeleteAction from "./deleteAction/DeleteAction";
 import ApprovePendingLotesAction from "./approvePendingLotsAction/approvePendingLotsAction";
 import CustomizeColumns from "./customizeColumns/customizeColumns";
+import TagAction from "./tagAction/TagAction";
 
 export const ReceiptionsTableToolbar = (
   props: ReceiptionsTableToolbarProps
@@ -22,6 +23,7 @@ export const ReceiptionsTableToolbar = (
     <GridToolbarContainer sx={{ justifyContent: "end", m: 2 }}>
       {rowsSelection.length > 0 && !isRowAdded && <ApprovePendingLotesAction />}
       {rowsSelection.length > 0 && !isRowAdded && <DeleteAction />}
+      {rowsSelection.length > 0 && !isRowAdded && <TagAction />}
       <Divider orientation="vertical" />
 
       {isRowAdded ? (
