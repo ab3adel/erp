@@ -1,7 +1,13 @@
 import { useReceiptionsTableColumns } from "../hooks/useReceiptionsTableColumns";
 import { useReceiptionsTableRows } from "../hooks/useReceiptionsTableRows";
-import { DataGridPro, GridColDef, GridColumnVisibilityModel, GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
-import { ReceiptionsTableToolbar } from "./ReceiptionsTableToolbar";
+import {
+  DataGridPro,
+  GridColDef,
+  GridColumnVisibilityModel,
+  GridFilterModel,
+  GridPaginationModel,
+} from "@mui/x-data-grid-pro";
+import { ReceiptionsTableToolbar } from "../containers/receiptionsTableToolbar/ReceiptionsTableToolbar";
 import { useState } from "react";
 import { Action } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
@@ -24,7 +30,10 @@ export const ReceiptionsTable = ({
   });
 
   const [filterModel, setFilterModel] = useState<GridFilterModel>();
-  const { rows, loading, paginatorInfo } = useReceiptionsTableRows(paginationModel, filterModel);
+  const { rows, loading, paginatorInfo } = useReceiptionsTableRows(
+    paginationModel,
+    filterModel
+  );
 
   return (
     <div style={{ width: "100%" }}>
@@ -57,7 +66,6 @@ export const ReceiptionsTable = ({
               dispatch,
             },
           }}
-          
           slots={{
             toolbar: ReceiptionsTableToolbar,
             pagination: CustomPagination,

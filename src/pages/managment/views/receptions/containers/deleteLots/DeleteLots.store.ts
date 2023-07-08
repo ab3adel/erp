@@ -5,6 +5,7 @@ interface DeleteLotsStoreState {
   clearList: () => void;
   addId: (id: number) => void;
   removeId: (id: number) => void;
+  setIdList: (idList: number[]) => void;
 }
 
 export const useDeletePendingLotsStore = create<DeleteLotsStoreState>(
@@ -14,5 +15,6 @@ export const useDeletePendingLotsStore = create<DeleteLotsStoreState>(
     addId: (id) => set((state) => ({ idList: [...state.idList, id] })),
     removeId: (id) =>
       set((state) => ({ idList: state.idList.filter((item) => item !== id) })),
+    setIdList: (idList) => set(() => ({ idList })),
   })
 );
