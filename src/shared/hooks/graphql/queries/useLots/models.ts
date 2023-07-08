@@ -1,14 +1,16 @@
 import { Lot, PaginatorInfo } from "@/shared/models/models";
 
 export interface LotsData {
-  data: {
-    lots: {
-      data: Lot[];
-      paginatorInfo: PaginatorInfo;
-    };
+  lots: {
+    data: Lot[];
+    paginatorInfo: PaginatorInfo;
   };
 }
 
 export interface Params {
-  ids: number[];
+  filter?: {
+    ids?: number[];
+  };
+  first?: number;
+  page?: number;
 }

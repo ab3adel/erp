@@ -9,7 +9,7 @@ interface ApprovePendingLotsStoreState {
 
 export const useApprovePendingLotsStore = create<ApprovePendingLotsStoreState>(
   (set) => ({
-    idList: [],
+    idList: [5, 6],
     clearList: () => set(() => ({ idList: [] })),
     addId: (id) => set((state) => ({ idList: [...state.idList, id] })),
     removeId: (id) =>

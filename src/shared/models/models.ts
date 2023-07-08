@@ -171,16 +171,16 @@ export interface Lot {
   is_paid: boolean | null;
   is_combined: boolean | null;
   certification: string | null;
-  receivedTo: {
+  receivedTo?: {
     id: number;
     name: string;
   };
-  account: {
+  account?: {
     id: number;
     name: string;
   };
   tags: Pick<Tag, "id">[];
-  currency: {
+  currency?: {
     id: number;
     name: string;
   };

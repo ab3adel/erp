@@ -4,6 +4,8 @@ import { useFormik } from "formik";
 import { schema } from "./ApproveLots.validation";
 import { useMergeLotsMutation } from "@/shared/hooks/graphql/mutation/mergeLots/useMergeLots";
 import { useUpdateLotsStatusMutation } from "@/shared/hooks/graphql/mutation/updateLotsStatus/useUpdateLotsStatus";
+import { useLots } from "@/shared/hooks/graphql/queries/useLots/useLots";
+import { useMemo } from "react";
 
 export const useLogic = () => {
   const idList = useApprovePendingLotsStore((state) => state.idList);
@@ -15,6 +17,17 @@ export const useLogic = () => {
 
   const [mutateMergeLots, { loading: loadingMergeLots }] =
     useMergeLotsMutation();
+
+  const { data } = useLots({ filter: { ids: idList } });
+
+  const totalWeight = useMemo(
+    () =>
+      data?.lots.data.reduce(
+        (sum, current) => (sum = sum + (current?.weight ?? 0)),
+        0
+      ),
+    [data?.lots.data]
+  );
 
   const loading = loadingUpdateLotStatus || loadingMergeLots;
 
@@ -57,5 +70,5 @@ export const useLogic = () => {
     },
   });
 
-  return { idList, clearIdList, form, loading };
+  return { idList, clearIdList, form, loading, totalWeight };
 };

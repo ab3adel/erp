@@ -2,7 +2,7 @@ import ApproveReceiptions from "../../components/ApproveReceiptions/ApproveRecei
 import { useLogic } from "./ApprovedLots.logic";
 
 const ApproveLots = () => {
-  const { clearIdList, idList, form, loading } = useLogic();
+  const { clearIdList, idList, form, loading, totalWeight } = useLogic();
   return (
     <ApproveReceiptions
       open={idList.length > 0}
@@ -18,6 +18,7 @@ const ApproveLots = () => {
         onClick: form.submitForm,
         disabled: !form.isValid || loading,
       }}
+      totalWeight={totalWeight}
       textfieldProps={{
         value: form.values["name"],
         name: "name",
