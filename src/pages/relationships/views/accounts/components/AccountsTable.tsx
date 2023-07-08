@@ -73,7 +73,6 @@ export const AccountsTable = ({
           unstable_headerFilters
           loading={loading}
           rows={rows}
-          
           paginationModel={paginationModel}
           onPaginationModelChange={(newModel) => {
             setPaginationModel(newModel);
