@@ -7,7 +7,10 @@ const ApproveLots = () => {
     <ApproveReceiptions
       open={idList.length > 0}
       type={idList.length === 1 ? "single" : "selection"}
-      onCancelClick={clearIdList}
+      onCancelClick={() => {
+        clearIdList();
+        form.resetForm();
+      }}
       approveAndCombineProps={{
         value: form.values["combined"],
         name: "combined",

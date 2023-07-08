@@ -10,6 +10,7 @@ import { Action } from "../../types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteAction from "./deleteAction/DeleteAction";
+import ApprovePendingLotesAction from "./approvePendingLotsAction/approvePendingLotsAction";
 
 export const ReceiptionsTableToolbar = (
   props: ReceiptionsTableToolbarProps
@@ -18,12 +19,9 @@ export const ReceiptionsTableToolbar = (
 
   return (
     <GridToolbarContainer sx={{ justifyContent: "end", m: 2 }}>
-      {rowsSelection.length > 0 && !isRowAdded && (
-        <>
-          <DeleteAction />
-          <Divider orientation="vertical" />
-        </>
-      )}
+      {rowsSelection.length > 0 && !isRowAdded && <ApprovePendingLotesAction />}
+      {rowsSelection.length > 0 && !isRowAdded && <DeleteAction />}
+      <Divider orientation="vertical" />
 
       {isRowAdded ? (
         <>
