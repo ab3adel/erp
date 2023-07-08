@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { DataGridRow, Response } from "../types";
 import { useMemo } from "react";
-import { receptions } from "@/shared/hooks/graphql/queries/lots/receptions";
+import { receptions } from "@/shared/hooks/graphql/queries/useLots/query";
 import { PaginatorInfo } from "@/shared/models/models";
 import { GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
 

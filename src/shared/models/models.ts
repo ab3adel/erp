@@ -153,3 +153,35 @@ type City = {
   id: number;
   name: string;
 };
+
+export interface Lot {
+  id: string;
+  uuid: string;
+  status: string;
+  grade: string;
+  weight: number | null;
+  commission_uom: string | null;
+  total_price: number;
+  cherry_price: number;
+  name: string | null;
+  cupping_score: string | null;
+  coffee_state: string;
+  reception_date: string | null;
+  cost_per_uom: number | null;
+  is_paid: boolean | null;
+  is_combined: boolean | null;
+  certification: string | null;
+  receivedTo: {
+    id: number;
+    name: string;
+  };
+  account: {
+    id: number;
+    name: string;
+  };
+  tags: Pick<Tag, "id">[];
+  currency: {
+    id: number;
+    name: string;
+  };
+}

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const receptions = gql`
-  query Lots($first: Int!, $page: Int!, $filter: LotFilter) {
+export const query = gql`
+  query Lots($first: Int, $page: Int, $filter: LotFilter) {
     lots(first: $first, page: $page, LotFilter: $filter) {
       data {
         id
