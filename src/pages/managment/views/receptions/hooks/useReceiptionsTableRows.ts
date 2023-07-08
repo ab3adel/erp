@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { DataGridRow, Response } from "../types";
 import { useMemo } from "react";
-import { receptions } from "../graphql/queries/receptions";
+import { receptions } from "@/shared/hooks/graphql/queries/lots/receptions";
 import { PaginatorInfo } from "@/shared/models/models";
 import { GridFilterModel, GridPaginationModel } from "@mui/x-data-grid-pro";
 
@@ -36,7 +36,9 @@ export const useReceiptionsTableRows = (
     return (
       data?.lots?.data?.map?.((lot) => ({
         id: lot.id,
-        receptionDate: lot.reception_date ? new Date(lot.reception_date) : new Date(),
+        receptionDate: lot.reception_date
+          ? new Date(lot.reception_date)
+          : new Date(),
         status: lot.status,
         accountId: lot.account.id,
         accountName: lot.account.name,
@@ -53,7 +55,7 @@ export const useReceiptionsTableRows = (
     );
   }, [data]);
 
-  const paginatorInfo = data?.lots.paginatorInfo || null
+  const paginatorInfo = data?.lots.paginatorInfo || null;
 
   return { rows, loading, paginatorInfo };
 };
