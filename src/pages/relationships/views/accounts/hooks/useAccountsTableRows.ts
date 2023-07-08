@@ -30,7 +30,17 @@ export const useAccountsTableRows = (
   });
 
   const rows = useMemo(() => {
-    const rows: Account[] = data?.accounts.data || [];
+    const rows: Account[] = data?.accounts.data.map((account) => {
+      return {
+        ...account,
+        tags: account.tags?.map((tag) => {
+          return {
+            ...tag,
+            group: 'Account'
+          }
+        })
+      }
+    }) || [];
     return rows;
   }, [data]);
 

@@ -84,6 +84,8 @@ export interface Tag {
   id: number;
   name: string;
   color: string;
+  group: string;
+  tenant_id: string
 }
 
 export interface Contact {

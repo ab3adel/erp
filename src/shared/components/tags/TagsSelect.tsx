@@ -69,6 +69,7 @@ export const TagsSelect: React.FC<TagDropdownProps> = ({
     {
       name: string;
       color: string;
+      group: "Account" | "Lot";
     }
   >(createTag, {
     refetchQueries: ["accountTags"],
@@ -99,6 +100,7 @@ export const TagsSelect: React.FC<TagDropdownProps> = ({
       variables: {
         color,
         name: inputValue,
+        group: type,
       },
     });
   };
