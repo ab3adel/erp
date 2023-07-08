@@ -14,7 +14,6 @@ const ApproveLots = () => {
         onChange: form.handleChange,
       }}
       withCombine={form.values.combined}
-      totalWeight={}
       confirmButtonProps={{
         onClick: form.submitForm,
         disabled: !form.isValid || loading,
