@@ -11,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteAction from "./deleteAction/DeleteAction";
 import ApprovePendingLotesAction from "./approvePendingLotsAction/approvePendingLotsAction";
+import CustomizeColumns from "./customizeColumns/customizeColumns";
 
 export const ReceiptionsTableToolbar = (
   props: ReceiptionsTableToolbarProps
@@ -51,7 +52,7 @@ export const ReceiptionsTableToolbar = (
         <></>
       )}
       <GridToolbarExport variant="text" />
-      <GridToolbarColumnsButton variant="text" />
+      <CustomizeColumns />
     </GridToolbarContainer>
   );
 };

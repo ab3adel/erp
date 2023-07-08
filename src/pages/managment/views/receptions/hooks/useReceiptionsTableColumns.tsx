@@ -4,27 +4,38 @@ import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { AccountsEditSelect } from "../components/AccountsEditSelect";
-import DateRangeContainer from '@/shared/components/dateRangePicker/DateRangeContainer'
+import DateRangeContainer from "@/shared/components/dateRangePicker/DateRangeContainer";
+
+type GroupedGridColumn = GridColDef & { group?: string };
 
 export const useReceiptionsTableColumns = () => {
   const navigate = useNavigate();
-  
-  const columns: GridColDef[] = [
+
+  const columns: GroupedGridColumn[] = [
     {
       field: "receptionDate",
       headerName: "Reception Date",
       width: 180,
+      group: "test",
       editable: false,
-      renderCell: () => <DateRangeContainer  />
+      renderCell: () => <DateRangeContainer />,
     },
     {
       field: "status",
       headerName: "Status",
       width: 100,
+      group: "test 2",
       type: "singleSelect",
       valueOptions: ["pending", "approved"],
       renderCell: ({ value }) =>
-        value ? <Chip label={value} color={value === 'pending' ? 'warning' : 'primary'} /> : <></>,
+        value ? (
+          <Chip
+            label={value}
+            color={value === "pending" ? "warning" : "primary"}
+          />
+        ) : (
+          <></>
+        ),
       editable: true,
     },
     {
@@ -42,6 +53,7 @@ export const useReceiptionsTableColumns = () => {
     {
       field: "lotNumber",
       headerName: "Lot Number",
+      group: "Lots Details",
       width: 150,
       type: "number",
       renderCell: ({ value }) => (
@@ -86,10 +98,12 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Grade",
       width: 100,
       editable: true,
+      group: "Lots Details",
     },
     {
       field: "weight",
       headerName: "Weight",
+      group: "Sample Details",
       width: 100,
       editable: true,
       type: "number",
@@ -113,6 +127,7 @@ export const useReceiptionsTableColumns = () => {
       headerName: "UoM",
       width: 100,
       editable: true,
+      group: "Sample Details",
     },
     {
       field: "cherry_price",
@@ -120,6 +135,7 @@ export const useReceiptionsTableColumns = () => {
       width: 100,
       type: "number",
       editable: true,
+      group: "Sample Details",
     },
     {
       field: "currency_fixed",

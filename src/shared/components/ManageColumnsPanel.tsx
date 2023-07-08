@@ -7,7 +7,6 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormLabel,
   Grid,
   IconButton,
   ListItem,
