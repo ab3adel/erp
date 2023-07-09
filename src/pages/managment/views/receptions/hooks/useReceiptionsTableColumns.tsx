@@ -69,6 +69,7 @@ export const useReceiptionsTableColumns = () => {
         ) : (
           <></>
         ),
+      editable: true,
     },
     {
       field: "accountId",
