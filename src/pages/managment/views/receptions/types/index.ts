@@ -43,6 +43,10 @@ interface ReceptionEntity {
   tags: [
     {
       id: string;
+      name: string;
+      color: string;
+      group: string;
+      tenant_id: string
     }
   ];
 }
@@ -63,17 +67,17 @@ interface ReceptionEntityResponseCollection {
 
 export interface DataGridRow {
   id: string;
-  receptionDate: Date;
+  reception_date: string;
   status: string;
   accountId: number;
   accountName: string;
   lotNumber: string;
   grade: string;
   weight: string;
-  totalCost: number;
+  total_price: number;
   payment: boolean;
-  commission: string;
-  uom: string;
+  commission_uom: string;
+  cost_per_uom: string;
   cherry_price: number;
   currency_fixed: string;
   tags: Tag[];

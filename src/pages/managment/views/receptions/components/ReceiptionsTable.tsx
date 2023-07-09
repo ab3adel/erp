@@ -13,12 +13,15 @@ import { Action } from "../types";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { ManageColumnsPanel } from "@/shared/components/ManageColumnsPanel";
 import { CustomPagination } from "@/pages/relationships/views/accounts/components/CustomPagination";
+import ReceptionsTableFooter from "./ReceptionsTableFooter/ReceptionsTableFooter";
 
 export const ReceiptionsTable = ({
   apiRef,
   dispatch,
   isRowAdded,
 }: ReceiptionsTableProps) => {
+
+  console.log(apiRef)
   const columns = useReceiptionsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
@@ -28,7 +31,6 @@ export const ReceiptionsTable = ({
     page: 0,
     pageSize: 10,
   });
-
   const [filterModel, setFilterModel] = useState<GridFilterModel>();
   const { rows, loading, paginatorInfo } = useReceiptionsTableRows(
     paginationModel,
@@ -37,7 +39,7 @@ export const ReceiptionsTable = ({
 
   return (
     <div style={{ width: "100%" }}>
-      <div style={{ height: 450, width: "100%" }}>
+      <div style={{ height: "63vh", width: "100%" }}>
         <DataGridPro
           loading={loading}
           apiRef={apiRef}
@@ -83,6 +85,7 @@ export const ReceiptionsTable = ({
           slots={{
             toolbar: ReceiptionsTableToolbar,
             pagination: CustomPagination,
+            footer: () => <ReceptionsTableFooter apiRef={apiRef} />,
           }}
           pagination
           pageSizeOptions={[10, 25, 50]}

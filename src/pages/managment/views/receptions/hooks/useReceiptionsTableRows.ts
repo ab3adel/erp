@@ -10,21 +10,22 @@ export const useReceiptionsTableRows = (
   filterModel?: GridFilterModel,
   typeId?: number
 ): {
+
   rows: DataGridRow[];
   loading: boolean;
   paginatorInfo: PaginatorInfo | null;
 } => {
   const { data, loading } = useQuery<Response>(receptions, {
     variables: {
-      first: paginationModel.pageSize,
-      page: paginationModel.page + 1,
+      first: filterModel ? undefined : paginationModel.pageSize,
+      page:  filterModel ? undefined : paginationModel.page + 1,
       ...(filterModel && {
         filter: filterModel?.items.reduce((acc, item) => {
           return {
             ...acc,
-            [item.field]: Number(item.value)
+            [item.field]: Number(item.value) || Number(item.value) === 0
               ? { min: Number(item.value), max: Number(item.value) }
-              : "%" + item.value + "%",
+              : item.value,
             ...(typeId && { type_id: typeId }),
           };
         }, {}),
@@ -36,19 +37,17 @@ export const useReceiptionsTableRows = (
     return (
       data?.lots?.data?.map?.((lot) => ({
         id: lot?.id,
-        receptionDate: lot.reception_date
-          ? new Date(lot.reception_date)
-          : new Date(),
+        reception_date: lot.reception_date,
         status: lot.status,
         accountId: lot.account?.id,
         accountName: lot.account?.name,
         lotNumber: lot.uuid,
         grade: lot.grade,
         weight: lot.weight,
-        totalCost: lot.total_price,
+        total_price: lot.total_price,
         payment: lot.is_paid,
-        commission: lot.commission_uom,
-        uom: lot.cost_per_uom,
+        commission_uom: lot.commission_uom,
+        cost_per_uom: lot.cost_per_uom,
         cherry_price: lot.cherry_price,
         currency_fixed: lot.currency?.name,
         tags: lot.tags,

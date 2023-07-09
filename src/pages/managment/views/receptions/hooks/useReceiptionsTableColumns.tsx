@@ -1,5 +1,9 @@
 import { Chip, Link } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid-pro";
+import {
+  GridColDef,
+  GridFilterInputValue,
+  GridFilterItem,
+} from "@mui/x-data-grid-pro";
 import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -13,12 +17,34 @@ export const useReceiptionsTableColumns = () => {
 
   const columns: GroupedGridColumn[] = [
     {
-      field: "receptionDate",
+      field: "reception_date",
       headerName: "Reception Date",
       width: 180,
       group: "test",
       editable: false,
-      renderCell: () => <DateRangeContainer />,
+      filterOperators: [
+        {
+          label: "is",
+          value: "is",
+          getApplyFilterFn: (filterItem: GridFilterItem) => {
+            const filterValue = filterItem.value;
+            return (params) => {
+              const value = params.value as Date;
+              return value.getTime() === filterValue.getTime();
+            };
+          },
+          InputComponent: (props) => (
+            <DateRangeContainer
+              startdate={new Date()}
+              endDate={null}
+              hundleChangeDateFilter={props}
+            />
+          ),
+        },
+      ],
+      renderCell: (params) => {
+        return <DateRangeContainer startdate={params.value} endDate={null} />;
+      },
     },
     {
       field: "status",
@@ -26,12 +52,19 @@ export const useReceiptionsTableColumns = () => {
       width: 100,
       group: "test 2",
       type: "singleSelect",
-      valueOptions: ["pending", "approved"],
+      valueOptions: ["pending", "approved", "inactive"],
       renderCell: ({ value }) =>
         value ? (
           <Chip
             label={value}
-            color={value === "pending" ? "warning" : "primary"}
+            color={
+              value === "pending"
+                ? "warning"
+                : value === "inactive"
+                ? "error"
+                : "primary"
+            }
+            sx={{ textTransform: "capitalize" }}
           />
         ) : (
           <></>
@@ -99,6 +132,17 @@ export const useReceiptionsTableColumns = () => {
       width: 100,
       editable: true,
       group: "Lots Details",
+      filterOperators: [
+        {
+          label: "equals",
+          value: "equals",
+          getApplyFilterFn: (filterItem: GridFilterItem) => {
+            return filterItem.value;
+          },
+          InputComponent: GridFilterInputValue,
+          InputComponentProps: { type: "string" },
+        },
+      ],
     },
     {
       field: "weight",
@@ -109,21 +153,21 @@ export const useReceiptionsTableColumns = () => {
       type: "number",
     },
     {
-      field: "totalCost",
+      field: "total_price",
       headerName: "Total Cost",
       width: 150,
       type: "number",
       editable: true,
     },
     {
-      field: "commission",
+      field: "commission_uom",
       headerName: "Commission",
       width: 100,
       type: "number",
       editable: true,
     },
     {
-      field: "uom",
+      field: "cost_per_uom",
       headerName: "UoM",
       width: 100,
       editable: true,
