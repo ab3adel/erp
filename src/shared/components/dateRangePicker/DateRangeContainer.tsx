@@ -68,7 +68,7 @@ const DateRangeContainer: FunctionComponent<DateRangeContainerProps> = ({
           }`
         ) : (
           <Typography sx={{ fontStyle: "italic", opacity: 0.8 }}>
-            Select date
+            Empty
           </Typography>
         )}
       </Typography>

@@ -10,7 +10,6 @@ export const useReceiptionsTableRows = (
   filterModel?: GridFilterModel,
   typeId?: number
 ): {
-
   rows: DataGridRow[];
   loading: boolean;
   paginatorInfo: PaginatorInfo | null;
@@ -18,14 +17,15 @@ export const useReceiptionsTableRows = (
   const { data, loading } = useQuery<Response>(receptions, {
     variables: {
       first: filterModel ? undefined : paginationModel.pageSize,
-      page:  filterModel ? undefined : paginationModel.page + 1,
+      page: filterModel ? undefined : paginationModel.page + 1,
       ...(filterModel && {
         filter: filterModel?.items.reduce((acc, item) => {
           return {
             ...acc,
-            [item.field]: Number(item.value) || Number(item.value) === 0
-              ? { min: Number(item.value), max: Number(item.value) }
-              : item.value,
+            [item.field]:
+              Number(item.value) || Number(item.value) === 0
+                ? { min: Number(item.value), max: Number(item.value) }
+                : item.value,
             ...(typeId && { type_id: typeId }),
           };
         }, {}),
@@ -36,7 +36,7 @@ export const useReceiptionsTableRows = (
   const rows: DataGridRow[] = useMemo(() => {
     return (
       data?.lots?.data?.map?.((lot) => ({
-        id: lot?.id,
+        id: Number(lot?.id),
         reception_date: lot.reception_date,
         status: lot.status,
         accountId: lot.account?.id,

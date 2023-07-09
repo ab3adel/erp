@@ -9,8 +9,7 @@ interface ReceptionsTableFooterProps {
 
 const ReceptionsTableFooter: FunctionComponent<
   ReceptionsTableFooterProps
-> = ({apiRef}) => {
-
+> = () => {
   const containerStyle = {
     px: "24px",
     py: "14px",
@@ -32,8 +31,6 @@ const ReceptionsTableFooter: FunctionComponent<
       {value}
     </Box>
   );
-
-  console.log(apiRef.current.getSelectedRows())
 
   return (
     <Box mt="auto" display="flex" flexDirection="column">

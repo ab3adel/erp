@@ -21,7 +21,7 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Reception Date",
       width: 180,
       group: "test",
-      editable: false,
+      editable: true,
       filterOperators: [
         {
           label: "is",
@@ -69,7 +69,6 @@ export const useReceiptionsTableColumns = () => {
         ) : (
           <></>
         ),
-      editable: true,
     },
     {
       field: "accountId",
@@ -88,6 +87,7 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Lot Number",
       group: "Lots Details",
       width: 150,
+
       type: "number",
       renderCell: ({ value }) => (
         <Link

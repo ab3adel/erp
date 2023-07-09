@@ -2,9 +2,13 @@ import TableSaveCancelActions from "@/shared/components/tableSaveCancelActions/T
 import { useLogic } from "./insertUpdateAction.logic";
 
 const InsertUpdateAction = () => {
-  const { isInEditMode } = useLogic();
+  const { isInEditMode, handleCancel } = useLogic();
 
-  return isInEditMode && <TableSaveCancelActions />;
+  return isInEditMode ? (
+    <TableSaveCancelActions cancelProps={{ onClick: handleCancel }} />
+  ) : (
+    <></>
+  );
 };
 
 export default InsertUpdateAction;

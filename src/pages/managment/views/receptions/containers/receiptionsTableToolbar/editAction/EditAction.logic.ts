@@ -13,7 +13,7 @@ export const useLogic = () => {
   const { isInEditMode } = useCheckMode();
 
   const handleTriggerEdit = () => {
-    apiRef.current.startRowEditMode({ id: rowsSelection[0] });
+    apiRef.current.startRowEditMode({ id: Number(rowsSelection[0]) });
   };
 
   return { handleTriggerEdit, rowsSelection, isInEditMode };
