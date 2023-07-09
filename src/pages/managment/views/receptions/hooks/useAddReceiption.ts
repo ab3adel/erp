@@ -4,9 +4,7 @@ import { useGenericMutation } from "@/shared";
 import { saveReceiption } from "../graphql/mutations/saveReceiption";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 
-export const useAddReceiption = (
-  ref: React.MutableRefObject<GridApiPro>
-) => {
+export const useAddReceiption = (ref: React.MutableRefObject<GridApiPro>) => {
   const [isRowAdded, setIsRowAdded] = React.useState(false);
   const [save] = useGenericMutation<{ __typename: string }, Variables>(
     saveReceiption,

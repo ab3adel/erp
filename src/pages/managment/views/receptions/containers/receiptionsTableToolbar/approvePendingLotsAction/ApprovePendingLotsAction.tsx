@@ -3,9 +3,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useLogic } from "./ApprovePendingLotsAction.logic";
 
 const ApprovePendingLotesAction = () => {
-  const { handleSetIdList } = useLogic();
+  const { handleSetIdList, isInEditMode } = useLogic();
   return (
-    <Button variant="text" startIcon={<CheckIcon />} onClick={handleSetIdList}>
+    <Button
+      sx={{ display: isInEditMode ? "none" : undefined }}
+      variant="text"
+      startIcon={<CheckIcon />}
+      onClick={handleSetIdList}
+    >
       Approve
     </Button>
   );

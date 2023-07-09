@@ -3,6 +3,7 @@ import { useUpdateOrInsertLotMutation } from "@/shared/hooks/graphql/mutation/up
 import { Tag } from "@/shared/models/models";
 import { useGridApiContext } from "@mui/x-data-grid-pro";
 import { useState } from "react";
+import { useCheckMode } from "../../../hooks/useCheckMode";
 
 export const useLogic = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -17,11 +18,13 @@ export const useLogic = () => {
 
   const [editLot] = useUpdateOrInsertLotMutation();
 
+  const { isInEditMode } = useCheckMode();
+
   const handleDeleteTag = (tag: Tag) => {
     removeTags({
       variables: {
         ids: [Number(tag.id)],
-        lotId: selectedRow.id,
+        lotId: Number(selectedRow.id),
       },
     });
   };
@@ -54,5 +57,6 @@ export const useLogic = () => {
     selectedRow,
     handleDeleteTag,
     handleAddTag,
+    isInEditMode,
   };
 };

@@ -1,59 +1,29 @@
-import {
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  GridToolbarProps,
-} from "@mui/x-data-grid-pro";
-import { Box, Button, Divider } from "@mui/material";
-
+import { GridToolbarContainer, GridToolbarProps } from "@mui/x-data-grid-pro";
+import { Divider } from "@mui/material";
 import { Action } from "../../types";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SaveIcon from "@mui/icons-material/Save";
 import DeleteAction from "./deleteAction/DeleteAction";
-import ApprovePendingLotesAction from "./approvePendingLotsAction/approvePendingLotsAction";
-import CustomizeColumns from "./customizeColumns/customizeColumns";
+import ApprovePendingLotesAction from "./approvePendingLotsAction/ApprovePendingLotsAction";
+import CustomizeColumns from "./customizeColumns/CustomizeColumns";
 import TagAction from "./tagAction/TagAction";
+import ExportActions from "./exportAction/ExportAction";
+import EditAction from "./editAction/EditAction";
+import InsertUpdateAction from "./insertUpdateAction/InsertUpdateAction";
 
 export const ReceiptionsTableToolbar = (
   props: ReceiptionsTableToolbarProps
 ) => {
-  const { rowsSelection, dispatch, isRowAdded } = props;
+  const { rowsSelection, isRowAdded } = props;
 
   return (
     <GridToolbarContainer sx={{ justifyContent: "end", m: 2 }}>
       {rowsSelection.length > 0 && !isRowAdded && <ApprovePendingLotesAction />}
       {rowsSelection.length > 0 && !isRowAdded && <DeleteAction />}
       {rowsSelection.length > 0 && !isRowAdded && <TagAction />}
+      {rowsSelection.length > 0 && !isRowAdded && <EditAction />}
+      <InsertUpdateAction />
       <Divider orientation="vertical" />
 
-      {isRowAdded ? (
-        <>
-          <Box display="flex" columnGap={2}>
-            <Button
-              variant="text"
-              startIcon={<SaveIcon />}
-              onClick={() => {
-                dispatch({ type: "SAVE_RECEIPTION" });
-              }}
-            >
-              Save row
-            </Button>
-            <Button
-              variant="text"
-              startIcon={<DeleteIcon />}
-              onClick={() => {
-                dispatch({ type: "CANCEL_RECEIPTION" });
-              }}
-            >
-              Cancel
-            </Button>
-          </Box>
-          <Divider orientation="vertical" />
-        </>
-      ) : (
-        <></>
-      )}
-      <GridToolbarExport variant="text" />
+      <ExportActions />
       <CustomizeColumns />
     </GridToolbarContainer>
   );

@@ -1,3 +1,4 @@
+import { useCheckMode } from "../../../hooks/useCheckMode";
 import { useDeletePendingLotsStore } from "../../deleteLots/DeleteLots.store";
 import {
   gridRowSelectionStateSelector,
@@ -12,8 +13,10 @@ export const useLogic = () => {
 
   const rowsSelection = useGridSelector(apiRef, gridRowSelectionStateSelector);
 
+  const { isInEditMode } = useCheckMode();
+
   const handleSetIdList = () =>
     setDeleteIdList(rowsSelection.map((item) => Number(item)));
 
-  return { rowsSelection, handleSetIdList };
+  return { rowsSelection, handleSetIdList, isInEditMode };
 };

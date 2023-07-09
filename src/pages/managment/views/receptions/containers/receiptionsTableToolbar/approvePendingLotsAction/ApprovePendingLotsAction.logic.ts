@@ -1,3 +1,4 @@
+import { useCheckMode } from "../../../hooks/useCheckMode";
 import { useApprovePendingLotsStore } from "../../approveLots/ApproveLots.store";
 import {
   gridRowSelectionStateSelector,
@@ -14,8 +15,10 @@ export const useLogic = () => {
 
   const rowsSelection = useGridSelector(apiRef, gridRowSelectionStateSelector);
 
+  const { isInEditMode } = useCheckMode();
+
   const handleSetIdList = () =>
     setApproveIdList(rowsSelection.map((item) => Number(item)));
 
-  return { handleSetIdList };
+  return { handleSetIdList, isInEditMode };
 };

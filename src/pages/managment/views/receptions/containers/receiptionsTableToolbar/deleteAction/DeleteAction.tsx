@@ -5,10 +5,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useLogic } from "./DeleteAction.logic";
 
 const DeleteAction: FunctionComponent = () => {
-  const { handleSetIdList, rowsSelection } = useLogic();
+  const { handleSetIdList, rowsSelection, isInEditMode } = useLogic();
 
   return (
     <Button
+      sx={{ display: isInEditMode ? "none" : undefined }}
       variant="text"
       startIcon={<DeleteIcon />}
       disabled={rowsSelection.length !== 1}

@@ -10,11 +10,13 @@ const TagAction = () => {
     selectedRow,
     handleDeleteTag,
     handleAddTag,
+    isInEditMode,
   } = useLogic();
 
   return (
     <>
       <Button
+        style={{ display: isInEditMode ? "none" : undefined }}
         variant="text"
         startIcon={<LocalOfferIcon />}
         onClick={handleTagButtonClick}
