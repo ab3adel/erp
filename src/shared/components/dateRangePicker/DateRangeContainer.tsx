@@ -44,8 +44,8 @@ const DateRangeContainer: FunctionComponent<DateRangeContainerProps> = ({
       if (!isNaN(date[1].getTime())) {
         hundleChangeDateFilter.applyValue({
           value: {
-            min: new Date(date[0]),
-            max: new Date(date[1]),
+            min: dayjs(date[0]).format("YYYY-MM-DD HH:mm:ss"),
+            max: dayjs(date[1]).format("YYYY-MM-DD HH:mm:ss"),
           },
           field: hundleChangeDateFilter.item.field,
         });

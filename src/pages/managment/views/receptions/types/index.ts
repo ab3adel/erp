@@ -16,7 +16,7 @@ interface ReceptionEntity {
   uuid: string;
   status: string;
   grade: string;
-  weight: string;
+  weight: number;
   commission_uom: string;
   total_price: number;
   cherry_price: number;
@@ -28,6 +28,7 @@ interface ReceptionEntity {
   is_paid: boolean;
   is_combined: true;
   certification: string;
+  lot_number: string;
   receivedTo: {
     id: number;
     name: string;
@@ -66,12 +67,11 @@ interface ReceptionEntityResponseCollection {
 }
 
 export interface DataGridRow {
-  id: string;
+  id: number;
   reception_date: string;
   status: string;
   accountId: number;
   accountName: string;
-  lotNumber: string;
   grade: string;
   weight: number;
   total_price: number;
@@ -81,6 +81,7 @@ export interface DataGridRow {
   cherry_price: number;
   currency_fixed: string;
   tags: Tag[];
+  lot_number: string;
 }
 
 export interface Response {

@@ -20,6 +20,7 @@ export const query = gql`
         is_paid
         is_combined
         certification
+        lot_number
         receivedTo {
           id
           name

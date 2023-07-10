@@ -41,7 +41,6 @@ export const useReceiptionsTableRows = (
         status: lot.status,
         accountId: lot.account?.id,
         accountName: lot.account?.name,
-        lotNumber: lot.uuid,
         grade: lot.grade,
         weight: lot.weight,
         total_price: lot.total_price,
@@ -51,6 +50,7 @@ export const useReceiptionsTableRows = (
         cherry_price: lot.cherry_price,
         currency_fixed: lot.currency?.name,
         tags: lot.tags,
+        lot_number: lot.lot_number,
       })) || []
     );
   }, [data]);

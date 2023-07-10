@@ -75,8 +75,7 @@ export const useReceiptionsTableColumns = () => {
       field: "accountId",
       headerName: "Account ID",
       width: 150,
-      renderEditCell: (props) => <AccountsEditSelect {...props} />,
-      editable: true,
+      editable: false,
     },
     {
       field: "accountName",
@@ -84,11 +83,10 @@ export const useReceiptionsTableColumns = () => {
       width: 150,
     },
     {
-      field: "lotNumber",
+      field: "lot_number",
       headerName: "Lot Number",
       group: "Lots Details",
       width: 150,
-
       type: "number",
       renderCell: ({ value }) => (
         <Link
@@ -99,7 +97,7 @@ export const useReceiptionsTableColumns = () => {
           {value}
         </Link>
       ),
-      editable: true,
+      editable: false,
     },
     {
       field: "payment",
