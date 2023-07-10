@@ -73,7 +73,7 @@ export interface DataGridRow {
   accountName: string;
   lotNumber: string;
   grade: string;
-  weight: string;
+  weight: number;
   total_price: number;
   payment: boolean;
   commission_uom: string;

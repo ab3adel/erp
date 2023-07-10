@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { FunctionComponent } from "react";
 

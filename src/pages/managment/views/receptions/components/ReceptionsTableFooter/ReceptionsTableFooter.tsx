@@ -1,8 +1,14 @@
 import { Box } from "@mui/material";
-import { GridFooter } from "@mui/x-data-grid-pro";
+import {
+  GridFooter,
+  gridRowsLookupSelector,
+  useGridApiContext,
+  useGridSelector,
+} from "@mui/x-data-grid-pro";
 import { GridApiPro } from "@mui/x-data-grid-pro/models/gridApiPro";
 import { FunctionComponent } from "react";
 import FormulaFooter from "../formulaFooter/FormulaFooter";
+import { DataGridRow } from "../../types";
 
 interface ReceptionsTableFooterProps {
   apiRef: React.MutableRefObject<GridApiPro>;
@@ -21,16 +27,28 @@ const ReceptionsTableFooter: FunctionComponent<
     borderBottom: "1px solid #dcdcdc",
   };
 
+  const apiRef = useGridApiContext();
+
+  const rows = useGridSelector(apiRef, gridRowsLookupSelector);
+  const rowsArr: DataGridRow[] = Object.keys(rows).map((key) => ({ id: key, ...rows[key] }));
+
+  const totalCost = rowsArr.reduce((acc, row) => acc + row.total_price, 0)
+  const totalWeight = rowsArr.reduce((acc, row) => acc +row.weight, 0)
+
+  const totalCostStr = `Total Cost: USD$${totalCost.toLocaleString()}`
+  const totalWeightStr = `Total Weight: ${totalWeight.toLocaleString()} Kg`
+  const tatalAvargeUnitCostStr = `Total Average Unit Cost: ${totalCost / totalWeight} USD/Kg`
+
   return (
     <Box mt="auto" display="flex" flexDirection="column">
       <Box sx={{ ...containerStyle }}>
         <FormulaFooter
           formulaList={[
-            "Total Cost: USD$84,568.45",
+            totalCostStr,
             "/",
-            "Total Weight: 34,568.45 Kg",
+            totalWeightStr,
           ]}
-          result="Total Average Unit Cost: 2.45 USD/Kg"
+          result={tatalAvargeUnitCostStr}
         />
       </Box>
       <GridFooter />

@@ -20,7 +20,6 @@ export const ReceiptionsTable = ({
   dispatch,
   isRowAdded,
 }: ReceiptionsTableProps) => {
-  console.log(apiRef);
   const columns = useReceiptionsTableColumns();
   const [rowsSelection, setRowsSelection] = useState<string[]>([]);
   const [columnsState, setColumnsState] = useState<GridColDef[]>(columns);
