@@ -2,7 +2,6 @@ import {
   GridColDef,
   GridEditInputCell,
   GridRenderEditCellParams,
-  GridCellProps,
   GridRenderCellParams,
 } from "@mui/x-data-grid-pro";
 import LinearProgress, {
@@ -192,6 +191,7 @@ export const useAccountsTableColumns = ({
         </Typography>
       ),
       align: "right",
+      editable: true,
     },
     {
       field: "accountType",

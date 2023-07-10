@@ -37,18 +37,20 @@ const ReceptionsTableFooter: FunctionComponent<
     ...rows[key],
   }));
 
-  const totalCost = rowsSelection.size !==0
-    ? Array.from(rowsSelection.values()).reduce(
-        (acc, row) => acc + row.total_price,
-        0
-      )
-    : rowsArr.reduce((acc, row) => acc + row.total_price, 0);
-  const totalWeight = rowsSelection.size !==0
-    ? Array.from(rowsSelection.values()).reduce(
-        (acc, row) => acc + row.total_price,
-        0
-      )
-    : rowsArr.reduce((acc, row) => acc + row.weight, 0);
+  const totalCost =
+    rowsSelection.size !== 0
+      ? Array.from(rowsSelection.values()).reduce(
+          (acc, row) => acc + row?.total_price ?? 0,
+          0
+        )
+      : rowsArr.reduce((acc, row) => acc + row?.total_price ?? 0, 0);
+  const totalWeight =
+    rowsSelection.size !== 0
+      ? Array.from(rowsSelection.values()).reduce(
+          (acc, row) => acc + row?.total_price ?? 0,
+          0
+        )
+      : rowsArr.reduce((acc, row) => acc + row.weight, 0);
 
   const totalCostStr = `Total Cost: USD$${totalCost.toLocaleString()}`;
   const totalWeightStr = `Total Weight: ${totalWeight.toLocaleString()} Kg`;

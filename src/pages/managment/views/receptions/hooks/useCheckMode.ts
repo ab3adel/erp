@@ -9,7 +9,7 @@ export const useCheckMode = () => {
 
   const rowsSelection = useGridSelector(apiRef, gridRowSelectionStateSelector);
 
-  const mode = apiRef.current.getCellMode(rowsSelection[0], "status");
+  const mode = apiRef.current.getCellMode(rowsSelection[0], "grade");
 
   const isInEditMode = mode === "edit";
 

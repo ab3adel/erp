@@ -47,7 +47,7 @@ interface ReceptionEntity {
       name: string;
       color: string;
       group: string;
-      tenant_id: string
+      tenant_id: string;
     }
   ];
 }
@@ -70,12 +70,12 @@ export interface DataGridRow {
   id: number;
   reception_date: string;
   status: string;
-  accountId: number;
+  account_id: number;
   accountName: string;
   grade: string;
   weight: number;
   total_price: number;
-  payment: boolean;
+  is_paid: boolean;
   commission_uom: string;
   cost_per_uom: string;
   cherry_price: number;

@@ -1,4 +1,4 @@
-import { Chip, Link } from "@mui/material";
+import { Chip, Link, TextField } from "@mui/material";
 import {
   GridColDef,
   GridFilterInputValue,
@@ -7,7 +7,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { AccountsEditSelect } from "../components/AccountsEditSelect";
 import DateRangeContainer from "@/shared/components/dateRangePicker/DateRangeContainer";
 
 type GroupedGridColumn = GridColDef & { group?: string };
@@ -42,9 +41,16 @@ export const useReceiptionsTableColumns = () => {
           ),
         },
       ],
-      renderCell: (params) => {
-        return <DateRangeContainer startdate={params.value} endDate={null} />;
-      },
+      renderEditCell: (props) => (
+        <TextField
+          value={props.value}
+          type="date"
+          sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
+        />
+      ),
+      // renderCell: (params) => {
+      //   return <DateRangeContainer startdate={params.value} endDate={null} />;
+      // },
     },
     {
       field: "status",
@@ -52,6 +58,7 @@ export const useReceiptionsTableColumns = () => {
       width: 100,
       group: "test 2",
       type: "singleSelect",
+
       valueOptions: ["pending", "approved", "inactive"],
       renderCell: ({ value }) =>
         value ? (
@@ -69,10 +76,10 @@ export const useReceiptionsTableColumns = () => {
         ) : (
           <></>
         ),
-      editable: true,
+      editable: false,
     },
     {
-      field: "accountId",
+      field: "account_id",
       headerName: "Account ID",
       width: 150,
       editable: false,
@@ -101,7 +108,7 @@ export const useReceiptionsTableColumns = () => {
       editable: false,
     },
     {
-      field: "payment",
+      field: "is_paid",
       headerName: "Payment",
       width: 100,
       type: "boolean",
@@ -157,7 +164,7 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Total Cost",
       width: 150,
       type: "number",
-      editable: true,
+      editable: false,
     },
     {
       field: "commission_uom",
@@ -178,14 +185,14 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Cherry Price",
       width: 100,
       type: "number",
-      editable: true,
+      editable: false,
       group: "Sample Details",
     },
     {
       field: "currency_fixed",
       headerName: "Currency Fixed",
       width: 100,
-      editable: true,
+      editable: false,
     },
   ];
   return columns;
