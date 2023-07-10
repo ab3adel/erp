@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import {
   GridFooter,
+  gridRowSelectionStateSelector,
   gridRowsLookupSelector,
   useGridApiContext,
   useGridSelector,
@@ -30,24 +31,36 @@ const ReceptionsTableFooter: FunctionComponent<
   const apiRef = useGridApiContext();
 
   const rows = useGridSelector(apiRef, gridRowsLookupSelector);
-  const rowsArr: DataGridRow[] = Object.keys(rows).map((key) => ({ id: key, ...rows[key] }));
+  const rowsSelection = apiRef.current.getSelectedRows();
+  const rowsArr: DataGridRow[] = Object.keys(rows).map((key) => ({
+    id: key,
+    ...rows[key],
+  }));
 
-  const totalCost = rowsArr.reduce((acc, row) => acc + row.total_price, 0)
-  const totalWeight = rowsArr.reduce((acc, row) => acc +row.weight, 0)
+  const totalCost = rowsSelection.size !==0
+    ? Array.from(rowsSelection.values()).reduce(
+        (acc, row) => acc + row.total_price,
+        0
+      )
+    : rowsArr.reduce((acc, row) => acc + row.total_price, 0);
+  const totalWeight = rowsSelection.size !==0
+    ? Array.from(rowsSelection.values()).reduce(
+        (acc, row) => acc + row.total_price,
+        0
+      )
+    : rowsArr.reduce((acc, row) => acc + row.weight, 0);
 
-  const totalCostStr = `Total Cost: USD$${totalCost.toLocaleString()}`
-  const totalWeightStr = `Total Weight: ${totalWeight.toLocaleString()} Kg`
-  const tatalAvargeUnitCostStr = `Total Average Unit Cost: ${totalCost / totalWeight} USD/Kg`
+  const totalCostStr = `Total Cost: USD$${totalCost.toLocaleString()}`;
+  const totalWeightStr = `Total Weight: ${totalWeight.toLocaleString()} Kg`;
+  const tatalAvargeUnitCostStr = `Total Average Unit Cost: ${
+    totalCost / totalWeight
+  } USD/Kg`;
 
   return (
     <Box mt="auto" display="flex" flexDirection="column">
       <Box sx={{ ...containerStyle }}>
         <FormulaFooter
-          formulaList={[
-            totalCostStr,
-            "/",
-            totalWeightStr,
-          ]}
+          formulaList={[totalCostStr, "/", totalWeightStr]}
           result={tatalAvargeUnitCostStr}
         />
       </Box>
