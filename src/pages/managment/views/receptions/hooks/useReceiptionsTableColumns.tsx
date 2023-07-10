@@ -90,6 +90,7 @@ export const useReceiptionsTableColumns = () => {
       type: "number",
       renderCell: ({ value }) => (
         <Link
+          textTransform="uppercase"
           onClick={() => {
             navigate("/traceability?lotNumber=" + value);
           }}
