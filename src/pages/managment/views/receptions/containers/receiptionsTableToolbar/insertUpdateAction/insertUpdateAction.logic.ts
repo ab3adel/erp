@@ -37,7 +37,7 @@ export const useLogic = () => {
             id: values.id,
             grade: values.grade,
             commission_uom: Number(values.commission_uom),
-            coffee_state: "Cherry",
+            // coffee_state: "Cherry",
           },
         },
       });
@@ -70,7 +70,6 @@ export const useLogic = () => {
   const handleCancel = () => {
     apiRef.current.stopRowEditMode({
       id: Number(rowsSelection[0]),
-      field: "status",
     });
   };
 

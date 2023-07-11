@@ -35,11 +35,12 @@ export const ReceiptionsTable = ({
     <div style={{ height: "63vh" }}>
       <DataGridPro
         isRowSelectable={(params) =>
-          apiRef.current.getCellMode(params.id, "status") === "view"
+          apiRef.current.getRowMode(params.id) === "view"
         }
         sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
         loading={loading}
         apiRef={apiRef}
+        editMode="row"
         rowSelectionModel={rowsSelection}
         onRowSelectionModelChange={(newSelection) => {
           setRowsSelection(newSelection as string[]);

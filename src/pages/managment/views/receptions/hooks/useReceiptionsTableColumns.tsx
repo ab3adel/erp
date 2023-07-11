@@ -46,6 +46,13 @@ export const useReceiptionsTableColumns = () => {
           value={props.value}
           type="date"
           sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
+          onChange={(e) =>
+            props.api.setEditCellValue({
+              value: e.currentTarget.value,
+              id: props.id,
+              field: props.field,
+            })
+          }
         />
       ),
       // renderCell: (params) => {
@@ -58,7 +65,6 @@ export const useReceiptionsTableColumns = () => {
       width: 100,
       group: "test 2",
       type: "singleSelect",
-
       valueOptions: ["pending", "approved", "inactive"],
       renderCell: ({ value }) =>
         value ? (
@@ -138,6 +144,8 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Grade",
       width: 100,
       editable: true,
+      type: "singleSelect",
+      valueOptions: ["A", "B", "C"],
       group: "Lots Details",
       filterOperators: [
         {
