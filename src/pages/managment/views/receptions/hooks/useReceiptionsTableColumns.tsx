@@ -91,7 +91,7 @@ export const useReceiptionsTableColumns = () => {
       editable: false,
     },
     {
-      field: "accountName",
+      field: "account_name",
       headerName: "Account Name",
       width: 150,
     },
@@ -100,7 +100,7 @@ export const useReceiptionsTableColumns = () => {
       headerName: "Lot Number",
       group: "Lots Details",
       width: 150,
-      type: "number",
+      type: "text",
       renderCell: ({ value }) => (
         <Link
           textTransform="uppercase"
