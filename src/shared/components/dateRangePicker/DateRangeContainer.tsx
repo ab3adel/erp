@@ -15,8 +15,14 @@ const DateRangeContainer: FunctionComponent<DateRangeContainerProps> = ({
   hundleChangeDateFilter,
 }) => {
   const [date, setDate] = useState<[string | null, string | null] | undefined>([
-    startdate?.toString(),
-    endDate ? endDate?.toString() : "",
+    hundleChangeDateFilter.item.value
+      ? hundleChangeDateFilter.item.value.min
+      : startdate?.toString(),
+    hundleChangeDateFilter.item.value
+      ? hundleChangeDateFilter.item.value.max
+      : endDate
+      ? endDate?.toString()
+      : "",
   ]);
 
   const [isOpen, setisOpen] = useState(false);

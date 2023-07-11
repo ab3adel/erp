@@ -10,10 +10,12 @@ export const useReceiptionsTableRows = (
   filterModel?: GridFilterModel,
   typeId?: number
 ): {
+
   rows: DataGridRow[];
   loading: boolean;
   paginatorInfo: PaginatorInfo | null;
 } => {
+
   const { data, loading } = useQuery<Response>(receptions, {
     variables: {
       first: filterModel ? undefined : paginationModel.pageSize,
@@ -23,9 +25,9 @@ export const useReceiptionsTableRows = (
           return {
             ...acc,
             [item.field]:
-              Number(item.value) || Number(item.value) === 0
+              (Number(item.value) || Number(item.value) === 0) && (item.field !== 'lot_number' && item.field !== 'account_id')
                 ? { min: Number(item.value), max: Number(item.value) }
-                : item.value,
+                : item.field === "account_id" ? Number(item.value) : item.field === 'is_paid' ? item.value === 'true' : item.value,
             ...(typeId && { type_id: typeId }),
           };
         }, {}),
@@ -40,7 +42,7 @@ export const useReceiptionsTableRows = (
         reception_date: lot.reception_date,
         status: lot.status,
         account_id: lot.account?.id,
-        accountName: lot.account?.name,
+        account_name: lot.account?.name,
         grade: lot.grade,
         weight: lot.weight,
         total_price: lot.total_price,

@@ -71,7 +71,7 @@ export interface DataGridRow {
   reception_date: string;
   status: string;
   account_id: number;
-  accountName: string;
+  account_name: string;
   grade: string;
   weight: number;
   total_price: number;
