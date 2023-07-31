@@ -2,6 +2,7 @@ import { TagsSelect } from "@/shared/components/tags/TagsSelect";
 import { Button } from "@mui/material";
 import { useLogic } from "./TagActions.logic";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import TagICon from '@/assets/images/tag.svg'
 
 const TagAction = () => {
   const {
@@ -18,7 +19,7 @@ const TagAction = () => {
       <Button
         style={{ display: isInEditMode ? "none" : undefined }}
         variant="text"
-        startIcon={<LocalOfferIcon />}
+        startIcon={<img src={TagICon} />}
         onClick={handleTagButtonClick}
       >
         TAG

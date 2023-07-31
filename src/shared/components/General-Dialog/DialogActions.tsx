@@ -15,7 +15,7 @@ const DialogActions: FunctionComponent<DialogActionsProps> = (props) => {
     <MUIDialogActions disableSpacing style={{ padding: 12, paddingBlock: 12 }}>
       <Button
         variant="text"
-        sx={{ color: "#24282899" }}
+        sx={{ color: "rgba(36, 40, 40, 0.6)" }}
         onClick={onCancelClick}
       >
         {cancelLabel}

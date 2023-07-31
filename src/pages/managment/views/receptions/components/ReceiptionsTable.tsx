@@ -37,7 +37,26 @@ export const ReceiptionsTable = ({
         isRowSelectable={(params) =>
           apiRef.current.getRowMode(params.id) === "view"
         }
-        sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
+        sx={{
+          "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+          "& .MuiDataGrid-main": {
+            "& .MuiDataGrid-columnHeaders ": {
+              "& .MuiDataGrid-columnHeader:hover ": {
+               
+                  "& .MuiDataGrid-columnHeaderDraggableContainer": {
+                    flexDirection: "row-reverse",
+                    "& .MuiDataGrid-columnHeaderTitleContainer": {
+                      justifyContent: "flex-end",
+                    },
+                    "& .MuiDataGrid-menuIcon":{
+                      margin:'0 5px '
+                    }
+                  },
+                
+              },
+            },
+          },
+        }}
         loading={loading}
         apiRef={apiRef}
         editMode="row"
@@ -69,11 +88,17 @@ export const ReceiptionsTable = ({
             InputComponentProps: {
               sx: {
                 "&::before, &::after": {
-                  borderBottom: "none !important",
+                  borderBottomColor: "#008E8F !important",
                 },
+
                 "& .MuiInputBase-root": {
                   "&::before, &::after": {
-                    borderBottom: "none !important",
+                    borderBottomColor: "#008E8F !important",
+                  },
+                  "&:hover": {
+                    "&::before, &::after": {
+                      borderBottomColor: "#008E8F  ",
+                    },
                   },
                 },
               },

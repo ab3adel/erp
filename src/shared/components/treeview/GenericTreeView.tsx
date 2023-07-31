@@ -1,14 +1,23 @@
 import { TreeView, TreeViewProps } from "@mui/lab";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { GenericTreeItem } from "./components";
 import { GenericTreeViewDefaultIcon } from "./components/GenericTreeViewDefaultIcon";
 import { getExpandedNodesIds } from "./utils/getExpandedNodesIds";
-
+import {useLocation} from 'react-router-dom'
+let routes =[
+  'management',
+  'approved-inverntory',
+  'relationships',
+  'accounts',
+  'customview',
+  'traceability'
+]
 export const GenericTreeView = ({
   treeNodes,
   onNodeClick,
   ...props
 }: GenericTreeViewProps) => {
+  const location=useLocation()
   const defaultExpanded = useMemo(
     () => getExpandedNodesIds(treeNodes),
     [treeNodes]
@@ -32,13 +41,23 @@ export const GenericTreeView = ({
       }}
       {...props}
     >
-      {treeNodes.map((treeNode) => (
-        <GenericTreeItem
+      {treeNodes.map((treeNode) => 
+       { 
+       
+       return ( <GenericTreeItem
           key={treeNode.nodeId}
           treeNode={treeNode}
           onNodeClick={handleNodeClick}
-        />
-      ))}
+        
+         sx= {location.pathname=== treeNode.nodeId ?
+          {
+            backgroundColor: `#008E8F14`,
+             color: "#008E8F",
+          }
+          :{}
+        }
+        />)}
+      )}
     </TreeView>
   );
 };

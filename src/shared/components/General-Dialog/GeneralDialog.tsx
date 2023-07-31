@@ -39,6 +39,11 @@ const GeneralDialog: FunctionComponent<GeneralDialogProps> = (props) => {
         dividers
         style={{ marginTop: 0, minWidth: "none" }}
         {...dialogContentContainerProps}
+        sx={{
+  
+            borderBottom:'none'
+        
+        }}
       >
         {children}
       </DialogContent>

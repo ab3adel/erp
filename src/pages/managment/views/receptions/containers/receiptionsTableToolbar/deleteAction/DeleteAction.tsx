@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import { FunctionComponent } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 
+import  DeleteIcon from '@/assets/images/delete.svg'
 import { useLogic } from "./DeleteAction.logic";
 
 const DeleteAction: FunctionComponent = () => {
@@ -11,7 +11,7 @@ const DeleteAction: FunctionComponent = () => {
     <Button
       sx={{ display: isInEditMode ? "none" : undefined }}
       variant="text"
-      startIcon={<DeleteIcon />}
+      startIcon={<img src={DeleteIcon} />}
       disabled={rowsSelection.length !== 1}
       onClick={handleSetIdList}
     >

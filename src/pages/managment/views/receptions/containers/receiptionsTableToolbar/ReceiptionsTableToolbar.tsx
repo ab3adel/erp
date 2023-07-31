@@ -17,9 +17,10 @@ export const ReceiptionsTableToolbar = (
   return (
     <GridToolbarContainer sx={{ justifyContent: "end", m: 2 }}>
       {rowsSelection.length > 0 && !isRowAdded && <ApprovePendingLotesAction />}
-      {rowsSelection.length > 0 && !isRowAdded && <DeleteAction />}
-      {rowsSelection.length > 0 && !isRowAdded && <TagAction />}
       {rowsSelection.length > 0 && !isRowAdded && <EditAction />}
+      {rowsSelection.length > 0 && !isRowAdded && <TagAction />}
+     
+      {rowsSelection.length > 0 && !isRowAdded && <DeleteAction />}
       <InsertUpdateAction />
       <Divider orientation="vertical" />
 

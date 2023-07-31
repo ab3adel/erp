@@ -1,8 +1,11 @@
 import ApproveReceiptions from "../../components/ApproveReceiptions/ApproveReceiptions";
 import { useLogic } from "./ApprovedLots.logic";
+import {enqueueSnackbar} from 'notistack'
 
 const ApproveLots = () => {
   const { clearIdList, idList, form, loading, totalWeight } = useLogic();
+
+
   return (
     <ApproveReceiptions
       open={idList.length > 0}

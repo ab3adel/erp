@@ -44,6 +44,7 @@ export const useReceiptionsTableColumns = () => {
       renderEditCell: (props) => (
         <TextField
           value={props.value}
+          placeholder={null}
           type="date"
           sx={{ "& .MuiOutlinedInput-notchedOutline": { border: "none" } }}
           onChange={(e) =>
@@ -75,7 +76,7 @@ export const useReceiptionsTableColumns = () => {
                 ? "warning"
                 : value === "inactive"
                 ? "error"
-                : "primary"
+                : "success"
             }
             sx={{ textTransform: "capitalize" }}
           />
@@ -129,11 +130,11 @@ export const useReceiptionsTableColumns = () => {
             );
           case false:
             return (
-              <HighlightOffIcon sx={{ color: "error.main" }} fontSize="small" />
+              <HighlightOffIcon sx={{ color: "#F57C00" }} fontSize="small" />
             );
           default:
             return (
-              <HighlightOffIcon sx={{ color: "error.main" }} fontSize="small" />
+              <HighlightOffIcon sx={{ color: "#F57C00" }} fontSize="small" />
             );
         }
       },

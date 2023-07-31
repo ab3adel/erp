@@ -39,9 +39,9 @@ export const useLogic = () => {
     onSubmit: (values) => {
       const notficationMessage =
         idList.length === 1
-          ? `1 Reception has been approved`
+          ? <>1 Reception has been approved<span style={{margin:'0 5px',color:'#33A4A5',cursor:'pointer'}}> Undo </span></>
           : idList.length > 1 && !values.combined
-          ? `${idList.length} Reception has been approved to inventory`
+          ? <>{idList.length} Reception has been approved to inventory <span style={{margin:'0 5px',color:'#33A4A5',cursor:'pointer'}}> View </span></>
           : ``;
 
       // this promise will be used to merge multiply lots together
@@ -64,6 +64,7 @@ export const useLogic = () => {
           enqueueSnackbar({
             message: notficationMessage,
             anchorOrigin: { horizontal: "center", vertical: "bottom" },
+            
           });
         clearIdList();
       });

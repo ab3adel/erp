@@ -6,6 +6,7 @@ import { memo } from "react";
 const GenericTreeItem = ({
   treeNode,
   onNodeClick,
+  focused,
   ...props
 }: GenericTreeItemProps) => {
   const handleItemClick = () => {
@@ -27,16 +28,28 @@ const GenericTreeItem = ({
         </Box>
       }
       onClick={handleItemClick}
+      sx= {location.pathname === treeNode.nodeId?
+        {[`& .${treeItemClasses.content}`]:{
+          backgroundColor: `#008E8F14`,
+           color: "#008E8F",
+        }
+        }
+        :{ 
+        }
+      }
     >
       {Array.isArray(treeNode.children)
-        ? treeNode.children.map((node) => (
-            <GenericTreeItem
+        ? treeNode.children.map((node) => {
+          console.log(node.nodeId,location.pathname,node.label)
+            return (<GenericTreeItem
               treeNode={node}
               onNodeClick={onNodeClick}
               key={node.nodeId}
+            
+              
               {...props}
-            />
-          ))
+            />)
+            })
         : null}
     </StyledTreeItemRoot>
   );
@@ -58,6 +71,7 @@ const StyledTreeItemRoot = styled(TreeItem, {
     paddingBottom: theme.spacing(1.5),
     paddingTop: theme.spacing(1.5),
     fontWeight: theme.typography.fontWeightRegular,
+ 
     "&.Mui-expanded": {
       backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
       color: "var(--tree-view-color)",
@@ -65,10 +79,10 @@ const StyledTreeItemRoot = styled(TreeItem, {
     "&:hover": {
       backgroundColor: theme.palette.action.hover,
     },
-    "&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused": {
-      backgroundColor: `#008E8F14`,
-      color: theme.palette.primary.main,
-    },
+    // "&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused": {
+    //   backgroundColor: `#008E8F14`,
+    //   color: theme.palette.primary.main,
+    // },
     [`& .${treeItemClasses.label}`]: {
       fontWeight: "inherit",
       color: "inherit",
@@ -85,6 +99,7 @@ const StyledTreeItemRoot = styled(TreeItem, {
 type GenericTreeItemProps = Omit<TreeItemProps, "nodeId"> & {
   treeNode: TreeNode;
   onNodeClick: (key: string, isLeaf?: boolean) => void;
+  focused?:boolean
 };
 
 type TreeNode = {
